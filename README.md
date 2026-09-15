@@ -22,7 +22,7 @@
 | --- | --- |
 | **기수** | 가짜연구소 13기 Open Academy |
 | **활동 기간** | 2026.10.04 – 2027.01.09 (12주 코어 + 2주 버퍼) |
-| **정기 모임** | 매주 **일요일 12:00–14:00** (2시간) |
+| **정기 모임** | 매주 **토요일 10:00–12:00** (2시간) |
 | **인원** | 9명 (빌더 1 + 러너 8) |
 | **커뮤니케이션** | 가짜연구소 디스코드 `#Room-YB` |
 | **저장소** | <https://github.com/Pseudo-Lab/abstain-dti> · MIT License |
@@ -164,7 +164,7 @@ Medea는 verification-aware 설계와 보정된 기권(calibrated abstention)이
 
 **12주 코어 + 2주 버퍼 · 2026.10.04 – 2027.01.09**
 
-주차는 **일요일 시작**입니다. 각 주차 첫날 **일요일 12:00–14:00 정기 모임**에서 지난 주 Issue를 닫고 이번 주 Issue를 엽니다. 킥오프는 W01 첫날인 **2026.10.04(일)**입니다.
+주차는 **토요일 시작**입니다. 각 주차 첫날 **토요일 10:00–12:00 정기 모임**에서 지난 주 Issue를 닫고 이번 주 Issue를 엽니다. 킥오프는 W01 첫날인 **2026.10.09(토)**입니다.
 
 각 주차는 GitHub **Milestone**과 `week/WXX` 라벨로 연결됩니다. → [GitHub 운영 규약](#-github-운영-규약)
 
@@ -284,7 +284,7 @@ ICLR 2027 워크숍의 개별 마감일과 ISMB/ECCB 2027의 key dates는 이 �
 
 | Role | Name | 담당 |
 | --- | --- | --- |
-| 🧭 Builder | [@ybaeus](https://github.com/ybaeus) | 프로젝트 리딩, 평가 설계 · **ML · 보정** 트랙 참여 |
+| 🧭 Builder | [@ybaeus](https://github.com/ybaeus) | 프로젝트 리딩, ML · 보정 |
 | 🧑‍💻 Runner | `@name` | ML · 보정 |
 | 🧑‍💻 Runner | `@name` | ML · 보정 |
 | 🤖 Runner | `@name` | 에이전트 · 교란 감사 |
@@ -328,7 +328,7 @@ Explore → Design → Build → Test → Improve → Share
 
 ### 운영 방식
 
-- **매주 일요일 12:00–14:00** 정기 모임 — 진행 공유 + 페어 작업. 필요 시 추가로 모여 작업
+- **매주 토요일 10:00–12:00** 정기 모임 — 진행 공유 + 페어 작업. 필요 시 추가로 모여 작업
 - **모든 작업은 GitHub Issue로 관리**, 주차별 마일스톤 운영
 - PR은 최소 1인 리뷰 후 머지
 - 결석·이탈 대비 — 모든 작업을 문서화해 인계 가능하도록 유지
@@ -344,7 +344,7 @@ Explore → Design → Build → Test → Improve → Share
 
 | 종류 | 라벨 | 용도 |
 | --- | --- | --- |
-| 주차 | `week/W01` … `week/W14` | 일요일 정기 모임에서 부여, 다음 일요일 모임에서 정리 |
+| 주차 | `week/W01` … `week/W14` | 토요일 정기 모임에서 부여, 다음 토요일 모임에서 정리 |
 | 트랙 | `track/ml` · `track/agent` · `track/curation` | W04 트랙 배정 이후 사용 |
 | 유형 | `type/task` · `type/bug` · `type/question` · `type/docs` | Issue 템플릿에서 자동 부여 |
 | 게이트 | `gate/freeze` | W04 split 동결, W11 수치 동결 |
@@ -358,9 +358,9 @@ Explore → Design → Build → Test → Improve → Share
 
 **주차 운영 루틴**
 
-1. **일요일 12:00 모임 전반** — 지난 주차 Issue 정리, 미완 항목은 이번 주차 라벨로 이월. `/docs/weekly/WXX.md`에 진행 로그 기록
-2. **일요일 모임 후반** — 트랙별로 이번 주 Issue를 열고 `week/WXX` + Milestone 부여, 페어 작업
-3. **주중** — PR로 작업, 최소 1인 리뷰. 다음 일요일 모임에서 닫음
+1. **토요일 10:00 모임 전반** — 지난 주차 Issue 정리, 미완 항목은 이번 주차 라벨로 이월. `/docs/weekly/WXX.md`에 진행 로그 기록
+2. **토요일 모임 후반** — 트랙별로 이번 주 Issue를 열고 `week/WXX` + Milestone 부여, 페어 작업
+3. **주중** — PR로 작업, 최소 1인 리뷰. 다음 토요일 모임에서 닫음
 
 ## 📁 Repository 구조
 
@@ -516,7 +516,7 @@ abstain-dti/
 
 **누구나 청강을 통해 모임을 참여하실 수 있습니다.**
 
-1. 특별한 신청 없이 **일요일 12:00** 정기 모임 시간에 맞추어 디스코드 `#Room-YB` 채널로 입장
+1. 특별한 신청 없이 **토요일 10:00** 정기 모임 시간에 맞추어 디스코드 `#Room-YB` 채널로 입장
 2. Magical Week 중 행사에 참가
 3. Pseudo Lab 행사에서 만나기
 
