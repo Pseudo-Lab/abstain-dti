@@ -18,11 +18,6 @@
 >
 > 신약 발굴 모델과 AI 에이전트가 **"모르면 모른다"고 말하는지**를, 물리적으로 정의된 난이도 좌표 위에서 측정하는 공개 벤치마크를 만듭니다. 그리고 제대로 보정된 지도학습 baseline과 직접 비교합니다.
 
-**저도 이 분야는 올해 처음입니다.** 생물정보 쪽 실무는 해왔지만 AI research는 저도 올해부터 붙잡고
-있습니다. 그래서 이 프로젝트는 누가 가르치고 누가 배우는 구조가 아닙니다. 같이 읽고, 같이 틀리고,
-틀린 걸 기록으로 남기는 쪽에 가깝습니다. 잘하는 사람보다 모르는 걸 모른다고 말할 수 있는 사람과
-하고 싶습니다. 마침 이 프로젝트가 모델한테 묻는 질문이 바로 그겁니다.
-
 **중간에 외부에서 사람을 부릅니다.** 이 분야를 실제로 하고 계신 분께 기수 중 한두 번 자리를
 부탁드릴 생각입니다. 아직 확정된 분은 없고 기수가 시작하면 섭외합니다. 이 세션은 청강으로도 열어둡니다.
 
@@ -43,7 +38,7 @@
 
 ---
 
-## 요약
+## 🎯 요약
 
 이번 기수에 반드시 남길 것 네 가지입니다.
 
@@ -77,7 +72,7 @@
 
 ---
 
-## 왜 이걸 하는지
+## ✨ 왜 이걸 하는지
 
 ### 문제
 
@@ -120,7 +115,7 @@ Medea는 검증을 전제로 한 설계와 보정된 기권이 성능에 기여�
 
 ---
 
-## 누구랑 같이 하고 싶은지
+## 👥 누구랑 같이 하고 싶은지
 
 빌더 1명과 러너 8명, 9명이 함께 만듭니다.
 
@@ -215,7 +210,7 @@ Explore → Design → Build → Test → Improve → Share
 
 ---
 
-## 무엇을 만드는가 (평가 설계 상세)
+## 🧪 무엇을 만드는가 (평가 설계 상세)
 
 <details>
 <summary>난이도 좌표 6종, split 프로토콜, 비교 대상, 측정 지표, 교란 감사, AlphaFold 3단계 (펼치기)</summary>
@@ -304,7 +299,7 @@ Explore → Design → Build → Test → Improve → Share
 
 </details>
 
-## 주차 로드맵
+## 🗺️ 주차 로드맵
 
 <details>
 <summary>14주 주차별 계획, 게이트, 최소 척추 6단계 (펼치기)</summary>
@@ -375,7 +370,7 @@ Explore → Design → Build → Test → Improve → Share
 
 </details>
 
-## 마일스톤과 GitHub 운영
+## 🧭 마일스톤과 GitHub 운영
 
 <details>
 <summary>M1-M5 완료 조건, 트랙별 완료 조건, 라벨과 브랜치 규약, 저장소 구조 (펼치기)</summary>
@@ -464,7 +459,7 @@ abstain-dti/
 
 </details>
 
-## 리스크와 대응
+## ⚠️ 리스크와 대응
 
 <details>
 <summary>GPU 확보 실패부터 논문까지 못 가는 경우까지 14가지 (펼치기)</summary>
@@ -490,7 +485,7 @@ abstain-dti/
 
 </details>
 
-## 연장 트랙 (기수 종료 후)
+## 🔁 연장 트랙 (기수 종료 후)
 
 <details>
 <summary>도전 실험, 투고 로드맵, 외부 행사 일정 (펼치기)</summary>
@@ -522,7 +517,7 @@ ICLR 2027 워크숍의 개별 마감일과 ISMB/ECCB 2027의 key dates는 이 �
 
 </details>
 
-## 부록 A. W02 지정 논문
+## 📖 부록 A. W02 지정 논문
 
 <details>
 <summary>5개 묶음 23편. 별표는 전원 필독 (펼치기)</summary>
@@ -602,7 +597,7 @@ ICLR 2027 워크숍의 개별 마감일과 ISMB/ECCB 2027의 key dates는 이 �
 
 ---
 
-## Archive
+## 📚 Archive
 
 - Repository: <https://github.com/Pseudo-Lab/abstain-dti>
 - Benchmark: `benchmark/queries.jsonl` · `benchmark/difficulty.tsv` *(M3에서 확정)*
@@ -621,7 +616,7 @@ ICLR 2027 워크숍의 개별 마감일과 ISMB/ECCB 2027의 key dates는 이 �
 
 ---
 
-## Acknowledgement
+## Acknowledgement 🙏
 
 이 프로젝트는 가짜연구소 Open Academy로 진행됩니다. 여러분의 참여와 기여가 '우연한 혁명(Serendipity
 Revolution)'을 가능하게 합니다. 모두에게 깊은 감사를 전합니다.
@@ -629,7 +624,7 @@ Revolution)'을 가능하게 합니다. 모두에게 깊은 감사를 전합니�
 abstain-dti is developed as part of Pseudo-Lab's Open Research Initiative. Special thanks to our
 contributors and the open source community for their valuable insights and contributions.
 
-## About Pseudo Lab
+## About Pseudo Lab 👋🏼
 
 [Pseudo-Lab](https://pseudo-lab.com/) is a non-profit organization focused on advancing machine learning
 and AI technologies. Our core values of Sharing, Motivation, and Collaborative Joy drive us to create
