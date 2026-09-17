@@ -1,0 +1,1319 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<!-- abstain-dti W01 온보딩 슬라이드. 2026-09-05 작성, 2026-09-17 저장소로 회수.
+     원본은 claude.ai/code/artifact/e8ce415e-be63-4f78-b57e-ecaa06b6af05 에 있었음. -->
+<title>1주차 온보딩 — 어휘·분자·파이프라인·split</title>
+
+<style>
+  :root {
+    --paper:   #EEF2F8;
+    --card:    #FFFFFF;
+    --ink:     #0B1220;
+    --ink-2:   #4B5A73;
+    --ink-3:   #7C8AA3;
+    --rule:    #D5DFEC;
+    --blue:    #0053D6;
+    --cyan:    #2E9FD4;
+    --yellow:  #C99400;
+    --orange:  #E2632A;
+    --codebg:  #0D1526;
+    --codefg:  #DDE6F5;
+    --codedim: #7E8FAE;
+
+    --f-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont,
+              "Apple SD Gothic Neo", "Segoe UI", "Noto Sans KR", "Malgun Gothic",
+              system-ui, sans-serif;
+    --f-mono: ui-monospace, SFMono-Regular, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+
+    --wrap: 1040px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper:  #080D17; --card: #101927; --ink: #E9EFF9; --ink-2: #9AAAC4;
+      --ink-3: #6C7C97; --rule: #21304A; --blue: #6699FF; --cyan: #65CBF3;
+      --yellow: #FFDB13; --orange: #FF9463; --codebg: #060B14; --codefg: #DDE6F5; --codedim: #67789A;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper:  #080D17; --card: #101927; --ink: #E9EFF9; --ink-2: #9AAAC4;
+    --ink-3: #6C7C97; --rule: #21304A; --blue: #6699FF; --cyan: #65CBF3;
+    --yellow: #FFDB13; --orange: #FF9463; --codebg: #060B14; --codefg: #DDE6F5; --codedim: #67789A;
+  }
+  :root[data-theme="light"] {
+    --paper: #EEF2F8; --card: #FFFFFF; --ink: #0B1220; --ink-2: #4B5A73;
+    --ink-3: #7C8AA3; --rule: #D5DFEC; --blue: #0053D6; --cyan: #2E9FD4;
+    --yellow: #C99400; --orange: #E2632A; --codebg: #0D1526; --codefg: #DDE6F5; --codedim: #7E8FAE;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--paper); color: var(--ink); font-family: var(--f-sans);
+    font-size: 16px; line-height: 1.62; -webkit-font-smoothing: antialiased;
+    word-break: keep-all;
+  }
+
+  .rail { position: fixed; inset: 0 auto 0 0; width: 3px; z-index: 40; background: var(--rule); }
+  .rail span { display: block; width: 100%; height: 0%; background: linear-gradient(180deg, var(--blue), var(--cyan)); transition: height .18s linear; }
+  .counter {
+    position: fixed; right: 1.25rem; bottom: 1.1rem; z-index: 40;
+    font-family: var(--f-mono); font-size: .72rem; letter-spacing: .06em;
+    color: var(--ink-3); background: var(--paper); padding: .3rem .55rem;
+    border: 1px solid var(--rule); border-radius: 2px; font-variant-numeric: tabular-nums;
+  }
+
+  .slide {
+    min-height: 100vh; display: flex; flex-direction: column; justify-content: center;
+    padding: 4.5rem 0; border-bottom: 1px solid var(--rule);
+  }
+  .wrap { width: 100%; max-width: var(--wrap); margin: 0 auto; padding: 0 2.25rem; }
+
+  .eyebrow {
+    font-family: var(--f-mono); font-size: .7rem; text-transform: uppercase;
+    letter-spacing: .16em; color: var(--blue); margin-bottom: 1.1rem;
+    display: flex; align-items: baseline; gap: .7rem; flex-wrap: wrap;
+  }
+  .eyebrow b { font-weight: 500; color: var(--ink-3); }
+
+  h1 { font-size: clamp(2.1rem, 5.2vw, 3.5rem); line-height: 1.14; font-weight: 800; letter-spacing: -.025em; text-wrap: balance; margin: 0 0 1.1rem; }
+  h2 { font-size: clamp(1.5rem, 3.3vw, 2.1rem); line-height: 1.24; font-weight: 750; letter-spacing: -.02em; text-wrap: balance; margin: 0 0 1.3rem; }
+  h3 { font-size: 1.0rem; font-weight: 700; margin: 0 0 .45rem; }
+  h4 { font-size: .74rem; font-family: var(--f-mono); text-transform: uppercase; letter-spacing: .12em; color: var(--ink-3); font-weight: 600; margin: 0 0 .6rem; }
+  p { margin: 0 0 1rem; max-width: 70ch; color: var(--ink-2); }
+  p.lead { font-size: 1.13rem; color: var(--ink); max-width: 62ch; }
+  strong { color: var(--ink); font-weight: 700; }
+  .dim { color: var(--ink-3); }
+  .small { font-size: .88rem; }
+
+  ul, ol { margin: 0 0 1.05rem; padding-left: 1.15rem; max-width: 70ch; color: var(--ink-2); }
+  li { margin-bottom: .38rem; }
+  li::marker { color: var(--ink-3); }
+
+  code {
+    font-family: var(--f-mono); font-size: .88em;
+    background: color-mix(in srgb, var(--blue) 10%, transparent);
+    color: var(--ink); padding: .1em .34em; border-radius: 2px;
+  }
+  pre {
+    background: var(--codebg); color: var(--codefg); font-family: var(--f-mono);
+    font-size: .82rem; line-height: 1.65; padding: 1.1rem 1.25rem; border-radius: 4px;
+    overflow-x: auto; margin: 0 0 1.05rem;
+    border: 1px solid color-mix(in srgb, var(--blue) 22%, transparent);
+  }
+  pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+  pre .c { color: var(--codedim); }
+  pre .k { color: var(--cyan); }
+
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: start; }
+  .grid2b { display: grid; grid-template-columns: 1.15fr .85fr; gap: 1.6rem; align-items: start; }
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.1rem; align-items: start; }
+  @media (max-width: 800px) { .grid2, .grid2b, .grid3 { grid-template-columns: 1fr; } }
+
+  .card { background: var(--card); border: 1px solid var(--rule); border-radius: 4px; padding: 1.05rem 1.15rem; }
+  .card p, .card ul { margin-bottom: 0; font-size: .92rem; }
+  .card + .card { margin-top: .8rem; }
+
+  .tag {
+    display: inline-block; font-family: var(--f-mono); font-size: .66rem;
+    letter-spacing: .08em; text-transform: uppercase; padding: .16rem .42rem;
+    border-radius: 2px; margin-bottom: .5rem; border: 1px solid currentColor;
+  }
+  .t-blue { color: var(--blue); } .t-cyan { color: var(--cyan); }
+  .t-yel { color: var(--yellow); } .t-org { color: var(--orange); }
+
+  .note { border-left: 3px solid var(--orange); padding: .1rem 0 .1rem 1rem; margin: 1.05rem 0; color: var(--ink-2); font-size: .93rem; max-width: 70ch; }
+  .note strong { color: var(--orange); }
+  .note.b { border-left-color: var(--blue); }
+  .note.b strong { color: var(--blue); }
+
+  .tablewrap { overflow-x: auto; margin-bottom: 1.05rem; border: 1px solid var(--rule); border-radius: 4px; }
+  table { border-collapse: collapse; width: 100%; min-width: 560px; background: var(--card); }
+  th, td { text-align: left; padding: .62rem .85rem; border-bottom: 1px solid var(--rule); font-size: .88rem; vertical-align: top; }
+  th { font-size: .7rem; text-transform: uppercase; letter-spacing: .1em; color: var(--ink-3); font-weight: 600; white-space: nowrap; }
+  td { color: var(--ink-2); }
+  td:first-child { color: var(--ink); font-weight: 650; }
+  tr:last-child td { border-bottom: none; }
+  td code, th code { white-space: nowrap; }
+
+  dl.kv { display: grid; grid-template-columns: 9rem 1fr; gap: .4rem 1rem; font-size: .93rem; margin: 0 0 1rem; }
+  dl.kv dt { font-family: var(--f-mono); font-size: .78rem; color: var(--blue); padding-top: .2rem; }
+  dl.kv dd { margin: 0; color: var(--ink-2); }
+  @media (max-width: 620px) { dl.kv { grid-template-columns: 1fr; gap: .1rem .5rem; } dl.kv dd { margin-bottom: .6rem; } }
+
+  /* figures */
+  figure { margin: 0; }
+  figcaption { font-size: .8rem; color: var(--ink-3); margin-top: .5rem; }
+  svg { max-width: 100%; height: auto; display: block; }
+  .fig-surface { background: var(--card); border: 1px solid var(--rule); border-radius: 4px; padding: .9rem; }
+
+  /* pipeline */
+  .pipe { display: grid; gap: .55rem; margin-bottom: 1.1rem; }
+  .lane {
+    display: flex; align-items: center; gap: .45rem; flex-wrap: wrap;
+    background: var(--card); border: 1px solid var(--rule); border-left-width: 4px;
+    border-radius: 3px; padding: .7rem .85rem;
+  }
+  .lane .lbl {
+    font-family: var(--f-mono); font-size: .68rem; letter-spacing: .08em;
+    text-transform: uppercase; color: var(--ink-3); width: 5.5rem; flex-shrink: 0;
+  }
+  .chip {
+    font-size: .82rem; padding: .28rem .6rem; border-radius: 3px;
+    border: 1px solid var(--rule); background: var(--paper); color: var(--ink);
+    white-space: nowrap; font-weight: 600;
+  }
+  .chip.io { background: color-mix(in srgb, var(--blue) 12%, transparent); border-color: color-mix(in srgb, var(--blue) 35%, transparent); }
+  .chip.tool { font-family: var(--f-mono); font-size: .76rem; font-weight: 500; }
+  .chip.out { background: color-mix(in srgb, var(--orange) 14%, transparent); border-color: color-mix(in srgb, var(--orange) 40%, transparent); }
+  .conn { color: var(--ink-3); font-family: var(--f-mono); font-size: .8rem; flex-shrink: 0; }
+  .lane-note { font-size: .76rem; color: var(--ink-3); margin-left: auto; padding-left: .8rem; white-space: nowrap; }
+  @media (max-width: 800px) { .lane .lbl { width: 100%; } .lane-note { margin-left: 0; padding-left: 0; width: 100%; } }
+
+  /* ramp / pae / split */
+  .ramp { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin-bottom: .8rem; border-radius: 3px; overflow: hidden; }
+  .ramp div { padding: .9rem .8rem; color: #fff; }
+  .ramp .n { font-family: var(--f-mono); font-size: .92rem; font-weight: 700; display: block; }
+  .ramp .l { font-size: .78rem; opacity: .92; }
+
+  .pae { display: grid; grid-template-columns: repeat(16, 1fr); gap: 1px; width: 240px; aspect-ratio: 1; }
+
+  .splits { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.3rem; margin-bottom: 1.2rem; }
+  @media (max-width: 800px) { .splits { grid-template-columns: repeat(2, 1fr); } }
+  .split-fig figcaption { font-family: var(--f-mono); font-size: .74rem; color: var(--ink); margin-top: .5rem; font-weight: 600; }
+  .split-fig .sub { font-family: var(--f-sans); font-size: .78rem; color: var(--ink-3); font-weight: 400; }
+  .mat { display: grid; grid-template-columns: repeat(8, 1fr); gap: 2px; aspect-ratio: 1; }
+  .mat i { border-radius: 1px; background: var(--rule); }
+  .mat i.tr { background: var(--blue); }
+  .mat i.te { background: var(--orange); }
+  .mat i.ex { background: transparent; border: 1px dashed var(--rule); }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 1.1rem; font-size: .81rem; color: var(--ink-2); }
+  .legend span { display: flex; align-items: center; gap: .42rem; }
+  .legend b { width: 11px; height: 11px; border-radius: 2px; display: inline-block; }
+
+  /* fingerprint bit strip */
+  .bits { display: grid; grid-template-columns: repeat(64, 1fr); gap: 1px; margin: .5rem 0 .4rem; }
+  .bits i { aspect-ratio: 1; background: var(--rule); border-radius: 1px; }
+  .bits i.on { background: var(--blue); }
+
+  .ladder { display: grid; gap: .7rem; }
+  .rung { display: grid; grid-template-columns: auto 1fr auto; gap: 1rem; align-items: baseline;
+          background: var(--card); border: 1px solid var(--rule); border-left-width: 4px;
+          border-radius: 3px; padding: .9rem 1.1rem; }
+  .rung .num { font-family: var(--f-mono); font-size: .76rem; color: var(--ink-3); }
+  .rung .cost { font-family: var(--f-mono); font-size: .72rem; color: var(--ink-3); white-space: nowrap; }
+  .rung p { margin: .18rem 0 0; font-size: .88rem; }
+
+  a { color: var(--blue); }
+  a:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
+
+  @media (max-width: 800px) {
+    .slide { min-height: auto; padding: 3rem 0; }
+    .wrap { padding: 0 1.25rem; }
+    body { font-size: 15px; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
+  @media print {
+    .rail, .counter { display: none; }
+    .slide { min-height: 0; page-break-after: always; border: none; padding: 1.4rem 0; }
+    body { background: #fff; color: #000; }
+  }
+</style>
+
+<div class="rail" aria-hidden="true"><span id="railfill"></span></div>
+<div class="counter" id="counter">01 / 01</div>
+
+<!-- 01 =================================================================== -->
+<section class="slide">
+  <div class="wrap">
+    <div class="eyebrow">abstain-dti <b>· 1주차 온보딩</b></div>
+    <h1>단백질, 분자,<br>그리고 파이프라인</h1>
+    <p class="lead">이 프로젝트에서 쓸 단어를 전부 여기서 맞춘다.<br>
+    사전 지식은 가정하지 않는다.</p>
+    <div class="legend" style="margin-top:2rem">
+      <span><b style="background:var(--blue)"></b> Part A · 단백질 쪽 어휘 (2–6)</span>
+      <span><b style="background:var(--cyan)"></b> Part B · 분자 쪽 어휘 (7–16)</span>
+      <span><b style="background:var(--yellow)"></b> Part C · 파이프라인과 구조 (17–31)</span>
+      <span><b style="background:var(--orange)"></b> Part D · split과 난이도 (32–37)</span>
+    </div>
+    <p class="dim small" style="margin-top:2rem">← → 방향키로 이동 · 인쇄하면 PDF 슬라이드</p>
+  </div>
+</section>
+
+<!-- 02 =================================================================== -->
+<section class="slide">
+  <div class="wrap">
+    <div class="eyebrow">Part A <b>· 문제 정의</b></div>
+    <h2>우리가 예측하려는 것</h2>
+    <p class="lead">단백질 하나와 화합물 하나를 주면, <strong>이 둘이 결합하는가</strong>를 답한다.</p>
+    <div class="grid2">
+      <div class="card">
+        <span class="tag t-blue">입력 1</span>
+        <h3>단백질</h3>
+        <p style="font-family:var(--f-mono);font-size:.8rem;word-break:break-all">MRPSGTAGAALLALLAALCPASRA<br>LEEKKVCQGTSNKLTQLGTFEDHF…</p>
+        <p style="margin-top:.6rem">아미노산 20종이 사슬로 이어진 것. 이 문자열이 3차원으로 접혀서 기능을 한다.</p>
+      </div>
+      <div class="card">
+        <span class="tag t-cyan">입력 2</span>
+        <h3>화합물</h3>
+        <p style="font-family:var(--f-mono);font-size:.86rem">CC(=O)Oc1ccccc1C(=O)O</p>
+        <p style="margin-top:.6rem">약이 될 수 있는 작은 분자. 원자 수십 개짜리. 이건 아스피린이다.</p>
+      </div>
+    </div>
+    <div class="card" style="margin-top:1.2rem">
+      <span class="tag t-org">출력</span>
+      <h3>결합 여부, 그리고 — 이 프로젝트의 진짜 질문 — <em>확신의 정도</em></h3>
+      <p>정확도가 아니라 <strong>모델이 자기가 틀릴 때를 아는가</strong>가 우리 주제다. 오늘은 그 질문을 던지기 위한 어휘를 깐다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 =================================================================== -->
+<section class="slide">
+  <div class="wrap">
+    <div class="eyebrow">Part A · 01 <b>· 어휘</b></div>
+    <h2>단백질의 해부학</h2>
+    <div class="grid2b">
+      <figure class="fig-surface">
+        <svg viewBox="0 0 420 290" role="img" aria-label="단백질 덩어리와 그 표면의 오목한 pocket, pocket 안에 앉은 리간드, pocket을 둘러싼 잔기들">
+          <defs>
+            <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+              <path d="M0,0 L7,3.5 L0,7 z" fill="currentColor"/>
+            </marker>
+          </defs>
+          <!-- protein body with a bay on the right -->
+          <path d="M55,55 C100,25 250,28 300,62 C320,77 318,95 300,105
+                   C265,125 245,137 248,162 C250,187 275,197 300,207
+                   C320,219 318,242 295,252 C240,269 95,265 55,235
+                   C20,212 18,80 55,55 Z"
+                fill="var(--blue)" fill-opacity="0.13"
+                stroke="var(--blue)" stroke-width="2"/>
+          <!-- residues lining the pocket -->
+          <g fill="var(--blue)">
+            <circle cx="299" cy="106" r="6"/>
+            <circle cx="275" cy="120" r="6"/>
+            <circle cx="256" cy="140" r="6"/>
+            <circle cx="248" cy="163" r="6"/>
+            <circle cx="258" cy="184" r="6"/>
+            <circle cx="279" cy="197" r="6"/>
+            <circle cx="299" cy="206" r="6"/>
+          </g>
+          <!-- other residues scattered -->
+          <g fill="var(--ink-3)" opacity="0.5">
+            <circle cx="110" cy="90" r="5"/><circle cx="160" cy="75" r="5"/>
+            <circle cx="95" cy="150" r="5"/><circle cx="145" cy="200" r="5"/>
+            <circle cx="205" cy="115" r="5"/><circle cx="200" cy="215" r="5"/>
+            <circle cx="70" cy="200" r="5"/><circle cx="230" cy="70" r="5"/>
+          </g>
+          <!-- ligand -->
+          <g transform="translate(288,155)">
+            <polygon points="0,-13 11,-6.5 11,6.5 0,13 -11,6.5 -11,-6.5"
+                     fill="var(--orange)" fill-opacity="0.85" stroke="var(--orange)" stroke-width="1.5"/>
+            <line x1="11" y1="-6.5" x2="26" y2="-14" stroke="var(--orange)" stroke-width="2.5"/>
+            <circle cx="29" cy="-16" r="4" fill="var(--orange)"/>
+          </g>
+          <!-- labels -->
+          <g font-family="var(--f-sans)" font-size="12" fill="var(--ink-2)">
+            <text x="112" y="145">단백질 (타겟)</text>
+            <line x1="150" y1="150" x2="180" y2="165" stroke="var(--ink-3)" stroke-width="1"/>
+
+            <text x="316" y="152" fill="var(--orange)">리간드</text>
+            <line x1="340" y1="157" x2="326" y2="146" stroke="var(--orange)" stroke-width="1" opacity=".6"/>
+
+            <text x="196" y="252" fill="var(--blue)">pocket 잔기</text>
+            <line x1="248" y1="246" x2="256" y2="192" stroke="var(--blue)" stroke-width="1" opacity=".5"/>
+
+            <text x="30" y="278" fill="var(--ink-3)">나머지 잔기</text>
+            <line x1="78" y1="272" x2="72" y2="210" stroke="var(--ink-3)" stroke-width="1" opacity=".5"/>
+          </g>
+        </svg>
+        <figcaption>단면 도식. 실제 단백질은 3차원이고 pocket은 표면이 안으로 파인 구멍이다.</figcaption>
+      </figure>
+      <div>
+        <dl class="kv">
+          <dt>잔기<br>residue</dt>
+          <dd>사슬에 들어간 아미노산 하나. 순서대로 번호가 붙는다 — <code>Lys745</code> = 745번째 잔기, 라이신. 단백질 하나에 수백~수천 개.</dd>
+
+          <dt>타겟<br>target</dt>
+          <dd>약이 작용시키려는 단백질. 같은 분자를 기능 얘기할 땐 "단백질", 신약 맥락에선 "타겟"이라 부를 뿐이다.</dd>
+
+          <dt>pocket<br>결합 부위</dt>
+          <dd>표면의 오목한 홈. 리간드가 들어가 앉는 곳. 보통 <strong>10~30개 잔기</strong>가 둘러싼다. 단백질 전체 중 극히 일부.</dd>
+
+          <dt>리간드<br>ligand</dt>
+          <dd>pocket에 결합하는 작은 분자. 우리 맥락에선 약물 후보 화합물.</dd>
+
+          <dt>도메인<br>domain</dt>
+          <dd>독립적으로 접히는 단위. 큰 단백질은 도메인 여러 개가 이어져 있다.</dd>
+        </dl>
+        <div class="note b"><strong>왜 pocket만 따로 보나</strong> — 단백질 전체가 잘 예측돼도 pocket 부분이 부정확하면 결합 예측에 쓸모없다. 반대도 성립. <strong>우리 난이도 좌표는 전부 pocket 기준으로 계산된다.</strong></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 =================================================================== -->
+<section class="slide">
+  <div class="wrap">
+    <div class="eyebrow">Part A · 02 <b>· 어휘</b></div>
+    <h2>entry — 데이터베이스의 레코드 한 줄</h2>
+    <p class="lead">"entry"는 생물학 용어가 아니라 <strong>DB 용어</strong>다. 어느 DB의 entry인지가 매번 다르다.</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>DB</th><th>entry 하나 = </th><th>식별자 예</th><th>우리 용도</th></tr></thead>
+        <tbody>
+          <tr><td>UniProt</td><td>단백질 하나 (서열 + 주석)</td><td><code>P00533</code> (EGFR)</td><td>타겟의 기준 ID</td></tr>
+          <tr><td>PDB</td><td><strong>실험으로 푼 구조 하나</strong></td><td><code>1M17</code></td><td>실험 구조 존재 여부</td></tr>
+          <tr><td>AlphaFold DB</td><td>예측 구조 하나</td><td><code>AF-P00533-F1</code></td><td>구조·pLDDT 원천</td></tr>
+          <tr><td>ChEMBL</td><td>측정 하나 또는 화합물 하나</td><td><code>CHEMBL941</code></td><td>친화도 + 출처 논문</td></tr>
+          <tr><td>BindingDB</td><td>(단백질, 화합물, 측정값) 하나</td><td>—</td><td><strong>우리 주 데이터</strong></td></tr>
+          <tr><td>Pharos</td><td>타겟 하나 + 연구 성숙도 등급</td><td><code>EGFR / Tclin</code></td><td>난이도 좌표 ⑤</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <h3>같은 단백질, 여러 entry</h3>
+        <p>EGFR 하나에 UniProt entry는 1개지만 PDB entry는 수백 개다 — 서로 다른 리간드, 서로 다른 변이체, 서로 다른 조각. <strong>ID 매핑이 큐레이션 트랙 일의 절반이다.</strong></p>
+      </div>
+      <div class="card">
+        <h3>apo / holo</h3>
+        <p>구조 entry를 부르는 두 이름.<br>
+        <strong>apo</strong> = 리간드 없이 푼 구조.<br>
+        <strong>holo</strong> = 리간드가 결합된 채로 푼 구조.<br>
+        holo가 있으면 그 타겟은 사실상 이미 풀린 타겟이다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 =================================================================== -->
+<section class="slide">
+  <div class="wrap">
+    <div class="eyebrow">Part A · 03 <b>· 어휘</b></div>
+    <h2>결합 친화도 — 얼마나 세게 붙나</h2>
+    <div class="grid2b">
+      <div>
+        <dl class="kv">
+          <dt>Kd</dt><dd>해리 상수. 단위 M(몰). <strong>작을수록 세게 붙는다.</strong> 1 nM이 100 nM보다 100배 강하다</dd>
+          <dt>Ki</dt><dd>저해 상수. 개념상 Kd와 같은 자리를 쓴다</dd>
+          <dt>IC50</dt><dd>활성을 절반으로 떨어뜨리는 농도. 실험 조건에 더 민감해서 Kd/Ki보다 비교가 어렵다</dd>
+          <dt>pKd</dt><dd><code>-log10(Kd in M)</code>. <strong>클수록 세게 붙는다.</strong> 로그라서 회귀에 쓰기 좋다</dd>
+        </dl>
+        <div class="tablewrap">
+          <table style="min-width:0">
+            <thead><tr><th>Kd</th><th>pKd</th><th>해석</th></tr></thead>
+            <tbody>
+              <tr><td>1 nM</td><td>9</td><td>매우 강함 — 약이 될 만함</td></tr>
+              <tr><td>100 nM</td><td>7</td><td>강함 — 흔한 판정 기준선</td></tr>
+              <tr><td>10 µM</td><td>5</td><td>약함 — 실용성 낮음</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div>
+        <div class="note"><strong>이진 분류로 바꿀 때의 함정</strong><br>
+        BindingDB에는 <strong>측정된 쌍만</strong> 들어있다. 대부분 실제로 붙는다. "안 붙음"이라는 라벨이 원래 없다.<br><br>
+        그래서 <strong>pKd ≥ 7 = 결합, &lt; 7 = 비결합</strong>처럼 임계값으로 자른다. 이때 "비결합"은 <strong>안 붙는 게 아니라 약하게 붙는 것</strong>이다. 논문에 이걸 명시해야 한다.</div>
+        <div class="card">
+          <h3>4주차에 같이 얼릴 것</h3>
+          <p>임계값(7), 어떤 측정치를 우선할지(Kd &gt; Ki &gt; IC50), 같은 쌍의 중복 측정을 어떻게 합칠지(중앙값). 셋 다 결과를 바꾼다.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 =================================================================== -->
+<section class="slide">
+  <div class="wrap">
+    <div class="eyebrow">Part A · 04 <b>· 정리</b></div>
+    <h2>Part A 한 줄 요약</h2>
+    <dl class="kv" style="grid-template-columns:11rem 1fr;font-size:1rem">
+      <dt>잔기</dt><dd>단백질 사슬의 아미노산 하나. 번호가 붙는다</dd>
+      <dt>타겟</dt><dd>약이 노리는 단백질</dd>
+      <dt>pocket</dt><dd>리간드가 앉는 표면의 홈. 잔기 10~30개가 둘러쌈</dd>
+      <dt>리간드</dt><dd>pocket에 붙는 작은 분자 = 우리 화합물</dd>
+      <dt>entry</dt><dd>DB 레코드 하나. 어느 DB냐에 따라 뜻이 다름</dd>
+      <dt>apo / holo</dt><dd>리간드 없는 구조 / 리간드 붙은 구조</dd>
+      <dt>Kd, pKd</dt><dd>결합 세기. pKd는 클수록 강함. pKd 7 = 100 nM</dd>
+    </dl>
+    <div class="note b"><strong>다음</strong> — 이제 반대편, 화합물 쪽 어휘로 넘어간다. 문자열 하나를 어떻게 숫자 벡터로 바꾸는가.</div>
+  </div>
+</section>
+
+<!-- 07 =================================================================== -->
+<section class="slide">
+  <div class="wrap">
+    <div class="eyebrow">Part B · 01 <b>· 분자</b></div>
+    <h2>SMILES — 분자를 문자열로</h2>
+    <p>원자는 글자, 결합은 기호, 고리는 <strong>숫자 짝</strong>으로 닫는다. 소문자는 방향족(aromatic) 원자.</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>분자</th><th>SMILES</th><th>읽는 법</th></tr></thead>
+        <tbody>
+          <tr><td>에탄올</td><td><code>CCO</code></td><td>탄소–탄소–산소. 수소는 생략(자동 추론)</td></tr>
+          <tr><td>벤젠</td><td><code>c1ccccc1</code></td><td>방향족 탄소 6개, <code>1</code>과 <code>1</code>이 만나 고리를 닫음</td></tr>
+          <tr><td>아스피린</td><td><code>CC(=O)Oc1ccccc1C(=O)O</code></td><td><code>()</code>는 가지, <code>=</code>는 이중결합</td></tr>
+          <tr><td>카페인</td><td><code>Cn1cnc2c1c(=O)n(C)c(=O)n2C</code></td><td>고리 두 개가 원자를 공유해 융합</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <h3>canonical SMILES</h3>
+        <p>같은 분자를 여러 문자열로 쓸 수 있다. RDKit이 규칙에 따라 하나로 정규화한다. <strong>중복 제거와 데이터 누출 점검은 반드시 정규화된 형태로 한다.</strong></p>
+      </div>
+      <div class="card">
+        <h3>SMILES가 담지 않는 것</h3>
+        <p><strong>3차원 좌표가 없다.</strong> 어떤 원자가 어떤 원자와 붙어 있는지(연결)만 기록한다. 모양은 슬라이드 14 참조.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 08 =================================================================== -->
+<section class="slide">
+  <div class="wrap">
+    <div class="eyebrow">Part B · 02 <b>· 도구</b></div>
+    <h2>RDKit — 분자를 다루는 표준 도구</h2>
+    <p class="lead">오픈소스 케모인포매틱스 라이브러리. C++ 코어에 Python 바인딩. BSD 라이선스라 상업 사용도 자유롭다.</p>
+    <div class="grid3">
+      <div class="card"><h4>읽고 정규화</h4><p>SMILES·InChI·SDF·mol 파일을 파싱하고, canonical 형태로 정규화하고, 유효성을 검사한다</p></div>
+      <div class="card"><h4>숫자로 변환</h4><p>fingerprint, descriptor(분자량·logP 등), scaffold 추출, 부분구조 검색</p></div>
+      <div class="card"><h4>3D와 그림</h4><p>conformer 생성과 힘장 최적화, 분자 구조 이미지 렌더링</p></div>
+    </div>
+    <pre style="margin-top:1.2rem"><code><span class="c"># 설치 — 둘 중 하나</span>
+conda install -c conda-forge rdkit
+pip install rdkit</code></pre>
+    <p><strong>이 분야에서 RDKit의 위치는 데이터 분석에서 pandas의 위치와 같다.</strong> 사실상 모든 논문·파이프라인이 이걸 쓴다. 대안(OpenBabel, CDK)은 있지만 Python 생태계에서는 RDKit이 기본값이다.</p>
+  </div>
+</section>
+
+<!-- 09 =================================================================== -->
+<section class="slide">
+  <div class="wrap">
+    <div class="eyebrow">Part B · 03 <b>· 어휘</b></div>
+    <h2>분자의 부위 이름</h2>
+    <div class="grid2b">
+      <figure class="fig-surface">
+        <svg viewBox="0 0 380 210" role="img" aria-label="고리 두 개가 linker로 이어지고 곁사슬이 매달린 분자 도식. 고리와 linker는 파랑, 곁사슬은 주황">
+          <g stroke-width="2.5" fill="none" stroke-linecap="round">
+            <!-- ring A -->
+            <polygon points="98,105 84,129 56,129 42,105 56,81 84,81" stroke="var(--blue)"/>
+            <!-- ring B (fused pair drawn as one hexagon for clarity) -->
+            <polygon points="286,105 272,129 244,129 230,105 244,81 272,81" stroke="var(--blue)"/>
+            <!-- linker -->
+            <path d="M98,105 L132,120 L166,105 L200,120 L230,105" stroke="var(--blue)"/>
+            <!-- side chains -->
+            <path d="M286,105 L316,88" stroke="var(--orange)"/>
+            <path d="M316,88 L346,105" stroke="var(--orange)"/>
+            <path d="M56,81 L56,48" stroke="var(--orange)"/>
+            <path d="M84,129 L84,162" stroke="var(--orange)"/>
+          </g>
+          <g font-size="11.5" font-family="var(--f-sans)">
+            <text x="34" y="185" fill="var(--blue)">고리</text>
+            <text x="120" y="152" fill="var(--blue)">linker</text>
+            <text x="238" y="185" fill="var(--blue)">고리</text>
+            <text x="300" y="70" fill="var(--orange)">곁사슬</text>
+            <text x="12" y="40" fill="var(--orange)">곁사슬</text>
+          </g>
+        </svg>
+        <figcaption>파랑 = Murcko scaffold로 남는 부분. 주황 = 떨어져 나가는 부분.</figcaption>
+      </figure>
+      <div>
+        <dl class="kv">
+          <dt>고리<br>ring</dt>
+          <dd>원자들이 닫힌 순환을 이루는 부분. 벤젠은 탄소 6개짜리 고리 하나.</dd>
+
+          <dt>고리 시스템<br>ring system</dt>
+          <dd>원자를 <strong>공유하며 융합된</strong> 고리들의 묶음. 나프탈렌은 고리 2개가 한 변을 공유하므로 고리 시스템은 <strong>1개</strong>. 위 그림은 공유하지 않으므로 고리 시스템 2개.</dd>
+
+          <dt>linker</dt>
+          <dd>고리 시스템끼리 <strong>잇는</strong> 사슬. 양쪽 끝이 고리에 붙어 있다.</dd>
+
+          <dt>곁사슬<br>치환기</dt>
+          <dd>골격에 <strong>매달린</strong> 가지. 끝이 막다른 길이다. 이게 linker와의 유일한 차이다.</dd>
+        </dl>
+        <div class="note"><strong>용어 충돌 주의</strong> — 단백질에서 "곁사슬"은 잔기의 R기(각 아미노산을 구별하는 부분)를 뜻한다. 분자에서 쓰는 "곁사슬"과 <strong>완전히 다른 것</strong>이다. 문맥으로 구분해라.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 10 =================================================================== -->
+<section class="slide">
+  <div class="wrap">
+    <div class="eyebrow">Part B · 04 <b>· 표현</b></div>
+    <h2>Morgan fingerprint — 원리</h2>
+    <p class="lead">각 원자를 중심으로 <strong>반경 r 안의 부분구조</strong>를 훑고, 그걸 해시해서 정해진 길이의 비트를 켠다.</p>
+    <div class="grid3">
+      <div class="card"><span class="tag t-blue">1 · 훑기</span><p>원자마다 반경 0(자기 자신), 1(직접 이웃까지), 2(두 칸까지)의 환경을 뽑는다. <code>radius=2</code>가 사실상 표준이며 이걸 <strong>ECFP4</strong>라 부른다</p></div>
+      <div class="card"><span class="tag t-blue">2 · 해시</span><p>각 부분구조를 정수로 해시하고 <code>fpSize</code>(보통 2048)로 나눈 나머지 위치의 비트를 1로 켠다</p></div>
+      <div class="card"><span class="tag t-blue">3 · 결과</span><p>길이 2048인 이진 벡터. <strong>어떤 분자든 같은 길이</strong>가 되므로 그대로 모델 입력이 된다</p></div>
+    </div>
+    <div class="note" style="margin-top:1.3rem"><strong>왜 radius 2가 표준인가</strong> — 반경 0은 원소 종류만, 반경 1은 작용기 정도, 반경 2는 "이 원자가 어떤 화학적 맥락에 있는가"를 담는다. 더 키우면 부분구조가 너무 특이해져서 분자끼리 겹치는 비트가 사라진다.</div>
+    <p class="small dim">해시 충돌은 정상이다. 서로 다른 부분구조가 같은 비트를 켤 수 있다. 2048비트면 실무상 문제되지 않는다.</p>
+  </div>
+</section>
+
+<!-- 11 =================================================================== -->
+<section class="slide">
+  <div class="wrap">
+    <div class="eyebrow">Part B · 05 <b>· 표현</b></div>
+    <h2>Morgan fingerprint — 에탄올로 직접</h2>
+    <p><code>CCO</code>. 원자 3개: C0 — C1 — O2. (수소는 생략)</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>중심 원자</th><th>radius</th><th>보이는 부분구조</th><th>해시 → 비트 위치</th></tr></thead>
+        <tbody>
+          <tr><td>C0</td><td>0</td><td>말단 탄소 그 자체</td><td>h → <code>bit 1057</code></td></tr>
+          <tr><td>C0</td><td>1</td><td>C0 + 이웃 C1</td><td>h → <code>bit 294</code></td></tr>
+          <tr><td>C0</td><td>2</td><td>C0 + C1 + O2 (전체)</td><td>h → <code>bit 1873</code></td></tr>
+          <tr><td>C1</td><td>0</td><td>가운데 탄소</td><td>h → <code>bit 807</code></td></tr>
+          <tr><td>C1</td><td>1</td><td>C1 + 양쪽 이웃 C0, O2</td><td>h → <code>bit 1552</code></td></tr>
+          <tr><td>O2</td><td>0</td><td>산소</td><td>h → <code>bit 640</code></td></tr>
+          <tr><td>O2</td><td>1</td><td>O2 + 이웃 C1 = 하이드록시기</td><td>h → <code>bit 222</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>결과 벡터 (앞 64비트만 확대)</h4>
+    <div class="bits" id="bits-etoh" role="img" aria-label="대부분 0이고 드문드문 1이 켜진 이진 벡터"></div>
+    <p class="small dim">비트 번호는 실제 RDKit 해시 결과가 아니라 설명용 예시다. 요점은 <strong>부분구조 하나가 비트 하나에 대응</strong>한다는 것. 원자 3개짜리 분자도 7개 부분구조를 만든다. 약물 크기 분자면 보통 <strong>50~120개</strong>의 비트가 켜진다.</p>
+    <div class="note b"><strong>여기서 나오는 성질</strong> — 두 분자가 부분구조를 많이 공유하면 켜진 비트가 많이 겹친다. 다음 슬라이드의 유사도가 정확히 이 겹침을 센다.</div>
+  </div>
+</section>
+
+<!-- 12 =================================================================== -->
+<section class="slide">
+  <div class="wrap">
+    <div class="eyebrow">Part B · 06 <b>· 유사도</b></div>
+    <h2>Tanimoto — fingerprint 위의 Jaccard 유사도</h2>
+    <p style="font-family:var(--f-mono);font-size:1.05rem;color:var(--ink)">T(A, B) = |A ∩ B| / |A ∪ B|</p>
+    <p>두 분자에서 <strong>둘 다 켜진 비트 수</strong>를 <strong>둘 중 하나라도 켜진 비트 수</strong>로 나눈다. 출력 0~1.</p>
+    <div class="grid2">
+      <div>
+        <ul>
+          <li><strong>&gt; 0.85</strong> — 사실상 같은 계열. 활성도 비슷할 가능성이 높다</li>
+          <li><strong>0.4 – 0.6</strong> — 공통 골격은 있으나 다른 분자</li>
+          <li><strong>&lt; 0.3</strong> — 화학적으로 남남</li>
+        </ul>
+        <p class="small dim">경계값은 관례일 뿐 물리 상수가 아니다. fingerprint 종류·크기·radius에 따라 통째로 달라진다. <strong>ECFP4 / 2048bit로 고정하고 논문에 명기</strong>해라.</p>
+      </div>
+      <div class="card">
+        <span class="tag t-org">난이도 좌표 ①</span>
+        <h3>리간드 신규성</h3>
+        <p>테스트 화합물 하나를 잡고 <strong>학습셋 전체와의 최대 Tanimoto</strong>를 구한다. 낮을수록 모델에게 처음 보는 분자 = 어려운 문제.</p>
+      </div>
+    </div>
+    <pre><code><span class="k">from</span> rdkit.Chem <span class="k">import</span> DataStructs
+sims = DataStructs.BulkTanimotoSimilarity(fp_test, train_fps)
+coord1 = max(sims)</code></pre>
+  </div>
+</section>
+
+<!-- 13 =================================================================== -->
+<section class="slide">
+  <div class="wrap">
+    <div class="eyebrow">Part B · 07 <b>· 골격</b></div>
+    <h2>Murcko scaffold — 분자의 뼈대</h2>
+    <p>곁사슬을 전부 떼고 <strong>고리 시스템 + linker</strong>만 남긴 것 (슬라이드 9의 파란 부분). 신약 화학자가 "이 시리즈"라고 부르는 단위와 대략 일치한다.</p>
+    <div class="grid2">
+      <div class="card">
+        <h3>아스피린의 경우</h3>
+        <p><code>CC(=O)Oc1ccccc1C(=O)O</code></p>
+        <p style="margin-top:.4rem" class="dim">↓ 곁사슬 제거</p>
+        <p><code>c1ccccc1</code> — 벤젠 고리 하나만 남는다</p>
+      </div>
+      <div class="card">
+        <h3>왜 중요한가</h3>
+        <p>제약사 데이터는 <strong>한 골격에 곁사슬만 바꾼 유도체가 수백 개씩</strong> 들어있다. 무작위로 나누면 train과 test에 같은 시리즈가 흩어지고, 모델은 외우기만 하면 된다.</p>
+      </div>
+    </div>
+    <p style="margin-top:1.3rem"><strong>scaffold split</strong> = train과 test가 골격을 하나도 공유하지 않게 나누는 것. Part D의 핵심 도구다.</p>
+    <pre><code><span class="k">from</span> rdkit.Chem.Scaffolds <span class="k">import</span> MurckoScaffold
+Chem.MolToSmiles(MurckoScaffold.GetScaffoldForMol(aspirin))   <span class="c"># 'c1ccccc1'</span></code></pre>
+  </div>
+</section>
+
+<!-- 14 =================================================================== -->
+<section class="slide">
+  <div class="wrap">
+    <div class="eyebrow">Part B · 08 <b>· 3차원</b></div>
+    <h2>conformer — 같은 분자, 여러 모양</h2>
+    <p class="lead">SMILES는 <strong>연결</strong>만 기록한다. 3차원 좌표는 없다. 그런데 분자는 단일결합을 축으로 <strong>회전한다.</strong></p>
+    <div class="grid2">
+      <div>
+        <p>연결이 완전히 같은 분자라도, 회전 가능한 결합을 어떻게 돌리느냐에 따라 3차원 모양이 무수히 많다. 그 각각을 <strong>conformer</strong>라 부른다.</p>
+        <p>펼쳐진 모양, 접힌 모양, 꼬인 모양 — 전부 같은 분자다. 실제로는 에너지가 낮은 몇 개 모양 사이를 오간다.</p>
+        <p><strong>결합할 때는 그중 하나의 모양으로 pocket에 들어간다.</strong> 그게 어떤 모양인지 맞히는 게 docking의 일이다.</p>
+      </div>
+      <div>
+        <pre style="margin-bottom:.7rem"><code><span class="k">from</span> rdkit.Chem <span class="k">import</span> AllChem
+m = Chem.AddHs(mol)
+AllChem.EmbedMultipleConfs(m, numConfs=<span class="k">50</span>)
+AllChem.MMFFOptimizeMoleculeConfs(m)
+<span class="c"># 이제 m 안에 3D 좌표 50벌</span></code></pre>
+        <div class="note"><strong>우리는 conformer를 만들지 않는다</strong> — Morgan fingerprint는 2D 연결만 쓴다. 3단계 co-folding 모델은 3D를 <strong>모델 내부에서 스스로</strong> 만든다. conformer 생성이 파이프라인에 등장하지 않는 이유다.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 15 =================================================================== -->
+<section class="slide">
+  <div class="wrap">
+    <div class="eyebrow">Part B · 09 <b>· 정리</b></div>
+    <h2>분자 표현, 전체 지형</h2>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>표현</th><th>형태</th><th>3D 필요?</th><th>우리 프로젝트</th></tr></thead>
+        <tbody>
+          <tr><td>Descriptor</td><td>분자량·logP 등 실수 수백 개</td><td>아니오</td><td>보조 feature</td></tr>
+          <tr><td>Fingerprint</td><td>2048비트 이진 벡터</td><td>아니오</td><td><strong>기본값</strong></td></tr>
+          <tr><td>Molecular graph</td><td>노드=원자, 엣지=결합</td><td>아니오</td><td>선택 ablation (GNN)</td></tr>
+          <tr><td>SMILES 토큰</td><td>문자열</td><td>아니오</td><td>선택 (Transformer)</td></tr>
+          <tr><td>3D conformer</td><td>원자 좌표</td><td>예</td><td>안 씀</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note"><strong>설계 판단</strong> — 우리 가설은 "어떤 분자 표현이 더 정확한가"가 아니라 "<strong>모델이 자기가 틀릴 때를 아는가</strong>"다. 표현은 fingerprint로 고정하고, 남는 힘을 전부 보정(calibration)에 쓴다.</div>
+  </div>
+</section>
+
+<!-- 16 =================================================================== -->
+<section class="slide">
+  <div class="wrap">
+    <div class="eyebrow">Part B · 10 <b>· 실습</b></div>
+    <h2>여기까지 한 화면에</h2>
+    <pre><code><span class="k">from</span> rdkit <span class="k">import</span> Chem
+<span class="k">from</span> rdkit.Chem <span class="k">import</span> AllChem, DataStructs
+<span class="k">from</span> rdkit.Chem.Scaffolds <span class="k">import</span> MurckoScaffold
+
+aspirin = Chem.MolFromSmiles(<span class="c">"CC(=O)Oc1ccccc1C(=O)O"</span>)
+tylenol = Chem.MolFromSmiles(<span class="c">"CC(=O)Nc1ccc(O)cc1"</span>)
+
+<span class="c"># 1. 정규화 — 중복 제거·누출 점검은 항상 이 형태로</span>
+Chem.MolToSmiles(aspirin)
+
+<span class="c"># 2. 벡터화 (슬라이드 10–11)</span>
+gen = AllChem.GetMorganGenerator(radius=<span class="k">2</span>, fpSize=<span class="k">2048</span>)
+fp_a, fp_t = gen.GetFingerprint(aspirin), gen.GetFingerprint(tylenol)
+
+<span class="c"># 3. 유사도 (슬라이드 12) — 둘은 사실상 남남이라 낮은 값이 나온다</span>
+DataStructs.TanimotoSimilarity(fp_a, fp_t)
+
+<span class="c"># 4. 골격 (슬라이드 13)</span>
+Chem.MolToSmiles(MurckoScaffold.GetScaffoldForMol(aspirin))   <span class="c"># 'c1ccccc1'</span></code></pre>
+    <p><strong>1주차 과제</strong> — 위 코드를 돌리고, TDC BindingDB에서 화합물 1000개를 뽑아 서로 간 Tanimoto 분포 히스토그램을 그려온다. 이 분포가 난이도 좌표 ①의 원자재다.</p>
+  </div>
+</section>
+
+<!-- 17 =================================================================== -->
+<section class="slide">
+  <div class="wrap">
+    <div class="eyebrow">Part C · 01 <b>· 전체 그림</b></div>
+    <h2>파이프라인 — 무엇이 무엇으로 들어가나</h2>
+    <div class="pipe">
+      <div class="lane" style="border-left-color:var(--cyan)">
+        <span class="lbl">화합물</span>
+        <span class="chip io">SMILES</span><span class="conn">──▶</span>
+        <span class="chip tool">RDKit</span><span class="conn">──▶</span>
+        <span class="chip">Morgan fingerprint</span>
+        <span class="lane-note">좌표 ① 여기서</span>
+      </div>
+
+      <div class="lane" style="border-left-color:var(--blue)">
+        <span class="lbl">단백질 · 서열</span>
+        <span class="chip io">아미노산 서열</span><span class="conn">──▶</span>
+        <span class="chip tool">ESM-2</span><span class="conn">──▶</span>
+        <span class="chip">서열 임베딩</span>
+        <span class="lane-note">좌표 ② 여기서</span>
+      </div>
+
+      <div class="lane" style="border-left-color:var(--blue)">
+        <span class="lbl">단백질 · 구조</span>
+        <span class="chip io">UniProt ID</span><span class="conn">──▶</span>
+        <span class="chip tool">AlphaFold DB</span><span class="conn">──▶</span>
+        <span class="chip">예측 구조 + pLDDT/PAE</span><span class="conn">──▶</span>
+        <span class="chip tool">P2Rank</span><span class="conn">──▶</span>
+        <span class="chip">pocket feature</span>
+        <span class="lane-note">좌표 ③④ 여기서</span>
+      </div>
+
+      <div class="lane" style="border-left-color:var(--cyan)">
+        <span class="lbl">구조 임베딩</span>
+        <span class="chip">예측 구조</span><span class="conn">──▶</span>
+        <span class="chip tool">Foldseek</span><span class="conn">──▶</span>
+        <span class="chip">3Di 문자열</span><span class="conn">──▶</span>
+        <span class="chip tool">SaProt</span><span class="conn">──▶</span>
+        <span class="chip">구조 인식 임베딩</span>
+        <span class="lane-note">2단계 · ESM-2 대체</span>
+      </div>
+
+      <div class="lane" style="border-left-color:var(--yellow)">
+        <span class="lbl">합치기</span>
+        <span class="chip">위 벡터 전부 concat</span><span class="conn">──▶</span>
+        <span class="chip tool">XGBoost / LoRA 학습 모델</span><span class="conn">──▶</span>
+        <span class="chip out">결합 확률</span>
+      </div>
+
+      <div class="lane" style="border-left-color:var(--orange)">
+        <span class="lbl">불확실성</span>
+        <span class="chip">결합 확률</span><span class="conn">──▶</span>
+        <span class="chip tool">conformal prediction</span><span class="conn">──▶</span>
+        <span class="chip out">예측 집합 · 기권 여부</span>
+        <span class="lane-note">이게 논문의 핵심</span>
+      </div>
+    </div>
+    <p class="small dim">위 6개 레인이 <strong>조건 A(보정된 baseline)</strong> 하나를 만든다. 조건 B/C/D는 같은 입력을 LLM 에이전트에 주고 같은 출력 형식을 요구한다.</p>
+  </div>
+</section>
+
+<!-- 18 =================================================================== -->
+<section class="slide">
+  <div class="wrap">
+    <div class="eyebrow">Part C · 02 <b>· 전체 그림</b></div>
+    <h2>co-folding은 별도 경로다</h2>
+    <p class="lead">앞 슬라이드의 파이프라인을 거치지 <strong>않는다.</strong> 서열과 SMILES에서 곧장 복합체 구조를 만든다.</p>
+    <div class="pipe">
+      <div class="lane" style="border-left-color:var(--orange)">
+        <span class="lbl">3단계</span>
+        <span class="chip io">서열 + SMILES</span><span class="conn">──▶</span>
+        <span class="chip tool">OpenFold3 / Boltz-2</span><span class="conn">──▶</span>
+        <span class="chip out">단백질+리간드 복합체 구조</span>
+        <span class="lane-note">A100 필요</span>
+      </div>
+      <div class="lane" style="border-left-color:var(--orange)">
+        <span class="lbl">Boltz-2만</span>
+        <span class="chip io">서열 + SMILES</span><span class="conn">──▶</span>
+        <span class="chip tool">Boltz-2 affinity head</span><span class="conn">──▶</span>
+        <span class="chip out">결합 친화도 값</span>
+        <span class="lane-note">우리 예측과 직접 비교</span>
+      </div>
+    </div>
+    <div class="note"><strong>헷갈리기 쉬운 지점 셋</strong><br>
+    ① <strong>AlphaFold는 리간드를 다루지 않는다.</strong> 단백질만 접는다. 위 파이프라인의 세 번째 레인이 그것이다.<br>
+    ② <strong>co-folding은 AlphaFold를 거치지 않는다.</strong> 예측 구조를 받아서 리간드를 끼우는 게 아니라, 처음부터 같이 만든다.<br>
+    ③ <strong>docking은 우리 파이프라인에 없다.</strong> 다음 슬라이드에서 왜인지 설명한다.</div>
+  </div>
+</section>
+
+<!-- 19 =================================================================== -->
+<section class="slide">
+  <div class="wrap">
+    <div class="eyebrow">Part C · 03 <b>· 왜 구조인가</b></div>
+    <h2>서열만으로는 왜 부족한가</h2>
+    <p class="lead">결합은 3차원 사건이다. pocket의 모양·전하·소수성이 결정한다.</p>
+    <p>서열이 25%만 같아도 pocket은 거의 동일할 수 있고, 서열이 90% 같아도 pocket 잔기 하나가 바뀌어 약이 안 듣게 될 수 있다. <strong>서열 임베딩만으로는 이 구분이 어렵다.</strong></p>
+    <div class="grid2">
+      <div class="card"><span class="tag t-cyan">예전</span><h3>구조가 없었다</h3><p>실험으로 푼 구조가 있는 단백질은 일부뿐이었다. 나머지는 구조 기반 방법을 아예 쓸 수 없었다.</p></div>
+      <div class="card"><span class="tag t-blue">지금</span><h3>구조가 공짜다</h3><p>AlphaFold DB에 약 2억 개 예측 구조가 있다. 무료 다운로드. <strong>단, 예측 구조는 신뢰도가 제각각이다.</strong> 그 신뢰도가 우리 난이도 좌표가 된다.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 20 =================================================================== -->
+<section class="slide">
+  <div class="wrap">
+    <div class="eyebrow">Part C · 04 <b>· 파이프라인 3번 레인</b></div>
+    <h2>AlphaFold2 — 서열에서 구조로</h2>
+    <dl class="kv">
+      <dt>입력</dt><dd>아미노산 서열 + 진화적 정보(MSA — 같은 단백질의 여러 생물종 서열을 정렬한 것)</dd>
+      <dt>출력</dt><dd>모든 원자의 3D 좌표 + <strong>잔기별 신뢰도(pLDDT)</strong> + <strong>쌍별 오차 예측(PAE)</strong></dd>
+      <dt>핵심 발상</dt><dd>진화 과정에서 같이 변하는 잔기 쌍은 3D에서 가까이 있다. MSA에서 그 공변이 신호를 읽는다</dd>
+      <dt>한계</dt><dd>단백질 하나만. 리간드·이온·핵산 없음. MSA가 얕은 서열(고아 단백질, 항체 CDR)에 취약</dd>
+      <dt>실무</dt><dd><strong>AlphaFold DB에서 받아 쓰면 GPU가 필요 없다.</strong> 1단계 전체가 CPU만으로 도는 이유</dd>
+    </dl>
+    <div class="note"><strong>착각하기 쉬운 것</strong> — AlphaFold는 "이 단백질이 어떻게 접히는가"를 예측하지, "이 약이 붙는가"를 예측하지 않는다. 결합 예측은 그 위에 따로 올려야 한다.</div>
+  </div>
+</section>
+
+<!-- 21 =================================================================== -->
+<section class="slide">
+  <div class="wrap">
+    <div class="eyebrow">Part C · 05 <b>· 신뢰도</b></div>
+    <h2>pLDDT — 구조가 스스로 붙이는 신뢰도</h2>
+    <p>잔기마다 0~100. AlphaFold가 <strong>자기 예측에 스스로 매기는 점수</strong>다. 이 프로젝트 주제와 직결된다.</p>
+    <div class="ramp">
+      <div style="background:#0053D6"><span class="n">&gt; 90</span><span class="l">매우 높음 — 곁사슬까지 신뢰</span></div>
+      <div style="background:#2E9FD4"><span class="n">70 – 90</span><span class="l">신뢰 — 뼈대는 맞음</span></div>
+      <div style="background:#C99400"><span class="n">50 – 70</span><span class="l">낮음 — 조심</span></div>
+      <div style="background:#E2632A"><span class="n">&lt; 50</span><span class="l">매우 낮음 — 대개 무질서 영역</span></div>
+    </div>
+    <p style="margin-top:1.1rem"><strong>전체 평균 pLDDT는 쓰지 않는다.</strong> 단백질 전체가 90이어도 pocket이 60이면 우리 목적에 쓸모없다. 반대도 성립한다.</p>
+    <pre><code><span class="c"># AlphaFold DB 파일에서는 B-factor 컬럼이 곧 pLDDT다</span>
+plddt = {r.id[<span class="k">1</span>]: next(r.get_atoms()).get_bfactor() <span class="k">for</span> r <span class="k">in</span> chain}
+coord3 = mean(plddt[i] <span class="k">for</span> i <span class="k">in</span> pocket_residues)</code></pre>
+    <div class="note"><strong>함정</strong> — B-factor = pLDDT는 <strong>AlphaFold DB 파일에서만</strong> 참이다. 실험 PDB에서 그 컬럼은 진짜 B-factor(원자 흔들림)다. 두 출처를 섞으면 조용히 재앙.</div>
+  </div>
+</section>
+
+<!-- 22 =================================================================== -->
+<section class="slide">
+  <div class="wrap">
+    <div class="eyebrow">Part C · 06 <b>· 신뢰도</b></div>
+    <h2>PAE — 두 부분의 상대 위치는 맞는가</h2>
+    <div class="grid2b">
+      <div>
+        <p>PAE(predicted aligned error)는 <strong>잔기 쌍마다</strong> 예측 오차를 준다. "잔기 i를 기준으로 정렬했을 때 잔기 j의 위치가 몇 Å 틀릴까". 단위는 Å, 낮을수록 좋다.</p>
+        <p>도메인 두 개가 각각은 완벽하게 접혔는데(pLDDT 95) 서로의 배치가 엉망일 수 있다. <strong>pLDDT는 이걸 못 잡고 PAE만 잡는다.</strong></p>
+        <p>pocket이 두 도메인 경계에 걸쳐 있으면, PAE가 나쁠 때 pocket 기하 자체가 틀린다. pocket pLDDT가 높아도 소용없다.</p>
+        <p class="small dim">AF DB에서 PAE는 구조 파일과 별개인 JSON으로 받는다.</p>
+      </div>
+      <div>
+        <div class="pae" id="paefig" role="img" aria-label="PAE 행렬 예시. 대각선 블록 두 개는 오차가 낮고 블록 사이는 높다"></div>
+        <p class="small dim" style="margin-top:.6rem">진할수록 오차 낮음. 대각선 블록 둘 = 잘 접힌 도메인 둘. 블록 사이가 밝다 = <strong>상대 배치를 모른다</strong>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 23 =================================================================== -->
+<section class="slide">
+  <div class="wrap">
+    <div class="eyebrow">Part C · 07 <b>· pocket</b></div>
+    <h2>pocket 검출 — 약이 들어갈 구멍 찾기</h2>
+    <p>구조를 받았다고 pocket을 아는 게 아니다. <strong>어느 잔기들이 pocket을 이루는지 따로 계산해야 한다.</strong></p>
+    <div class="grid2">
+      <div class="card"><h3>fpocket</h3><p>기하학적 방법. 단백질 표면에 작은 구를 굴려 넣어 오목한 공간을 찾는다. 빠르고 학습 가정이 없다.</p></div>
+      <div class="card"><h3>P2Rank</h3><p>머신러닝 방법. 알려진 결합 부위로 학습해 "약이 붙을 만한" 지점에 점수를 매긴다. 정확도가 더 높다.</p></div>
+    </div>
+    <p style="margin-top:1.2rem"><strong>둘 다 CPU에서 초 단위로 끝난다.</strong> 출력은 pocket마다 <em>이 pocket을 이루는 잔기 번호 목록</em>. 여기서 난이도 좌표 두 개가 나온다.</p>
+    <div class="grid2" style="margin-top:.3rem">
+      <div class="card"><span class="tag t-org">좌표 ③</span><h3>구조 신뢰도</h3><p>이 잔기 목록으로 pLDDT를 마스킹해 평균, PAE 부분행렬을 평균</p></div>
+      <div class="card"><span class="tag t-org">좌표 ④</span><h3>구조 가용성</h3><p>이 pocket 영역을 덮는 <strong>실험</strong> PDB 구조가 있는가. 0=없음 / 1=apo만 / 2=holo 있음</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 24 =================================================================== -->
+<section class="slide">
+  <div class="wrap">
+    <div class="eyebrow">Part C · 08 <b>· 파이프라인 4번 레인</b></div>
+    <h2>Foldseek 3Di와 SaProt — 구조를 문자열로</h2>
+    <div class="grid2">
+      <div>
+        <h3>3Di 알파벳</h3>
+        <p>잔기 하나의 <strong>국소 뼈대 기하</strong>를 20글자 중 하나로 인코딩한다. 3D 구조가 아미노산 서열과 <strong>같은 길이의 문자열</strong>이 된다.</p>
+        <p class="small dim">원래는 구조 검색을 서열 검색만큼 빠르게 하려고 만든 것. 부산물이 훨씬 유용해졌다.</p>
+        <pre style="font-size:.76rem"><code>아미노산  M K T A Y I A K Q R Q
+3Di       d p v v c q a d d p k</code></pre>
+      </div>
+      <div>
+        <h3>SaProt</h3>
+        <p>(아미노산, 3Di) 쌍을 <strong>하나의 토큰</strong>으로 묶은 어휘로 학습한 protein language model. 파이프라인에서 ESM-2 자리에 그대로 끼워넣을 수 있다.</p>
+        <p><strong>3D 좌표 처리도, docking도, conformer 생성도 없다.</strong> 구조를 쓰는 가장 싼 방법이다.</p>
+      </div>
+    </div>
+    <div class="card" style="margin-top:1.2rem">
+      <h3>2단계의 실제 질문</h3>
+      <p>ESM-2(서열만) vs SaProt(서열+구조). <strong>어느 난이도 구간에서 구조가 실제로 기여하는가?</strong> 구조가 도움이 안 된다는 결과가 나와도 그대로 보고한다 — 계획서 리스크 표에 이미 명시돼 있다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 25 =================================================================== -->
+<section class="slide">
+  <div class="wrap">
+    <div class="eyebrow">Part C · 09 <b>· 우리가 안 쓰는 것</b></div>
+    <h2>docking — 고전 방식</h2>
+    <p class="lead">단백질 구조는 <strong>고정</strong>해두고, 리간드를 회전·이동시켜 가장 잘 맞는 자세(pose)를 찾은 뒤 점수를 매긴다.</p>
+    <div class="grid3">
+      <div class="card"><h4>탐색</h4><p>리간드의 회전 가능한 결합을 돌려가며 수만~수백만 자세를 생성 (슬라이드 14의 conformer)</p></div>
+      <div class="card"><h4>채점</h4><p>물리 기반 또는 경험적 scoring function으로 각 자세에 점수</p></div>
+      <div class="card"><h4>출력</h4><p>최고점 자세 + 점수. 그 점수를 결합 친화도의 대용으로 쓴다</p></div>
+    </div>
+    <h3 style="margin-top:1.5rem">알려진 한계</h3>
+    <ul>
+      <li><strong>단백질이 안 움직인다</strong> — 실제로는 리간드가 들어오면서 pocket이 변형된다 (induced fit)</li>
+      <li><strong>scoring function이 부정확하다</strong> — 자세는 맞혀도 친화도 순위는 못 맞히는 일이 흔하다</li>
+      <li><strong>물리적으로 불가능한 pose</strong> — PoseBusters(2024)는 딥러닝 docking 결과 상당수가 결합 길이·입체화학이 깨진 구조임을 보였다</li>
+    </ul>
+    <div class="note"><strong>안 쓰는 이유</strong> — 자원 대비 신호가 약하고, 우리 질문은 "어떤 결합 예측이 정확한가"가 아니라 "<strong>모델이 자기 불확실성을 아는가</strong>"다.</div>
+  </div>
+</section>
+
+<!-- 26 =================================================================== -->
+<section class="slide">
+  <div class="wrap">
+    <div class="eyebrow">Part C · 10 <b>· co-folding</b></div>
+    <h2>co-folding — 같이 접는다</h2>
+    <p class="lead">단백질을 먼저 접고 리간드를 나중에 끼워넣는 대신, <strong>단백질과 리간드를 하나의 모델에서 동시에 배치</strong>한다.</p>
+    <div class="grid2">
+      <div>
+        <h3>왜 더 나은가</h3>
+        <ul>
+          <li>리간드가 있는 상태의 pocket 모양을 직접 만든다 — induced fit이 자연스럽게 들어온다</li>
+          <li>탐색+채점 2단계가 아니라 생성 1단계. scoring function의 부정확성을 우회</li>
+          <li>이온·보조인자·핵산도 같은 틀에서 다룬다</li>
+        </ul>
+      </div>
+      <div>
+        <h3>대가</h3>
+        <ul>
+          <li><strong>느리고 무겁다.</strong> 쌍 하나에 GPU 수십 초~수 분. 데이터 전체에 돌리면 예산이 붕괴한다</li>
+          <li>학습 데이터에 없던 화학종에 약하다</li>
+          <li>자신 있게 그럴듯한 <strong>틀린</strong> 구조를 낸다 — 우리 주제와 정확히 같은 실패 양상</li>
+        </ul>
+      </div>
+    </div>
+    <div class="note"><strong>계획서의 결정</strong> — co-folding은 전체 데이터에 돌리지 않는다. 3단계 도전 과제로 격리해, 실패해도 논문과 일정이 무손상이도록 설계했다.</div>
+  </div>
+</section>
+
+<!-- 27 =================================================================== -->
+<section class="slide">
+  <div class="wrap">
+    <div class="eyebrow">Part C · 11 <b>· 모델 계보</b></div>
+    <h2>AlphaFold3와 오픈 재현의 물결</h2>
+    <div class="grid2">
+      <div>
+        <h3>AlphaFold3 (2024)</h3>
+        <p>단백질만이 아니라 리간드·핵산·이온을 한 모델에서 다룬다. MSA 의존을 줄이고 diffusion 기반 구조 생성으로 전환. <strong>최초의 대규모 co-folding 모델.</strong></p>
+        <p><strong>문제</strong> — 코드와 가중치 접근이 제한적이다. 학술적으로 재현·감사가 어렵다.</p>
+      </div>
+      <div>
+        <h3>그래서 무슨 일이 벌어졌나</h3>
+        <p>여러 그룹이 AF3급 co-folding 모델을 <strong>오픈 라이선스로</strong> 재현하기 시작했다. 우리 3단계는 그 결과물 두 개를 쓴다.</p>
+        <ul style="margin-top:.5rem">
+          <li><strong>Boltz-2</strong> — 오픈 가중치, affinity head 내장</li>
+          <li><strong>OpenFold3</strong> — Apache 2.0, 학습 데이터 공개</li>
+        </ul>
+      </div>
+    </div>
+    <p style="margin-top:1.1rem" class="dim">이 물결이 우리에게 중요한 이유는 성능이 아니라 <strong>감사 가능성</strong>이다. 학습 데이터를 모르면 우리 test set과 겹쳤는지 확인할 방법이 없다.</p>
+  </div>
+</section>
+
+<!-- 28 =================================================================== -->
+<section class="slide">
+  <div class="wrap">
+    <div class="eyebrow">Part C · 12 <b>· Boltz</b></div>
+    <h2>Boltz-2 — 구조와 친화도를 한 번에</h2>
+    <dl class="kv">
+      <dt>출신</dt><dd>MIT Jameel Clinic 계열 오픈소스 프로젝트. Boltz-1은 AF3급 co-folding의 오픈 재현</dd>
+      <dt>추가분</dt><dd><strong>binding affinity head</strong> — 구조만 내는 게 아니라 결합 세기를 직접 예측한다</dd>
+      <dt>주장</dt><dd>물리 기반 골드 스탠다드(FEP)에 근접한 정확도를 훨씬 적은 연산으로</dd>
+      <dt>라이선스</dt><dd>오픈 가중치 배포</dd>
+      <dt>왜 중요</dt><dd>우리 태스크와 <strong>정확히 같은 것</strong>을 예측한다. 조건 A의 상한선을 보여주는 강력한 비교 대상</dd>
+    </dl>
+    <div class="note"><strong>3단계 착수 전 반드시 확인 (블로킹)</strong><br>
+    ① Boltz-2 affinity head는 ChEMBL·BindingDB로 학습됐다. 우리 test set이 TDC BindingDB다 → <strong>학습 데이터와 겹칠 가능성이 크다.</strong> 학습 cutoff 기준으로 중복 제거하지 않으면 train-on-test가 된다.<br>
+    ② 버전·라이선스 상태가 빠르게 바뀐다. 오픈 가중치 버전으로 고정하고 결과표에 버전 문자열을 명기한다.</div>
+  </div>
+</section>
+
+<!-- 29 =================================================================== -->
+<section class="slide">
+  <div class="wrap">
+    <div class="eyebrow">Part C · 13 <b>· OpenFold3</b></div>
+    <h2>OpenFold3 — 감사 가능한 쪽</h2>
+    <div class="grid2">
+      <div>
+        <p>OpenFold 컨소시엄의 AF3 재현. <strong>Apache 2.0</strong>이고 학습 데이터 구성이 공개된다.</p>
+        <p>계획서가 이쪽을 3단계 <strong>1순위</strong>로 둔 이유는 성능이 더 좋아서가 아니다. <strong>"우리 test set이 학습에 들어갔는가"를 직접 확인할 수 있어서</strong>다.</p>
+      </div>
+      <div class="card">
+        <span class="tag t-cyan">경로 설계</span>
+        <h3>둘을 나란히 두는 이유</h3>
+        <p>경로 ① OpenFold3 — Apache 2.0, 타겟 50개<br>
+        경로 ② Boltz-2 — 오픈 가중치, 200쌍, 선택</p>
+        <p style="margin-top:.6rem">한쪽 라이선스나 공개 상태가 막혀도 도전 실험이 살아남는다.</p>
+      </div>
+    </div>
+    <div class="note"><strong>정직한 고지</strong> — Boltz와 OpenFold3의 최신 버전 상태·라이선스는 빠르게 바뀐다. 이 슬라이드를 사실로 확정하지 말고, <strong>2주차 DOI·링크 전수 검증 때 직접 열어서 확인</strong>한 뒤 3단계 경로를 결정한다.</div>
+  </div>
+</section>
+
+<!-- 30 =================================================================== -->
+<section class="slide">
+  <div class="wrap">
+    <div class="eyebrow">Part C · 14 <b>· 정리</b></div>
+    <h2>모델 한 장 비교</h2>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th></th><th>무엇을 출력</th><th>리간드</th><th>접근성</th><th>우리 용도</th></tr></thead>
+        <tbody>
+          <tr><td>AlphaFold2</td><td>단백질 구조 + pLDDT/PAE</td><td>없음</td><td>DB에서 무료 다운로드</td><td><strong>1단계 — 필수, CPU만</strong></td></tr>
+          <tr><td>AlphaFold3</td><td>복합체 구조</td><td>있음</td><td>제한적</td><td>참조만</td></tr>
+          <tr><td>Boltz-2</td><td>복합체 구조 <strong>+ 친화도</strong></td><td>있음</td><td>오픈 가중치</td><td>3단계 경로 ② (선택)</td></tr>
+          <tr><td>OpenFold3</td><td>복합체 구조</td><td>있음</td><td>Apache 2.0, 데이터 공개</td><td>3단계 경로 ① (1순위)</td></tr>
+          <tr><td>docking</td><td>pose + 점수</td><td>있음</td><td>완전 공개, CPU</td><td><strong>안 쓴다</strong></td></tr>
+          <tr><td>ESM-2 / SaProt</td><td>임베딩 벡터</td><td>없음</td><td>완전 공개</td><td><strong>파이프라인 본선</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 31 =================================================================== -->
+<section class="slide">
+  <div class="wrap">
+    <div class="eyebrow">Part C · 15 <b>· 우리 설계</b></div>
+    <h2>구조를 쓰는 3단계 사다리</h2>
+    <div class="ladder">
+      <div class="rung" style="border-left-color:var(--blue)">
+        <span class="num">1단계</span>
+        <div>
+          <h3>pocket feature — 필수</h3>
+          <p>AlphaFold DB 수집 → P2Rank로 pocket 검출 → pocket pLDDT·PAE·부피·잔기 조성을 feature로. <strong>난이도 좌표 ③④가 여기서 나온다.</strong></p>
+        </div>
+        <span class="cost">CPU만</span>
+      </div>
+      <div class="rung" style="border-left-color:var(--cyan)">
+        <span class="num">2단계</span>
+        <div>
+          <h3>구조 인식 임베딩 — 권장</h3>
+          <p>Foldseek 3Di 기반 SaProt로 ESM-2를 교체. docking 없이 구조를 학습 가능한 벡터로. <strong>GPU 시간당 가치가 가장 높은 구간.</strong></p>
+        </div>
+        <span class="cost">소형 GPU</span>
+      </div>
+      <div class="rung" style="border-left-color:var(--orange)">
+        <span class="num">3단계</span>
+        <div>
+          <h3>co-folding — 도전</h3>
+          <p>OpenFold3 타겟 50개, 선택적으로 Boltz-2 200쌍. <strong>추론·비교만. 파인튜닝은 범위 밖.</strong> 실패해도 논문 무손상이도록 격리.</p>
+        </div>
+        <span class="cost">A100</span>
+      </div>
+    </div>
+    <p style="margin-top:1.2rem"><strong>설계 원칙</strong> — 무거운 실험을 가벼운 척추 <em>위에</em> 얹는다. 자원 사정이 바뀌어도 프로젝트가 무너지지 않는 구조.</p>
+  </div>
+</section>
+
+<!-- 32 =================================================================== -->
+<section class="slide">
+  <div class="wrap">
+    <div class="eyebrow">Part D · 01 <b>· split</b></div>
+    <h2>split이란 무엇인가</h2>
+    <p class="lead">데이터를 train / validation / test로 나누는 규칙.<br>
+    진짜 질문은 <strong>무엇을 기준으로 나누느냐</strong>이다.</p>
+    <p>DTI 데이터는 사실상 행렬이다. 행 = 단백질 타겟, 열 = 화합물, 셀 = 측정된 결합 친화도. 대부분의 셀은 비어 있다 (측정된 적 없음).</p>
+    <p><strong>그래서 "무작위로 20%를 뗀다"가 애매해진다.</strong> 셀을 뗄 것인가, 열을 뗄 것인가, 행을 뗄 것인가? 셋은 완전히 다른 문제를 만든다.</p>
+  </div>
+</section>
+
+<!-- 33 =================================================================== -->
+<section class="slide">
+  <div class="wrap">
+    <div class="eyebrow">Part D · 02 <b>· 함정</b></div>
+    <h2>random split은 거짓말을 한다</h2>
+    <div class="grid2">
+      <div>
+        <p>화합물 A가 train에 30번, test에 5번 등장한다고 하자. 모델은 A의 <strong>평균 활성</strong>만 외워도 test에서 잘 맞힌다. 타겟도 마찬가지다.</p>
+        <p>결과: AUROC 0.90짜리 논문이 실제 신약 발굴 상황에서는 무작위와 다를 바 없다.</p>
+        <p class="small dim">Wallach &amp; Heifets, <em>JCIM</em> 2018 — "대부분의 리간드 기반 벤치마크는 일반화가 아니라 암기를 보상한다". 부록 A 필독.</p>
+      </div>
+      <div class="card">
+        <span class="tag t-org">이 프로젝트의 출발점</span>
+        <h3>난이도는 사후 라벨이 아니다</h3>
+        <p>어떤 split을 쓰느냐가 곧 문제의 난이도를 결정한다. 그리고 우리는 그 난이도를 <strong>모델과 무관하게, 예측 전에</strong> 측정할 수 있다 — Tanimoto, 서열 identity, pocket pLDDT.</p>
+        <p style="margin-top:.6rem">그게 이 벤치마크의 유일한 고유 자산이다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 34 =================================================================== -->
+<section class="slide">
+  <div class="wrap">
+    <div class="eyebrow">Part D · 03 <b>· 네 가지 split</b></div>
+    <h2>같은 데이터, 네 가지 난이도</h2>
+    <div class="splits" id="splitfigs"></div>
+    <div class="legend">
+      <span><b style="background:var(--blue)"></b> train</span>
+      <span><b style="background:var(--orange)"></b> test</span>
+      <span><b style="background:var(--rule)"></b> 데이터 있음, 미사용</span>
+      <span><b style="border:1px dashed var(--rule);background:transparent"></b> 제외</span>
+    </div>
+    <p style="margin-top:1.2rem">행 = 타겟, 열 = 화합물. 오른쪽으로 갈수록 어렵다. <strong>계획서는 네 가지를 전부, 항상 함께 보고하도록 못박았다.</strong> 하나만 고르면 반드시 유리한 것을 고르게 되기 때문이다.</p>
+  </div>
+</section>
+
+<!-- 35 =================================================================== -->
+<section class="slide">
+  <div class="wrap">
+    <div class="eyebrow">Part D · 04 <b>· 네 가지 split</b></div>
+    <h2>각각이 묻는 질문</h2>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>split</th><th>test에 새로 나오는 것</th><th>답하는 질문</th><th>현실 대응</th></tr></thead>
+        <tbody>
+          <tr><td>random</td><td>없음</td><td>보간을 하는가</td><td>거의 없음 — 논문 숫자 부풀리기용</td></tr>
+          <tr><td>cold-drug</td><td>화합물</td><td>새 분자를 평가할 수 있는가</td><td>기존 타겟에 신규 화합물 스크리닝</td></tr>
+          <tr><td>cold-target</td><td>단백질</td><td>새 타겟으로 옮겨갈 수 있는가</td><td><strong>신규 타겟 발굴 — 우리 주 관심사</strong></td></tr>
+          <tr><td>cold-both</td><td>둘 다</td><td>진짜 일반화를 하는가</td><td>미개척 영역. 성능이 바닥으로 떨어짐</td></tr>
+          <tr><td>scaffold</td><td>화학 골격</td><td>시리즈를 외운 게 아닌가</td><td>cold-drug의 엄격한 버전</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <pre><code><span class="k">from</span> tdc.multi_pred <span class="k">import</span> DTI
+data  = DTI(name=<span class="c">'BindingDB_Kd'</span>)
+split = data.get_split(method=<span class="c">'cold_split'</span>, column_name=<span class="c">'Target_ID'</span>)
+<span class="c"># API 세부 인자는 1주차에 직접 열어서 확인할 것</span></code></pre>
+  </div>
+</section>
+
+<!-- 36 =================================================================== -->
+<section class="slide">
+  <div class="wrap">
+    <div class="eyebrow">Part D · 05 <b>· 동결</b></div>
+    <h2>split은 4주차에 얼려서 다시 건드리지 않는다</h2>
+    <div class="grid2">
+      <div>
+        <h3>실무 이유</h3>
+        <p>split을 바꾸면 학습·평가·난이도 좌표·보정이 전부 무효가 된다. 5~13주차 결과를 통째로 다시 돌려야 한다. 계획서가 <strong>유일하게 되돌릴 수 없는 지점</strong>이라 부른 곳.</p>
+      </div>
+      <div>
+        <h3>통계적 이유</h3>
+        <p>결과를 본 뒤 split을 조정하면 그건 더 이상 test set이 아니다. 사전 등록의 최소 형태가 split 동결이다.</p>
+      </div>
+    </div>
+    <div class="note"><strong>cold split = dataset shift</strong> — 이건 단순한 난이도 조절이 아니다. train과 test의 분포가 달라지므로, <strong>conformal prediction이 요구하는 exchangeability 가정이 깨진다.</strong> 커버리지 보장이 어디서 무너지는지가 이 프로젝트의 연구 질문 그 자체다.</div>
+  </div>
+</section>
+
+<!-- 37 =================================================================== -->
+<section class="slide">
+  <div class="wrap">
+    <div class="eyebrow">Part D · 06 <b>· 목적지</b></div>
+    <h2>난이도 좌표 — 오늘 배운 것의 종착지</h2>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>좌표</th><th>정의</th><th>도구</th><th>오늘 어디서</th></tr></thead>
+        <tbody>
+          <tr><td>① 리간드 신규성</td><td>학습셋 대비 최대 Tanimoto, scaffold 일치</td><td>RDKit</td><td>슬라이드 12–13</td></tr>
+          <tr><td>② 타겟 신규성</td><td>학습 타겟 대비 최대 서열 identity</td><td>MMseqs2</td><td>슬라이드 19</td></tr>
+          <tr><td>③ 구조 신뢰도</td><td>pocket 잔기 평균 pLDDT, pocket 내 PAE</td><td>AF DB, P2Rank</td><td>슬라이드 21–23</td></tr>
+          <tr><td>④ 구조 가용성</td><td>실험 PDB 존재 (0 / apo / holo)</td><td>PDB, SIFTS</td><td>슬라이드 4, 23</td></tr>
+          <tr><td>⑤ 타겟 성숙도</td><td>Pharos TDL (Tclin / Tchem / Tbio / Tdark)</td><td>Pharos</td><td>슬라이드 4</td></tr>
+          <tr><td>⑥ 오염 축</td><td>원측정 논문 발행일 (LLM cutoff 전/후)</td><td>ChEMBL, PubMed</td><td>2주차</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note"><strong>4주차 전에 할 일</strong> — 이 6개의 <strong>상관행렬을 그려본다.</strong> Tdark 타겟은 대개 identity도 낮고 PDB도 없고 pLDDT도 낮다. 6개가 사실은 2개 축일 가능성이 크고, <strong>그 붕괴 자체가 첫 번째 결과 그림</strong>이 된다.</div>
+    <p><strong>다음 세션</strong> — conformal prediction, risk–coverage 곡선, ECE. 즉 "모델이 자기가 틀릴 때를 아는가"를 실제로 어떻게 측정하는가. 오늘은 그 측정을 얹을 바닥을 깔았다.</p>
+  </div>
+</section>
+
+<script>
+(function () {
+  // ---- fingerprint bit strip -----------------------------------------
+  var strip = document.getElementById('bits-etoh');
+  if (strip) {
+    var on = { 6: 1, 13: 1, 22: 1, 37: 1, 49: 1, 58: 1 };
+    for (var b = 0; b < 64; b++) {
+      var el = document.createElement('i');
+      if (on[b]) el.className = 'on';
+      strip.appendChild(el);
+    }
+  }
+
+  // ---- split matrices -------------------------------------------------
+  var N = 8;
+  var defs = [
+    { name: 'random',      sub: '셀 무작위',   fn: function (r, c) { return ((r * 5 + c * 3) % 7 === 0) ? 'te' : 'tr'; } },
+    { name: 'cold-drug',   sub: '열 = 화합물', fn: function (r, c) { return c >= N - 2 ? 'te' : 'tr'; } },
+    { name: 'cold-target', sub: '행 = 타겟',   fn: function (r, c) { return r >= N - 2 ? 'te' : 'tr'; } },
+    { name: 'cold-both',   sub: '행 ∩ 열',     fn: function (r, c) {
+        var nr = r >= N - 2, nc = c >= N - 2;
+        if (nr && nc) return 'te';
+        if (nr || nc) return 'ex';
+        return 'tr';
+      } }
+  ];
+  var host = document.getElementById('splitfigs');
+  if (host) {
+    defs.forEach(function (d) {
+      var fig = document.createElement('figure');
+      fig.className = 'split-fig';
+      var mat = document.createElement('div');
+      mat.className = 'mat';
+      mat.setAttribute('role', 'img');
+      mat.setAttribute('aria-label', d.name + ' split 도식');
+      for (var r = 0; r < N; r++) {
+        for (var c = 0; c < N; c++) {
+          var cell = document.createElement('i');
+          cell.className = d.fn(r, c);
+          mat.appendChild(cell);
+        }
+      }
+      var cap = document.createElement('figcaption');
+      cap.textContent = d.name;
+      var sub = document.createElement('div');
+      sub.className = 'sub';
+      sub.textContent = d.sub;
+      cap.appendChild(sub);
+      fig.appendChild(mat);
+      fig.appendChild(cap);
+      host.appendChild(fig);
+    });
+  }
+
+  // ---- PAE heatmap ----------------------------------------------------
+  var P = 16, pae = document.getElementById('paefig');
+  if (pae) {
+    var blue = getComputedStyle(document.documentElement).getPropertyValue('--blue').trim() || '#0053D6';
+    for (var i = 0; i < P; i++) {
+      for (var j = 0; j < P; j++) {
+        var same = (i < 7 && j < 7) || (i >= 7 && j >= 7);
+        var d = Math.abs(i - j);
+        var err = same ? Math.min(1, d / 14) : 0.72 + Math.min(0.25, d / 60);
+        var cell = document.createElement('i');
+        cell.style.background = blue;
+        cell.style.opacity = String((1 - err).toFixed(3));
+        pae.appendChild(cell);
+      }
+    }
+  }
+
+  // ---- nav + progress -------------------------------------------------
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var counter = document.getElementById('counter');
+  var fill = document.getElementById('railfill');
+  var total = slides.length;
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+  function current() {
+    var best = 0, bestDist = Infinity;
+    slides.forEach(function (s, i) {
+      var d = Math.abs(s.getBoundingClientRect().top);
+      if (d < bestDist) { bestDist = d; best = i; }
+    });
+    return best;
+  }
+  function update() {
+    var i = current();
+    if (counter) counter.textContent = pad(i + 1) + ' / ' + pad(total);
+    if (fill) {
+      var max = document.body.scrollHeight - window.innerHeight;
+      fill.style.height = (max > 0 ? (window.scrollY / max) * 100 : 0) + '%';
+    }
+  }
+  var ticking = false;
+  window.addEventListener('scroll', function () {
+    if (!ticking) { ticking = true; window.requestAnimationFrame(function () { update(); ticking = false; }); }
+  }, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+  document.addEventListener('keydown', function (e) {
+    var t = e.target;
+    if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+    var i = current(), next = null;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'PageDown') next = i + 1;
+    else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'PageUp') next = i - 1;
+    else if (e.key === 'Home') next = 0;
+    else if (e.key === 'End') next = total - 1;
+    if (next === null) return;
+    next = Math.max(0, Math.min(total - 1, next));
+    e.preventDefault();
+    slides[next].scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+})();
+</script>
+</body>
+</html>
