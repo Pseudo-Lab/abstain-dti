@@ -388,6 +388,12 @@ tooluniverse-doctor                   # 누락 확인
       (타겟 후보 순위 / 분자 pose / 결합 친화도 중 무엇인가)
 
 ### 확인 필요 (불확실 항목)
+
+> 2026-09-17에 이 절의 ToolUniverse 항목을 실측으로 확인했습니다. 결과는
+> [`docs/literature/tooluniverse-facts.md`](../literature/tooluniverse-facts.md)에 있습니다.
+> 아래에 남아 있는 추정치보다 그 문서가 우선합니다. 특히 전체 로딩 토큰 추정(250k-400k)은
+> 실측 648,472와 차이가 큽니다. 도구 수를 1,000개로 가정한 것이 원인입니다.
+
 - ToolUniverse 도구 수 문서 불일치
 - Compact Mode 토큰 수치는 자체 추정 (공식 수치 아님)
 - Opus 5 등 최신 모델의 Biomni 벤치마크 부재 — 벤더 하네스 차이로 15~30점 편차 존재하므로 **모델만 교체하고 에이전트 구조는 고정**해야 비교 가능
