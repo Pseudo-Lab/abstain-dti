@@ -1,0 +1,36 @@
+# abstain-dti project environment (W01 draft).
+# Create:  mamba env create -f environment.yml
+# Update:  mamba env update -f environment.yml --prune
+# Channels follow SCRI policy: conda-forge and bioconda only.
+# Heavy deep-learning deps (pytorch, fair-esm, PyTDC) are added at W05,
+# once the W01 resource gate settles GPU vs CPU builds.
+name: abstain-dti
+channels:
+  - conda-forge
+  - bioconda
+  - nodefaults
+dependencies:
+  - python=3.12
+  - pip
+  # tooling
+  - gh
+  - git
+  - jupyterlab
+  # data and ML
+  - numpy
+  - pandas
+  - scipy
+  - scikit-learn
+  - xgboost
+  - mapie
+  - matplotlib
+  # chemistry and structure
+  - rdkit
+  - biopython
+  - mmseqs2
+  - fpocket
+  # P2Rank is not packaged on conda-forge or bioconda. It ships as a Java
+  # release tarball; openjdk lets that tarball run inside this env.
+  - openjdk
+  - pip:
+      - tooluniverse==1.5.0  # version verified in docs/literature/tooluniverse-facts.md
