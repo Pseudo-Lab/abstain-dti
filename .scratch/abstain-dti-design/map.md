@@ -5,7 +5,7 @@ Charted: 2026-10-04
 
 ## Destination
 
-동료 피드백 두 건([feedback.md](feedback.md))에 답하는 **과제 정의 초안**. 결과물은
+동료 피드백 두 건(원문은 로컬 `feedback.md`에만 보관, 저장소에 올리지 않음)에 답하는 **과제 정의 초안**. 결과물은
 `benchmark/EVALUATION.md` v0 초안과, 그 초안을 검증받을 **domain expert 질문 목록**입니다.
 W04 동결 게이트(2026-11-06) 전에 expert 검토까지 마칩니다.
 
