@@ -268,7 +268,7 @@ Explore → Design → Build → Test → Improve → Share
 | **난이도 좌표** | **모델에 입력하지 않습니다.** 난이도 좌표는 문제지에 붙은 태그이며, 결과를 층화해 분석할 때만 사용합니다 |
 | **결합 기준** | pAffinity ≥ 6.0 (Kd / Ki / IC50 ≤ 1 µM)이면 `binds = true`. ground truth와 전 조건에 동일 적용 |
 | **LLM 설정** | temperature 0.7 (0이면 flip rate가 구조적으로 0이 됨). 모델, 토큰 상한, 툴 목록은 조건 간 고정하고 전부 로그에 기록 |
-| **출력** | JSON 스키마 강제 (`agent/prompts/` 참조). 가능하면 API의 structured output 기능 사용 |
+| **출력** | JSON 스키마 강제 (`track_agent/prompts/` 참조). 가능하면 API의 structured output 기능 사용 |
 | **동결** | 프롬프트는 W08 파일럿 후 split과 마찬가지로 동결하고 버전을 커밋합니다 |
 
 **직접 조회 추적.** 조건 C·D는 출력에 `identified_target`(서열로 추론한 타겟)과
@@ -403,7 +403,7 @@ accuracy)에서 비교합니다.
 | **W01** | 10.10-10.16 | 2026.10.10 (토) 10:00-12:00 | 킥오프. 팀 소개와 역할 희망 조사, 환경 세팅(GitHub / conda). GPU 실물 확보 확인(Colab Pro / 대학 클러스터 / KISTI / NIPA). LLM API 크레딧 확보처와 **예산 상한을 숫자로 확정**. 팀 전체 일정 취합(시험기간과 연말 겹침 확인). **조건 F(Boltz-2) 승격 여부 결정.** GPU 종류, VRAM, 장수, 사용 가능 기간을 자원 메모에 기록 | repo 초기화, 환경 세팅 PR, 자원 확인 메모 | **자원 게이트.** 2·3단계 실행 여부와 조건 B/C/D 반복 횟수 확정 |
 | **W02** | 10.17-10.23 | 2026.10.17 (토) 10:00-12:00 | 1인 1편 논문 리뷰 발표(아래 부록 A). **DOI와 링크 전수 검증.** 저 pLDDT 및 PDB 부재 타겟 실제 개수 카운트 | `/docs/literature` 요약, 타겟 가용성 통계 | 타겟 수 부족 시 pocket identity 임계값 완화 결정 |
 | **W03** | 10.24-10.30 | 2026.10.24 (토) 10:00-12:00 | 전원이 tool calling 에이전트 자작(계산기 + 검색 2종). **ToolUniverse를 MCP로 연결**해 자작 구현과 비교 | 개인별 실습 노트북 | 없음 |
-| **W04** | 10.31-11.06 | 2026.10.31 (토) 10:00-12:00 | TDC 데이터 로드, 태스크 최종 선정. **난이도 좌표 6종 정의 확정, split 프로토콜 동결.** 기권과 보정, 재현성 프로토콜 문서화, 큐레이션 가이드라인 작성. **트랙 배정.** **입력 규약 확정**(서열 + SMILES만, 결합 기준 pAffinity 6.0), `agent/prompts/` v0 커밋 | `benchmark/EVALUATION.md`, 데이터 로더 코드 | **동결 게이트.** split 이후 변경 금지, 트랙 확정 |
+| **W04** | 10.31-11.06 | 2026.10.31 (토) 10:00-12:00 | TDC 데이터 로드, 태스크 최종 선정. **난이도 좌표 6종 정의 확정, split 프로토콜 동결.** 기권과 보정, 재현성 프로토콜 문서화, 큐레이션 가이드라인 작성. **트랙 배정.** **입력 규약 확정**(서열 + SMILES만, 결합 기준 pAffinity 6.0), `track_agent/prompts/` v0 커밋 | `benchmark/EVALUATION.md`, 데이터 로더 코드 | **동결 게이트.** split 이후 변경 금지, 트랙 확정 |
 
 ### Phase 2. 병렬 개발 (W05-W08, 트랙별)
 
@@ -479,7 +479,7 @@ M1은 트랙 배정 이전 구간이라 전원이 같은 과제를 수행합니�
 | **M2** (W05-07) | ESM-2 임베딩과 Morgan fingerprint 캐시 · AlphaFold DB 수집과 P2Rank pocket 추출 · XGBoost 기준선 4개 split · pocket과 SaProt feature ablation 표 · `LICENSE-AUDIT.md` | ToolUniverse MCP 연결 · 토큰, 지연, 비용 필드를 포함한 호출 로그 · 신뢰도와 기권 출력 스키마 확정 · PubMed와 화합물 DB 조회 동작 · 모델 백엔드 2종 비교 | 쿼리 60개 초안 · 좌표 계산 파이프라인 동작 · 좌표 6종 1차 계산값 |
 | **M3** (W08) | conformal prediction 적용 · risk-coverage 곡선과 AURC 산출 · seed 고정 분산 측정 | 교란 4종 주입 하네스 · 탐지 판정 로직 · 파일럿 40쿼리 실행 · 쿼리당 실측 비용 | 2인 교차 검증 완료 · `queries.jsonl`과 `difficulty.tsv` 확정 · 큐레이션 가이드 문서 |
 | **M4** (W09-11) | 조건 A 전체 실행 · 난이도 좌표 6종 구간별 층화 분석 · 조건별 지표표 산출 | 조건 B, C, D 전체 실행 3회 반복 · 기권 flip rate 계산 · 로그 기반 원인 추적 | 실패 모드 정성 분류 · 오답 사례 주석 · 층화 구간별 검수 |
-| **M5** (W12-14) | `ml-baselines` 모듈 정리 · 결과 재현 스크립트 · 재현 예제 노트북 1개 | `agent`와 `agent/perturb` 디렉토리 정리 · 실행 예제와 비용 안내 · 데모 | `curation`과 `benchmark` 디렉토리 문서화 · 좌표 확장 기여 가이드 · `good first issue` 발행 |
+| **M5** (W12-14) | `track_ml-baselines` 모듈 정리 · 결과 재현 스크립트 · 재현 예제 노트북 1개 | `track_agent`와 `track_agent/perturb` 디렉토리 정리 · 실행 예제와 비용 안내 · 데모 | `track_curation`과 `benchmark` 디렉토리 문서화 · 좌표 확장 기여 가이드 · `good first issue` 발행 |
 
 > 큐레이션 트랙은 M3에서 평가셋을 확정한 뒤 **M4의 실패 모드 정성 분류로 이동**합니다. 오답을 읽고
 > 분류하는 작업은 도메인 지식이 필요하고 코딩 부담이 낮아, 이 트랙이 이어받기에 가장 적합합니다.
@@ -524,11 +524,11 @@ M1은 트랙 배정 이전 구간이라 전원이 같은 과제를 수행합니�
 
 ```text
 abstain-dti/
-├── ml-baselines/   # ML과 보정 트랙: ESM-2, XGBoost, conformal prediction, AlphaFold 구조 feature, Boltz-2
-├── agent/          # 에이전트 트랙: ToolUniverse MCP, 로깅
+├── track_ml-baselines/ # ML과 보정 트랙: ESM-2, XGBoost, conformal prediction, AlphaFold 구조 feature, Boltz-2
+├── track_agent/    # 에이전트 트랙: ToolUniverse MCP, 로깅
 │   ├── prompts/    # 조건 B·C·D 프롬프트 (버전 관리, W08 동결)
 │   └── perturb/    # 도구 출력 교란 하네스 (4종 오류 주입)
-├── curation/       # 큐레이션 트랙: 가이드, 좌표 계산 스크립트, 2인 검증 기록
+├── track_curation/ # 큐레이션 트랙: 가이드, 좌표 계산 스크립트, 2인 검증 기록
 ├── benchmark/      # 결과물: EVALUATION.md, queries.jsonl, difficulty.tsv
 │   └── eval/       # 채점 스크립트 (risk-coverage, AURC, ECE, flip rate)
 ├── tests/          # pytest 자동 검사

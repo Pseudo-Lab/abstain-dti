@@ -12,6 +12,6 @@
 | `difficulty.tsv` | 쿼리별 난이도 좌표 6종 | M3 |
 | [`eval/`](eval/) | 채점 스크립트 | M4 |
 
-쿼리와 좌표를 만드는 과정은 [`curation/`](../curation/)에 있습니다.
+쿼리와 좌표를 만드는 과정은 [`track_curation/`](../track_curation/)에 있습니다.
 
 **동결 규칙.** split은 W04에, 쿼리와 좌표는 W08에 동결합니다. 동결 이후 변경은 `gate/freeze` 라벨 PR로만 합니다.

@@ -17,9 +17,10 @@ W04 동결 게이트(2026-11-06) 전에 expert 검토까지 마칩니다.
 - 생물학 사실(타겟 목록, pocket 위치, pLDDT 값 등)은 반드시 실제로 조회한 출처와 버전을 함께 기록합니다.
   모델 기억으로 채우지 않습니다.
 - 계산은 Sasquatch compute node에서 `-A rsc`. env는 저장소 루트 `environment.yml`(`abstain-dti`).
-- 트래커는 로컬 `.scratch/`. 2026-10-10 킥오프에 Pseudo-Lab GitHub Issues로 옮깁니다.
-- 이미 정한 것 (이 맵 밖에서): 폴더 구조 `ml-baselines/ agent/ curation/ benchmark/`(+`benchmark/EVALUATION.md`),
-  fork(`ybaeus`) → `Pseudo-Lab` PR 흐름, 입력 규약 v0(서열 + SMILES, pAffinity ≥ 6.0)은 PR1에 들어갔고 이 맵의 결정으로 수정될 수 있음.
+- 트래커는 저장소의 `.scratch/` 파일. 2026-10-10 킥오프에 Pseudo-Lab GitHub Issues로 옮깁니다.
+- 이미 정한 것 (이 맵 밖에서): 폴더 구조 `track_ml-baselines/ track_agent/ track_curation/ benchmark/`(+`benchmark/EVALUATION.md`),
+  Pseudo-Lab 저장소에서 `wXX/track/slug` 브랜치 + PR(러너는 Write 권한 collaborator).
+  입력 규약 v0(서열 + SMILES, pAffinity ≥ 6.0)은 PR #3로 README에 들어갔고, 이 맵의 결정으로 수정될 수 있습니다.
 
 ## Decisions so far
 
@@ -37,5 +38,5 @@ W04 동결 게이트(2026-11-06) 전에 expert 검토까지 마칩니다.
 
 ## Out of scope
 
-- 폴더 재구성 PR 자체 (실행 작업, 맵 밖에서 PR2/PR3로 진행)
+- 폴더 재구성 (PR #4로 완료. 루트 README 상세 내용을 폴더로 옮길지는 미정)
 - 모델 학습, 에이전트 구현 (W05 이후)

@@ -13,7 +13,7 @@ pytest tests/
 
 | 대상 | 검사 |
 | --- | --- |
-| 에이전트 출력 | `agent/prompts/`의 JSON 스키마대로 파싱되는지, 기권 시 `binds`와 `confidence`가 null인지 |
+| 에이전트 출력 | `track_agent/prompts/`의 JSON 스키마대로 파싱되는지, 기권 시 `binds`와 `confidence`가 null인지 |
 | 라벨 규칙 | pAffinity 6.0 기준, 측정 단위 변환(Boltz-2 출력 포함) |
 | 지표 | AURC, ECE, flip rate가 장난감 데이터에서 손으로 계산한 값과 같은지 |
 | split | 동결된 split에서 학습·평가 셋이 겹치지 않는지 |
