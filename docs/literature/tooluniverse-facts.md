@@ -2,7 +2,7 @@
 
 **확인 날짜**: 2026-09-17 (KST 17:20 / PT 01:20)
 **대상**: mims-harvard/ToolUniverse
-**티켓**: `.scratch/abstain-dti-launch/issues/08-tooluniverse-facts.md`
+**티켓**: `abstain-dti-launch` 08번 티켓 (당시 로컬 트래커, 저장소에는 없음)
 
 > 이 문서의 모든 수치에는 라벨이 붙어 있습니다. 라벨은 세 가지입니다.
 >
@@ -10,7 +10,7 @@
 > - **[문서]** 저장소나 논문에 적혀 있는 값입니다. 누가 적었는지, 어느 버전인지 표시합니다.
 > - **[미확정]** 확인하지 못했습니다. 추정치를 대신 적지 않았습니다.
 >
-> `context/study/HANDOFF.md` §9의 자체 추정치는 이 문서 어디에도 옮겨 적지 않았습니다.
+> [`docs/study/HANDOFF.md`](../study/HANDOFF.md) §9의 자체 추정치는 이 문서 어디에도 옮겨 적지 않았습니다.
 > 비교가 필요한 곳에서만 "HANDOFF 추정"이라고 명시하고 나란히 놓았습니다.
 
 ---
