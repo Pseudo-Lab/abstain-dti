@@ -37,6 +37,6 @@
 
 ## 참고
 
-- 평가 규약: [`benchmark/EVALUATION.md`](../benchmark/EVALUATION.md)
+- 평가 규약: [`results/benchmark/EVALUATION.md`](../results/benchmark/EVALUATION.md)
 - ToolUniverse 실측 기록: [`docs/literature/tooluniverse-facts.md`](../docs/literature/tooluniverse-facts.md)
 - 환경: 루트 `environment.yml` (`tooluniverse==1.5.0` 포함)

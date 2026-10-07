@@ -1,2 +1,4 @@
 .DS_Store
 .scratch/abstain-dti-design/feedback.md
+.env
+.env.secret

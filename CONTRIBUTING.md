@@ -27,6 +27,8 @@ mamba activate abstain-dti
 
 흐름은 `작업 브랜치 → 트랙 브랜치 → dev → main`입니다.
 
+> 트랙 브랜치 안에서 일하는 방식(아래 3절)은 초안입니다. W04 트랙 확정 때 함께 확정합니다.
+
 ## 3. 작업 순서 (기수 참여자)
 
 1. 작업할 GitHub Issue를 열거나 고르고 자신에게 assign합니다.
@@ -42,9 +44,16 @@ mamba activate abstain-dti
 
 ## 4. Issue와 라벨
 
-- 제목: `[WXX][track] 작업 내용` (예: `[W06][ml] XGBoost 4개 split 기준선`)
-- 라벨: `week/WXX`, `track/ml` · `track/agent` · `track/curation`, `type/task` · `type/bug` · `type/question` · `type/docs`
-- 동결 이후 변경은 `gate/freeze` 라벨을 붙입니다.
+Issue 제목은 `[WXX][track] 작업 내용`입니다 (예: `[W06][ml] XGBoost 4개 split 기준선`).
+PR 본문에 `Closes #NN`을 적으면 주차 라벨과 마일스톤을 Issue에서 이어받습니다.
+
+| 종류 | 라벨 | 용도 |
+| --- | --- | --- |
+| 주차 | `week/W01` ... `week/W14` | 토요일 정기 모임에서 부여, 다음 모임에서 정리 |
+| 트랙 | `track/ml` · `track/agent` · `track/curation` | 트랙 작업 표시 |
+| 유형 | `type/task` · `type/bug` · `type/question` · `type/docs` | Issue 템플릿에서 자동 부여 |
+| 게이트 | `gate/freeze` | W04 split 동결, W11 수치 동결 이후의 변경 |
+| 외부 기여 | `good first issue` · `help wanted` | M5에서 발행 |
 
 ## 5. 규칙
 

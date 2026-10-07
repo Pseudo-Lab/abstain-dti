@@ -1,9 +1,9 @@
 # track_curation
 
 **난이도 좌표 큐레이션 트랙**의 작업 공간입니다. 평가 쿼리를 만들고, 쿼리마다 난이도 좌표를 계산하고,
-2인 교차 검증을 거쳐 [`benchmark/`](../benchmark/)에 확정본을 넘깁니다.
+2인 교차 검증을 거쳐 [`results/benchmark/`](../results/benchmark/)에 확정본을 넘깁니다.
 
-`track_curation/`은 **만드는 과정**(가이드, 스크립트, 검증 기록)을, `benchmark/`는 **완성된 결과물**을 담습니다.
+`track_curation/`은 **만드는 과정**(가이드, 스크립트, 검증 기록)을, `results/benchmark/`는 **완성된 결과물**을 담습니다.
 
 > 상태: 비어 있음. 큐레이션 가이드라인은 W04에, 쿼리 초안은 W05부터 채웁니다.
 
@@ -19,5 +19,5 @@
 
 ## 참고
 
-- 좌표 정의와 split 프로토콜: [`benchmark/EVALUATION.md`](../benchmark/EVALUATION.md)
+- 좌표 정의와 split 프로토콜: [`results/benchmark/EVALUATION.md`](../results/benchmark/EVALUATION.md)
 - 생물학 사실(타겟, pocket, pLDDT 값 등)은 조회한 출처와 버전, 조회일을 함께 기록합니다.
