@@ -1,6 +1,7 @@
 <h1 align="center">abstain-dti</h1>
 <h3 align="center">AI 신약 발굴 모델은 자기가 틀릴 때를 아는가</h3>
 <p align="center">난이도 좌표 기반 drug-target 예측 보정 · 기권 벤치마크</p>
+<p align="center"><b>한국어</b> · <a href="README.en.md">English</a></p>
 
 <div align="center">
 <a href="https://pseudo-lab.com"><img src="https://img.shields.io/badge/PseudoLab-S13-3776AB" alt="PseudoLab"/></a>
@@ -50,7 +51,7 @@
 
 - `Open Source Repository`: <https://github.com/Pseudo-Lab/abstain-dti> (MIT)
 - `Research / Experiment`: 조건별 비교와 risk-coverage 리포트
-- `Documentation`: `benchmark/EVALUATION.md`, CONTRIBUTING.md, LICENSE-AUDIT.md, 주차별 진행 로그
+- `Documentation`: `results/benchmark/EVALUATION.md`, CONTRIBUTING.md, LICENSE-AUDIT.md, 주차별 진행 로그
 - `Demo`: 재현 가능한 예제 노트북 1개
 - `Paper (연장 트랙)`: arXiv 프리프린트, ICLR 2027 워크숍 투고
 
@@ -130,7 +131,7 @@ W04 말에 희망과 적성을 반영해 트랙을 정합니다. 페어로 진�
 
 - 신약 개발을 몰라도 됩니다. W01에 어휘부터 맞춥니다.
 - 논문을 끝까지 읽어본 적이 없어도 됩니다. W02에 한 명이 한 편씩 맡아 같이 읽습니다.
-- git이 처음이어도 됩니다. [온보딩 자료](docs/onboarding/w01-onboarding.html)가 있습니다.
+- git이 처음이어도 됩니다. [온보딩 자료](docs/onboarding/w01-drug_development_onboarding.html)가 있습니다.
 - 한국 밖에 계셔도 됩니다. 모임 시간을 그래서 토요일 오전으로 잡았습니다.
 
 ### 이런 건 부탁드립니다
@@ -168,20 +169,22 @@ W04 말에 희망과 적성을 반영해 트랙을 정합니다. 페어로 진�
 
 ### 팀
 
+트랙은 **잠정 배정**입니다. W04 말에 희망과 적성을 반영해 확정합니다. GitHub 아이디는 킥오프 때 채웁니다.
+
 | Role | Name | 담당 |
 | --- | --- | --- |
 | Builder | [@ybaeus](https://github.com/ybaeus) | 프로젝트 리딩, 평가 설계, ML과 보정 트랙 참여 |
-| Runner | `@name` | ML과 보정 |
-| Runner | `@name` | ML과 보정 |
-| Runner | `@name` | ML과 보정 |
-| Runner | `@name` | 에이전트와 교란 감사 |
-| Runner | `@name` | 에이전트와 교란 감사 |
-| Runner | `@name` | 에이전트와 교란 감사 |
-| Runner | `@name` | 에이전트와 교란 감사 |
-| Runner | `@name` | 난이도 좌표 큐레이션 |
-| Runner | `@name` | 난이도 좌표 큐레이션 |
-| Runner | `@name` | 난이도 좌표 큐레이션 |
-| Runner | `@name` | 난이도 좌표 큐레이션 |
+| Runner | 하민주 | ML과 보정 |
+| Runner | 최호재 | ML과 보정 |
+| Runner | 박소정 | ML과 보정 |
+| Runner | 김태엽 | 에이전트와 교란 감사 |
+| Runner | 서동영 | 에이전트와 교란 감사 |
+| Runner | 차재민 | 에이전트와 교란 감사 |
+| Runner | 정재훈 | 에이전트와 교란 감사 |
+| Runner | 권예진 | 난이도 좌표 큐레이션 |
+| Runner | 김시은 | 난이도 좌표 큐레이션 |
+| Runner | 이성주 | 난이도 좌표 큐레이션 |
+| Runner | 전소연 | 난이도 좌표 큐레이션 |
 
 **빌더 소개.** 가짜연구소 5기 리더 경험(NGS 분석 프로젝트 운영). Bioinformatics와 spatial biology
 실무 경험. 현재 시애틀 거주.
@@ -359,6 +362,9 @@ accuracy)에서 비교합니다.
 > **버전 주의.** Boltz 2.1(2026-06)은 클로즈드 소스이며 Boltz 자체 호스팅 API로만 실행됩니다. 논문에
 > 쓰는 수치는 반드시 **오픈 가중치 버전**으로 산출하고 버전 문자열을 결과표에 명기합니다. 공식 저장소의
 > Boltz-2용 학습 및 평가 코드는 현재 미공개이므로 "재현 가능한 학습"을 전제로 한 계획은 세우지 않습니다.
+>
+> **전체 데이터에 co-folding을 풀 실행하지 않습니다.** GPU 예산이 붕괴합니다. 3단계는 독립된 도전
+> 과제로 분리되어 있어, 실패해도 일정과 논문이 무손상입니다.
 
 > **Boltz-2 200쌍 배분.** 전체에 고르게 뿌리지 않고 난이도 양극단에 층화 배분합니다. "신뢰도가 난이도를
 > 따라가는가"를 적은 쌍으로도 깨끗하게 보여 주기 위함입니다.
@@ -373,10 +379,6 @@ accuracy)에서 비교합니다.
 > GPU가 넉넉하면 각 구간을 같은 비율로 늘립니다. **MSA는 타겟별로 한 번만 생성해 캐시**합니다
 > (`--use_msa_server` 반복 호출 금지). 사용 신호는 `affinity_probability_binary`(분류),
 > `affinity_pred_value`(회귀), `ligand_iptm`과 pocket 영역 PAE(신뢰도)입니다.
-
->
-> **전체 데이터에 co-folding을 풀 실행하지 않습니다.** GPU 예산이 붕괴합니다. 3단계는 독립된 도전
-> 과제로 분리되어 있어, 실패해도 일정과 논문이 무손상입니다.
 
 </details>
 
@@ -403,7 +405,7 @@ accuracy)에서 비교합니다.
 | **W01** | 10.10-10.16 | 2026.10.10 (토) 10:00-12:00 | 킥오프. 팀 소개와 역할 희망 조사, 환경 세팅(GitHub / conda). GPU 실물 확보 확인(Colab Pro / 대학 클러스터 / KISTI / NIPA). LLM API 크레딧 확보처와 **예산 상한을 숫자로 확정**. 팀 전체 일정 취합(시험기간과 연말 겹침 확인). **조건 F(Boltz-2) 승격 여부 결정.** GPU 종류, VRAM, 장수, 사용 가능 기간을 자원 메모에 기록 | repo 초기화, 환경 세팅 PR, 자원 확인 메모 | **자원 게이트.** 2·3단계 실행 여부와 조건 B/C/D 반복 횟수 확정 |
 | **W02** | 10.17-10.23 | 2026.10.17 (토) 10:00-12:00 | 1인 1편 논문 리뷰 발표(아래 부록 A). **DOI와 링크 전수 검증.** 저 pLDDT 및 PDB 부재 타겟 실제 개수 카운트 | `/docs/literature` 요약, 타겟 가용성 통계 | 타겟 수 부족 시 pocket identity 임계값 완화 결정 |
 | **W03** | 10.24-10.30 | 2026.10.24 (토) 10:00-12:00 | 전원이 tool calling 에이전트 자작(계산기 + 검색 2종). **ToolUniverse를 MCP로 연결**해 자작 구현과 비교 | 개인별 실습 노트북 | 없음 |
-| **W04** | 10.31-11.06 | 2026.10.31 (토) 10:00-12:00 | TDC 데이터 로드, 태스크 최종 선정. **난이도 좌표 6종 정의 확정, split 프로토콜 동결.** 기권과 보정, 재현성 프로토콜 문서화, 큐레이션 가이드라인 작성. **트랙 배정.** **입력 규약 확정**(서열 + SMILES만, 결합 기준 pAffinity 6.0), `track_agent/prompts/` v0 커밋 | `benchmark/EVALUATION.md`, 데이터 로더 코드 | **동결 게이트.** split 이후 변경 금지, 트랙 확정 |
+| **W04** | 10.31-11.06 | 2026.10.31 (토) 10:00-12:00 | TDC 데이터 로드, 태스크 최종 선정. **난이도 좌표 6종 정의 확정, split 프로토콜 동결.** 기권과 보정, 재현성 프로토콜 문서화, 큐레이션 가이드라인 작성. **트랙 배정.** **입력 규약 확정**(서열 + SMILES만, 결합 기준 pAffinity 6.0), `track_agent/prompts/` v0 커밋 | `results/benchmark/EVALUATION.md`, 데이터 로더 코드 | **동결 게이트.** split 이후 변경 금지, 트랙 확정 |
 
 ### Phase 2. 병렬 개발 (W05-W08, 트랙별)
 
@@ -414,7 +416,7 @@ accuracy)에서 비교합니다.
 | **W05** | 11.07-11.13 | 2026.11.07 (토) 10:00-12:00 | ESM-2 임베딩 + Morgan fingerprint 캐시, AlphaFold DB 구조 수집, P2Rank pocket 추출. **의존성 라이선스 감사** | ToolUniverse MCP 연결, 전 호출 로깅 시스템 구축. 로깅 스키마에 **토큰, 지연, 비용 필드** 포함. 신뢰도와 기권 출력 스키마 설계 | 쿼리 초안 20개, 작성자와 검증자 페어 배치 |
 | **W06** | 11.14-11.20 | 2026.11.14 (토) 10:00-12:00 | 첫 baseline. Logistic regression / XGBoost. **4개 split 전부**에서 기준선 확보 | 문헌 검색(PubMed API)과 화합물, 단백질 DB 조회 연결, 모델 백엔드 2종 이상 비교 | 쿼리 40개 누적, 좌표 계산 파이프라인 착수 |
 | **W07** | 11.21-11.27 | 2026.11.21 (토) 10:00-12:00 | 구조 표현 비교. pocket feature 추가, SaProt / ESM-IF, **2D와 3D ablation** | 교란 하네스 구현. 4종 오류 주입과 탐지 판정 로직 | 쿼리 60개, 좌표 6종 1차 계산 |
-| **W08** | 11.28-12.04 | 2026.11.28 (토) 10:00-12:00 | 보정. conformal prediction(MAPIE), risk-coverage 곡선, **seed 고정 분산 측정** | **파일럿 40쿼리** 실행, 파싱 실패 수정, 전체 비용 실측. 파일럿 결과로 **자기보고 신뢰도 분포 확인**(값이 몇 개로 뭉치면 E는 자기일관성 점수로 전환), **프롬프트 동결** | 2인 교차 검증, `benchmark/queries.jsonl`과 `benchmark/difficulty.tsv` 확정 |
+| **W08** | 11.28-12.04 | 2026.11.28 (토) 10:00-12:00 | 보정. conformal prediction(MAPIE), risk-coverage 곡선, **seed 고정 분산 측정** | **파일럿 40쿼리** 실행, 파싱 실패 수정, 전체 비용 실측. 파일럿 결과로 **자기보고 신뢰도 분포 확인**(값이 몇 개로 뭉치면 E는 자기일관성 점수로 전환), **프롬프트 동결** | 2인 교차 검증, `results/benchmark/queries.jsonl`과 `results/benchmark/difficulty.tsv` 확정 |
 
 > **W08이 이 일정의 최대 부하 지점입니다.** 보정 작업과 파일럿을 동시에 돌리며 평가셋까지 확정해야
 > 합니다. 파일럿을 **40쿼리**로 잡은 이유는 W09 전체 실행에서 파싱 실패가 나오면 복구할 주차가 없기
@@ -446,7 +448,7 @@ accuracy)에서 비교합니다.
 | **W13** | 01.02-01.08 | 2027.01.02 (토) 10:00-12:00 | 오픈소스 정비. README(설치, 실행, 재현), `CONTRIBUTING.md`, Issue와 PR 템플릿, MIT license, 재현 예제 노트북 1개, 라이선스 감사 결과 반영. 재현 검증으로 *새 환경에서 README만 보고 예제 노트북 완주* | 공개 가능한 저장소, 재현 검증 로그 |
 | **W14** | 01.09 (토) | 2027.01.09 (토) 10:00-12:00 | 최종 발표 자료, repo 공개, 데모. 확장 계획(router 학습, abstention head 파인튜닝) 정리. **연장 트랙 인수인계** | 발표 자료, 회고 기록, 연장 트랙 담당자 확정 |
 
-> 문서화는 마지막 주에 몰아 쓰는 작업이 아닙니다. README와 `benchmark/EVALUATION.md`를 **W05부터 PR마다 조금씩**
+> 문서화는 마지막 주에 몰아 쓰는 작업이 아닙니다. README와 `results/benchmark/EVALUATION.md`를 **W05부터 PR마다 조금씩**
 > 채웁니다.
 
 </details>
@@ -464,7 +466,7 @@ accuracy)에서 비교합니다.
 
 | # | GitHub Milestone | Week | Due | 완료 조건 |
 | --- | --- | --- | --- | --- |
-| **1** | `M1 · 기반 확정` | W01-W04 | 2026-11-06 | 전원 환경 세팅 PR 머지 · GPU와 API 예산을 적은 자원 확인 메모 · `benchmark/EVALUATION.md` 작성 · split 4종 **동결 커밋** · 트랙 배정표 공개 |
+| **1** | `M1 · 기반 확정` | W01-W04 | 2026-11-06 | 전원 환경 세팅 PR 머지 · GPU와 API 예산을 적은 자원 확인 메모 · `results/benchmark/EVALUATION.md` 작성 · split 4종 **동결 커밋** · 트랙 배정표 공개 |
 | **2** | `M2 · 첫 baseline과 도구 연결` | W05-W07 | 2026-11-27 | XGBoost 성능표가 **4개 split 전부**에 존재 · 구조 feature ablation 결과 · ToolUniverse 호출 로그 수집 확인 · 쿼리 60개 초안 |
 | **3** | `M3 · 최소 척추 완주` | W08 | 2026-12-04 | conformal risk-coverage 곡선 산출 · 교란 4종 하네스 동작 · `queries.jsonl`과 `difficulty.tsv` 확정 · 파일럿 40쿼리 실행 및 **비용 실측** |
 | **4** | `M4 · 비교와 결과 동결` | W09-W11 | 2026-12-25 | 원시 실행 로그 공개 · AURC, ECE, flip rate 표 · 난이도 층화 그림 · 실패 모드 분류표 · **수치 동결 태그** |
@@ -479,7 +481,7 @@ M1은 트랙 배정 이전 구간이라 전원이 같은 과제를 수행합니�
 | **M2** (W05-07) | ESM-2 임베딩과 Morgan fingerprint 캐시 · AlphaFold DB 수집과 P2Rank pocket 추출 · XGBoost 기준선 4개 split · pocket과 SaProt feature ablation 표 · `LICENSE-AUDIT.md` | ToolUniverse MCP 연결 · 토큰, 지연, 비용 필드를 포함한 호출 로그 · 신뢰도와 기권 출력 스키마 확정 · PubMed와 화합물 DB 조회 동작 · 모델 백엔드 2종 비교 | 쿼리 60개 초안 · 좌표 계산 파이프라인 동작 · 좌표 6종 1차 계산값 |
 | **M3** (W08) | conformal prediction 적용 · risk-coverage 곡선과 AURC 산출 · seed 고정 분산 측정 | 교란 4종 주입 하네스 · 탐지 판정 로직 · 파일럿 40쿼리 실행 · 쿼리당 실측 비용 | 2인 교차 검증 완료 · `queries.jsonl`과 `difficulty.tsv` 확정 · 큐레이션 가이드 문서 |
 | **M4** (W09-11) | 조건 A 전체 실행 · 난이도 좌표 6종 구간별 층화 분석 · 조건별 지표표 산출 | 조건 B, C, D 전체 실행 3회 반복 · 기권 flip rate 계산 · 로그 기반 원인 추적 | 실패 모드 정성 분류 · 오답 사례 주석 · 층화 구간별 검수 |
-| **M5** (W12-14) | `track_ml-baselines` 모듈 정리 · 결과 재현 스크립트 · 재현 예제 노트북 1개 | `track_agent`와 `track_agent/perturb` 디렉토리 정리 · 실행 예제와 비용 안내 · 데모 | `track_curation`과 `benchmark` 디렉토리 문서화 · 좌표 확장 기여 가이드 · `good first issue` 발행 |
+| **M5** (W12-14) | `track_ml-baselines` 모듈 정리 · 결과 재현 스크립트 · 재현 예제 노트북 1개 | `track_agent`와 `track_agent/perturb` 디렉토리 정리 · 실행 예제와 비용 안내 · 데모 | `track_curation`과 `results/benchmark` 디렉토리 문서화 · 좌표 확장 기여 가이드 · `good first issue` 발행 |
 
 > 큐레이션 트랙은 M3에서 평가셋을 확정한 뒤 **M4의 실패 모드 정성 분류로 이동**합니다. 오답을 읽고
 > 분류하는 작업은 도메인 지식이 필요하고 코딩 부담이 낮아, 이 트랙이 이어받기에 가장 적합합니다.
@@ -497,26 +499,12 @@ M1은 트랙 배정 이전 구간이라 전원이 같은 과제를 수행합니�
 
 **Milestone.** 위 표의 `M1`부터 `M5`. Due date를 그대로 설정합니다.
 
-**Label**
-
-| 종류 | 라벨 | 용도 |
-| --- | --- | --- |
-| 주차 | `week/W01` ... `week/W14` | 토요일 정기 모임에서 부여, 다음 토요일 모임에서 정리 |
-| 트랙 | `track/ml` · `track/agent` · `track/curation` | W04 트랙 배정 이후 사용 |
-| 유형 | `type/task` · `type/bug` · `type/question` · `type/docs` | Issue 템플릿에서 자동 부여 |
-| 게이트 | `gate/freeze` | W04 split 동결, W11 수치 동결 |
-| 외부 기여 | `good first issue` · `help wanted` | M5에서 발행 |
-
-**Issue 제목**: `[WXX][track] 작업 내용` (예: `[W06][ml] XGBoost 4개 split 기준선`)
-
-**Branch**: `wXX/track/short-slug` (예: `w06/ml/xgboost-baseline`)
-
-**PR**: 관련 Issue를 `Closes #NN`으로 연결. 주차 라벨과 마일스톤을 Issue에서 상속합니다.
+**브랜치, Issue, 라벨, PR 규칙**은 [`CONTRIBUTING.md`](CONTRIBUTING.md) 한 곳에만 적습니다.
 
 **주차 운영 루틴**
 
 1. **토요일 10:00 모임 전반.** 지난 주차 Issue 정리, 미완 항목은 이번 주차 라벨로 이월.
-   `/docs/weekly/WXX.md`에 진행 로그 기록
+   [`docs/weekly/`](docs/weekly/) 양식으로 `WXX.md` 회의록 기록
 2. **모임 후반.** 트랙별로 이번 주 Issue를 열고 `week/WXX` 라벨과 Milestone 부여, 페어 작업
 3. **주중.** PR로 작업, 최소 1인 리뷰. 다음 토요일 모임에서 닫음
 
@@ -529,17 +517,19 @@ abstain-dti/
 │   ├── prompts/    # 조건 B·C·D 프롬프트 (버전 관리, W08 동결)
 │   └── perturb/    # 도구 출력 교란 하네스 (4종 오류 주입)
 ├── track_curation/ # 큐레이션 트랙: 가이드, 좌표 계산 스크립트, 2인 검증 기록
-├── benchmark/      # 결과물: EVALUATION.md, queries.jsonl, difficulty.tsv
-│   └── eval/       # 채점 스크립트 (risk-coverage, AURC, ECE, flip rate)
+├── results/
+│   └── benchmark/  # 결과물: EVALUATION.md, queries.jsonl, difficulty.tsv
+│       └── eval/   # 채점 스크립트 (risk-coverage, AURC, ECE, flip rate)
 ├── tests/          # pytest 자동 검사
 ├── notebooks/      # 재현 예제 (M5)
 ├── docs/           # 논문 리뷰, 설계 문서, 주차별 진행 로그
-│   ├── literature/
-│   └── weekly/
+│   ├── literature/ # 논문 요약, HANDOFF, 도구 실측 기록
+│   ├── onboarding/ # W01 온보딩 자료
+│   └── weekly/     # 주간 회의록
 └── environment.yml # mamba 환경
 ```
 
-문서는 `README.md`, `CONTRIBUTING.md`, `benchmark/EVALUATION.md`, `LICENSE-AUDIT.md`, 주차별 진행 로그.
+문서는 `README.md`, `CONTRIBUTING.md`, `results/benchmark/EVALUATION.md`, `LICENSE-AUDIT.md`, 주차별 진행 로그.
 템플릿은 Issue(bug / task / question)와 PR 템플릿.
 
 </details>
@@ -690,8 +680,8 @@ ICLR 2027 워크숍의 개별 마감일과 ISMB/ECCB 2027의 key dates는 이 �
 ## 📚 Archive
 
 - Repository: <https://github.com/Pseudo-Lab/abstain-dti>
-- Benchmark: `benchmark/queries.jsonl` · `benchmark/difficulty.tsv` *(M3에서 확정)*
-- Evaluation protocol: [`benchmark/EVALUATION.md`](benchmark/EVALUATION.md) *(M1에서 확정)*
+- Benchmark: `results/benchmark/queries.jsonl` · `results/benchmark/difficulty.tsv` *(M3에서 확정)*
+- Evaluation protocol: [`results/benchmark/EVALUATION.md`](results/benchmark/EVALUATION.md) *(M1에서 확정)*
 - Demo: `URL` *(M5)*
 - Preprint: `URL` *(연장 트랙)*
 - Presentation: `URL` *(W14)*

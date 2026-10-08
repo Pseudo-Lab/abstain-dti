@@ -1,4 +1,4 @@
-# benchmark
+# results/benchmark
 
 이 프로젝트가 밖으로 내놓는 **벤치마크 결과물**입니다. 외부 사용자는 이 폴더만 보고 평가를 재현할 수 있어야
 합니다.
@@ -12,6 +12,6 @@
 | `difficulty.tsv` | 쿼리별 난이도 좌표 6종 | M3 |
 | [`eval/`](eval/) | 채점 스크립트 | M4 |
 
-쿼리와 좌표를 만드는 과정은 [`track_curation/`](../track_curation/)에 있습니다.
+쿼리와 좌표를 만드는 과정은 [`track_curation/`](../../track_curation/)에 있습니다.
 
 **동결 규칙.** split은 W04에, 쿼리와 좌표는 W08에 동결합니다. 동결 이후 변경은 `gate/freeze` 라벨 PR로만 합니다.

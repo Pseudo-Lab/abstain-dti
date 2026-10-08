@@ -6,7 +6,7 @@ Charted: 2026-10-04
 ## Destination
 
 동료 피드백 두 건(원문은 로컬 `feedback.md`에만 보관, 저장소에 올리지 않음)에 답하는 **과제 정의 초안**. 결과물은
-`benchmark/EVALUATION.md` v0 초안과, 그 초안을 검증받을 **domain expert 질문 목록**입니다.
+`results/benchmark/EVALUATION.md` v0 초안과, 그 초안을 검증받을 **domain expert 질문 목록**입니다.
 W04 동결 게이트(2026-11-06) 전에 expert 검토까지 마칩니다.
 
 ## Notes
@@ -18,8 +18,8 @@ W04 동결 게이트(2026-11-06) 전에 expert 검토까지 마칩니다.
   모델 기억으로 채우지 않습니다.
 - 계산은 Sasquatch compute node에서 `-A rsc`. env는 저장소 루트 `environment.yml`(`abstain-dti`).
 - 트래커는 저장소의 `.scratch/` 파일. 2026-10-10 킥오프에 Pseudo-Lab GitHub Issues로 옮깁니다.
-- 이미 정한 것 (이 맵 밖에서): 폴더 구조 `track_ml-baselines/ track_agent/ track_curation/ benchmark/`(+`benchmark/EVALUATION.md`),
-  Pseudo-Lab 저장소에서 `wXX/track/slug` 브랜치 + PR(러너는 Write 권한 collaborator).
+- 이미 정한 것 (이 맵 밖에서): 폴더 구조 `track_ml-baselines/ track_agent/ track_curation/ results/benchmark/`(+`EVALUATION.md`),
+  브랜치 `main` / `dev` / `track_*_b` (규칙은 `CONTRIBUTING.md`), 러너는 Write 권한 collaborator.
   입력 규약 v0(서열 + SMILES, pAffinity ≥ 6.0)은 PR #3로 README에 들어갔고, 이 맵의 결정으로 수정될 수 있습니다.
 
 ## Decisions so far
@@ -38,5 +38,5 @@ W04 동결 게이트(2026-11-06) 전에 expert 검토까지 마칩니다.
 
 ## Out of scope
 
-- 폴더 재구성 (PR #4로 완료. 루트 README 상세 내용을 폴더로 옮길지는 미정)
+- 폴더 재구성 (PR #4, #5와 이후 `dev` 커밋으로 완료. 루트 README 상세 내용을 폴더로 옮길지는 미정)
 - 모델 학습, 에이전트 구현 (W05 이후)

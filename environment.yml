@@ -23,6 +23,7 @@ dependencies:
   - scikit-learn
   - xgboost
   - mapie
+  - pytest
   - matplotlib
   # chemistry and structure
   - rdkit

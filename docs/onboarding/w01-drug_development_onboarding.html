@@ -489,8 +489,9 @@
     </div>
     <pre style="margin-top:1.2rem"><code><span class="c"># 이 프로젝트: 저장소 루트의 환경 파일에 rdkit이 들어 있다</span>
 mamba env create -f environment.yml
-<span class="c"># 단독 설치</span>
-conda install -c conda-forge rdkit</code></pre>
+<span class="c"># 단독 설치 (둘 중 하나)</span>
+conda install -c conda-forge rdkit
+pip install rdkit</code></pre>
     <p><strong>이 분야에서 RDKit의 위치는 데이터 분석에서 pandas의 위치와 같다.</strong> 사실상 모든 논문·파이프라인이 이걸 쓴다. 대안(OpenBabel, CDK)은 있지만 Python 생태계에서는 RDKit이 기본값이다.</p>
   </div>
 </section>

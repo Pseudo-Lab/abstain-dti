@@ -18,7 +18,7 @@
 
 ## 참고
 
-- 평가 규약과 기권 정의: [`benchmark/EVALUATION.md`](../benchmark/EVALUATION.md)
+- 평가 규약과 기권 정의: [`results/benchmark/EVALUATION.md`](../results/benchmark/EVALUATION.md)
 - AlphaFold 3단계와 Boltz-2 배분 계획: 루트 [README](../README.md)의 "AlphaFold 활용 3단계"
 - 환경: 루트 `environment.yml` (`mamba env create -f environment.yml`). pytorch와 ESM은 W05에 추가합니다.
 - 의존성 라이선스 감사(`LICENSE-AUDIT.md`)는 W05에 이 트랙이 맡습니다.
