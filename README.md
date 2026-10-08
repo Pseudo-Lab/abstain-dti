@@ -1,6 +1,7 @@
 <h1 align="center">abstain-dti</h1>
 <h3 align="center">AI 신약 발굴 모델은 자기가 틀릴 때를 아는가</h3>
 <p align="center">난이도 좌표 기반 drug-target 예측 보정 · 기권 벤치마크</p>
+<p align="center"><b>한국어</b> · <a href="README.en.md">English</a></p>
 
 <div align="center">
 <a href="https://pseudo-lab.com"><img src="https://img.shields.io/badge/PseudoLab-S13-3776AB" alt="PseudoLab"/></a>
