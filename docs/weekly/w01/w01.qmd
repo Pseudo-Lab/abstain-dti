@@ -18,17 +18,13 @@ format:
 - 주차별 회의록 담당자 선정
 - GPU 실물 확보 및 LLM API credit
 - 트랙별로 모여서 다음 주 발표할 논문 고르기
-
-**오늘의 목표:** PR 하나씩 올리기
-
-**다음 미팅 전 목표:** 논문 발표자료 정리해서 깃헙에 올리기
+- **오늘의 목표:** PR 하나씩 올리기
+- **HW:** 논문 발표자료 정리해서 깃헙에 올리기
 
 ## 스터디 룰 소개
 
 - 2회 이상 무단 불참 시 제명
-- 카메라 on 필수 (얼굴이 보이지 않아도 돼)
-
-# Ice breaking
+- 카메라 on 필수
 
 ## 자기소개
 
@@ -37,14 +33,14 @@ format:
 Data Scientist / Computational Biologist at Seattle Children's Hospital & Research Institute
 
 - Multi-omics Analysis
-- DL model development (fine tuning)
+- DL model development (fine-tuning)
 - Agent Engineering
 
 ## Abstain-DTI를 위한 온보딩
 
-- 문제 정의
-- 난이도 정의
-- INPUT & OUTPUT
+- 문제 정의 : 
+- 난이도 정의 : 
+- INPUT & OUTPUT : 
 
 ## 온보딩 자료
 
@@ -65,8 +61,8 @@ Data Scientist / Computational Biologist at Seattle Children's Hospital & Resear
 - 트랙 작업: 작업 브랜치 → 자기 트랙 브랜치 → dev 로 PR (리뷰어 1명 이상)
 - 트랙과 무관한 작업: dev에서 브랜치 → dev 로 PR
 - README.md 팀 테이블 이름에 깃헙 링크 달기
-- 다음 주 발표할 논문 올리기
-- 논문 → 실행: <https://github.com/ybaeus/Paper2Agent>
+- HW: 다음 주 발표할 논문 정리해서 자료 올리기
+  -  논문 → 실행: <https://github.com/ybaeus/Paper2Agent>
 
 ## Feedbacks will be given by
 
