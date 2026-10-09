@@ -1,0 +1,78 @@
+---
+title: "Abstain-DTI"
+subtitle: "week 1 · 2026.10.10"
+author: "가짜연구소 13기 배예지"
+lang: ko
+format:
+  pptx:
+    reference-doc: ../_template/reference.pptx
+    slide-level: 2
+---
+
+## Agenda
+
+- 스터디 룰 소개
+- 자기소개 (업무, 위치, 취미 1개)
+- Abstain-DTI를 위한 온보딩
+- 트랙 선정 및 트랙 리더 선정
+- 주차별 회의록 담당자 선정
+- GPU 실물 확보 및 LLM API credit
+- 트랙별로 모여서 다음 주 발표할 논문 고르기
+
+**오늘의 목표:** PR 하나씩 올리기
+
+**다음 미팅 전 목표:** 논문 발표자료 정리해서 깃헙에 올리기
+
+## 스터디 룰 소개
+
+- 2회 이상 무단 불참 시 제명
+- 카메라 on 필수 (얼굴이 보이지 않아도 돼)
+
+# Ice breaking
+
+## 자기소개
+
+**Yeji Bae**
+
+Data Scientist / Computational Biologist at Seattle Children's Hospital & Research Institute
+
+- Multi-omics Analysis
+- DL model development (fine tuning)
+- Agent Engineering
+
+## Abstain-DTI를 위한 온보딩
+
+- 문제 정의
+- 난이도 정의
+- INPUT & OUTPUT
+
+## 온보딩 자료
+
+:::: {.columns}
+::: {.column}
+![](assets/onboarding-artifact.png)
+:::
+::: {.column}
+- 웹: <https://claude.ai/artifact/VkNjGDDxE9S8b8eZsnMpjv>
+- 저장소: [docs/onboarding/w01-drug_development_onboarding.html](https://github.com/Pseudo-Lab/abstain-dti/blob/dev/docs/onboarding/w01-drug_development_onboarding.html) (내려받아 브라우저로 열기)
+:::
+::::
+
+## PR 올리기
+
+<https://github.com/Pseudo-Lab/abstain-dti>
+
+- 트랙 작업: 작업 브랜치 → 자기 트랙 브랜치 → dev 로 PR (리뷰어 1명 이상)
+- 트랙과 무관한 작업: dev에서 브랜치 → dev 로 PR
+- README.md 팀 테이블 이름에 깃헙 링크 달기
+- 다음 주 발표할 논문 올리기
+- 논문 → 실행: <https://github.com/ybaeus/Paper2Agent>
+
+## Feedbacks will be given by
+
+- UW Andre Berndt Lab postdoc 이다호 박사님 ([scholar](https://scholar.google.com/citations?user=hpQO_7QAAAAJ&hl=en))
+- UW David Baker Lab postdoc 신호정 박사님 ([scholar](https://scholar.google.com/citations?user=_PQ86mEAAAAJ&hl=ko))
+- Duke PhD candidate 김종현님
+  - Kim, J. and Romero, P.A. (2026) 'Benchmarking and behavioral characterization of LLM agents for protein design', bioRxiv
+
+## Thank you! {.unnumbered}

@@ -26,3 +26,14 @@
 ```
 
 W01-W04는 트랙 배정 전이라 트랙별 표 대신 전원 공통 진행을 적습니다.
+
+## 발표자료
+
+주간 발표자료는 `wXX/wXX.qmd` 마크다운에서 pptx로 만듭니다. 테마는 `_template/reference.pptx`를 씁니다.
+
+```bash
+mamba activate abstain-dti
+quarto render docs/weekly/w01/w01.qmd   # docs/weekly/w01/w01.pptx 생성
+```
+
+이미지는 `wXX/assets/`에 둡니다. pptx에서 직접 고친 내용은 다음 렌더 때 사라지니 `.qmd`를 고칩니다.
