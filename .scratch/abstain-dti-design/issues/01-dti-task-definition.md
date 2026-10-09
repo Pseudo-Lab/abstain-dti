@@ -2,6 +2,7 @@
 
 Type: grilling
 Status: open
+Assignee: ybae
 Blocked by: none
 
 ## Question
