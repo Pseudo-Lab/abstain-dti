@@ -16,6 +16,7 @@ dependencies:
   - gh
   - git
   - jupyterlab
+  - quarto  # weekly decks: docs/weekly/wXX/wXX.qmd -> pptx (bundles pandoc)
   # data and ML
   - numpy
   - pandas
