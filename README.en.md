@@ -186,12 +186,12 @@ GitHub handles will be filled in at kickoff.
 | Runner | 하민주 | ML & Calibration |
 | Runner | 최호재 | ML & Calibration |
 | Runner | 박소정 | ML & Calibration |
+| Runner | [@siuunni](https://github.com/siuunni) | ML & Calibration |
 | Runner | 김태엽 | Agent & Perturbation Audit |
 | Runner | 서동영 | Agent & Perturbation Audit |
 | Runner | 차재민 | Agent & Perturbation Audit |
 | Runner | 정재훈 | Agent & Perturbation Audit |
 | Runner | 권예진 | Difficulty-Coordinate Curation |
-| Runner | 김시은 | Difficulty-Coordinate Curation |
 | Runner | 이성주 | Difficulty-Coordinate Curation |
 | Runner | 전소연 | Difficulty-Coordinate Curation |
 
