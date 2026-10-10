@@ -183,7 +183,7 @@ W04 말에 희망과 적성을 반영해 트랙을 정합니다. 페어로 진�
 | Runner | [@motto7](https://github.com/motto7) | 에이전트와 교란 감사 |
 | Runner | 권예진 | 난이도 좌표 큐레이션 |
 | Runner | 김시은 | 난이도 좌표 큐레이션 |
-| Runner | 이성주 | 난이도 좌표 큐레이션 |
+| Runner | [@Leokong-C](https://github.com/Leokong-C) | 난이도 좌표 큐레이션 |
 | Runner | 전소연 | 난이도 좌표 큐레이션 |
 
 **빌더 소개.** 가짜연구소 5기 리더 경험(NGS 분석 프로젝트 운영). Bioinformatics와 spatial biology
