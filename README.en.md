@@ -21,17 +21,16 @@
 > when they don't know**, on top of physically defined difficulty coordinates. We then compare them directly against
 > a properly calibrated supervised baseline.
 
-
-| | |
-| --- | --- |
-| Cohort | Pseudo-Lab 13th Cohort Open Academy |
-| Activity period | 2026.10.04 - 2027.01.09 (12-week core + 2-week buffer) |
-| Kickoff meeting | 2026.10.10 (Sat) |
-| Regular meetings | Every **Saturday 10:00-12:00 KST** (2 hours) |
-| Members | 12 (1 Builder + 11 Runners) |
-| Communication | Pseudo-Lab Discord `#Room-YB` |
-| Repository | <https://github.com/Pseudo-Lab/abstain-dti> · MIT License |
-| Project page | <https://pseudo-lab.com/projects/8f035eab-4433-4661-9ae8-8f20e57ef06b> |
+|                  |                                                                        |
+| ---------------- | ---------------------------------------------------------------------- |
+| Cohort           | Pseudo-Lab 13th Cohort Open Academy                                    |
+| Activity period  | 2026.10.04 - 2027.01.09 (12-week core + 2-week buffer)                 |
+| Kickoff meeting  | 2026.10.10 (Sat)                                                       |
+| Regular meetings | Every **Saturday 10:00-12:00 KST** (2 hours)                           |
+| Members          | 12 (1 Builder + 11 Runners)                                            |
+| Communication    | Pseudo-Lab Discord `#Room-YB`                                          |
+| Repository       | <https://github.com/Pseudo-Lab/abstain-dti> · MIT License              |
+| Project page     | <https://pseudo-lab.com/projects/8f035eab-4433-4661-9ae8-8f20e57ef06b> |
 
 ---
 
@@ -60,11 +59,11 @@ One more item is conditional:
 
 The work splits into three tracks.
 
-| Track | What it does |
-| --- | --- |
-| ML & Calibration | Trains models that predict binding from protein sequence and molecular structure, then statistically calibrates the models' confidence |
-| Agent & Perturbation Audit | Makes LLMs call real biology tools and tests whether they notice when a tool lies |
-| Difficulty-Coordinate Curation | Computes 6 numbers for each evaluation question that say "how hard this question is" and attaches them |
+| Track                          | What it does                                                                                                                           |
+| ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------- |
+| ML & Calibration               | Trains models that predict binding from protein sequence and molecular structure, then statistically calibrates the models' confidence |
+| Agent & Perturbation Audit     | Makes LLMs call real biology tools and tests whether they notice when a tool lies                                                      |
+| Difficulty-Coordinate Curation | Computes 6 numbers for each evaluation question that say "how hard this question is" and attaches them                                 |
 
 > The goal is not a perfect result but to experiment together and leave behind something that actually runs.
 
@@ -119,11 +118,11 @@ quantifies this mismatch.
 
 One Builder and eleven Runners, twelve people, build this together.
 
-| Track | Members | What you need |
-| --- | --- | --- |
-| ML & Calibration | 4 (including Builder) | Being able to use Python is enough. ML experience helps but is not required |
-| Agent & Perturbation Audit | 4 | Being able to use Python and having called an API before is enough |
-| Difficulty-Coordinate Curation | 4 | A biology background helps. Beginner-level coding is fine |
+| Track                          | Members               | What you need                                                               |
+| ------------------------------ | --------------------- | --------------------------------------------------------------------------- |
+| ML & Calibration               | 4 (including Builder) | Being able to use Python is enough. ML experience helps but is not required |
+| Agent & Perturbation Audit     | 4                     | Being able to use Python and having called an API before is enough          |
+| Difficulty-Coordinate Curation | 4                     | A biology background helps. Beginner-level coding is fine                   |
 
 **Tracks are not decided at the start.** For the four weeks from W01 to W04, everyone does the same thing. We read
 papers together, set up environments, and each person builds one tool-calling agent. After seeing what fits during
@@ -150,14 +149,14 @@ know biology but find code intimidating.
 
 ### Recruitment schedule
 
-| Date | Event |
-| --- | --- |
-| 2026.09.18 | Recruitment opens |
-| 2026.09.28 | Recruitment closes |
-| 2026.10.01 | Selection announced |
-| 2026.10.04 | Activity begins |
+| Date       | Event                 |
+| ---------- | --------------------- |
+| 2026.09.18 | Recruitment opens     |
+| 2026.09.28 | Recruitment closes    |
+| 2026.10.01 | Selection announced   |
+| 2026.10.04 | Activity begins       |
 | 2026.10.10 | Kickoff meeting (Sat) |
-| 2027.01.09 | Activity ends |
+| 2027.01.09 | Activity ends         |
 
 ### How to participate
 
@@ -180,20 +179,20 @@ difficulty coordinates** and **adding evaluation-set queries** are areas where o
 Tracks are **provisional assignments**. They are finalized at the end of W04 based on preference and aptitude.
 GitHub handles will be filled in at kickoff.
 
-| Role | Name | Responsibility |
-| --- | --- | --- |
-| Builder | [@ybaeus](https://github.com/ybaeus) | Project lead, evaluation design, participates in ML & Calibration track |
-| Runner | 하민주 | ML & Calibration |
-| Runner | 최호재 | ML & Calibration |
-| Runner | 박소정 | ML & Calibration |
-| Runner | 김태엽 | Agent & Perturbation Audit |
-| Runner | 서동영 | Agent & Perturbation Audit |
-| Runner | 차재민 | Agent & Perturbation Audit |
-| Runner | 정재훈 | Agent & Perturbation Audit |
-| Runner | 권예진 | Difficulty-Coordinate Curation |
-| Runner | 김시은 | Difficulty-Coordinate Curation |
-| Runner | 이성주 | Difficulty-Coordinate Curation |
-| Runner | 전소연 | Difficulty-Coordinate Curation |
+| Role    | Name                                         | Responsibility                                                          |
+| ------- | -------------------------------------------- | ----------------------------------------------------------------------- |
+| Builder | [@ybaeus](https://github.com/ybaeus)         | Project lead, evaluation design, participates in ML & Calibration track |
+| Runner  | 하민주                                       | ML & Calibration                                                        |
+| Runner  | 최호재                                       | ML & Calibration                                                        |
+| Runner  | [@sosopark92](https://github.com/sosopark92) | ML & Calibration                                                        |
+| Runner  | 김태엽                                       | Agent & Perturbation Audit                                              |
+| Runner  | 서동영                                       | Agent & Perturbation Audit                                              |
+| Runner  | 차재민                                       | Agent & Perturbation Audit                                              |
+| Runner  | 정재훈                                       | Agent & Perturbation Audit                                              |
+| Runner  | 권예진                                       | Difficulty-Coordinate Curation                                          |
+| Runner  | 김시은                                       | Difficulty-Coordinate Curation                                          |
+| Runner  | 이성주                                       | Difficulty-Coordinate Curation                                          |
+| Runner  | 전소연                                       | Difficulty-Coordinate Curation                                          |
 
 **About the Builder.** Led a project in Pseudo-Lab's 5th cohort (ran an NGS analysis project). Hands-on experience
 in bioinformatics and spatial biology. Currently lives in Seattle.
@@ -227,25 +226,25 @@ Our three principles:
 
 ### Target task and data
 
-| Item | Details |
-| --- | --- |
-| Main task | Drug-Target Interaction. **BindingDB** from TDC (auxiliary: Papyrus / ChEMBL) |
-| Input and output | From protein sequence + compound SMILES to binding affinity (regression) or binding yes/no (classification) |
-| Auxiliary task | TDC ADMET group (BBB permeability, hERG toxicity, CYP inhibition). Single input, so the barrier to entry is low. We run the abstention and calibration metric pilot here first |
-| Excluded | DAVIS / KIBA are excluded from the main data. They are kinase panels, so experimental structures are saturated and the contribution of predicted structures cannot be seen, and the number of targets (442 / 229) is too small for statistical power on a cold-target split. Used only for auxiliary validation to compare with prior work |
+| Item             | Details                                                                                                                                                                                                                                                                                                                                    |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Main task        | Drug-Target Interaction. **BindingDB** from TDC (auxiliary: Papyrus / ChEMBL)                                                                                                                                                                                                                                                              |
+| Input and output | From protein sequence + compound SMILES to binding affinity (regression) or binding yes/no (classification)                                                                                                                                                                                                                                |
+| Auxiliary task   | TDC ADMET group (BBB permeability, hERG toxicity, CYP inhibition). Single input, so the barrier to entry is low. We run the abstention and calibration metric pilot here first                                                                                                                                                             |
+| Excluded         | DAVIS / KIBA are excluded from the main data. They are kinase panels, so experimental structures are saturated and the contribution of predicted structures cannot be seen, and the number of targets (442 / 229) is too small for statistical power on a cold-target split. Used only for auxiliary validation to compare with prior work |
 
 ### Difficulty coordinates
 
 **Every query in the evaluation set gets the 6 coordinates below.** This table is what sets the benchmark apart.
 
-| Coordinate | Definition | Tools |
-| --- | --- | --- |
-| Ligand novelty | Maximum Tanimoto similarity to the training set, whether the Murcko scaffold matches | RDKit |
-| Target novelty | Maximum sequence identity to training targets | MMseqs2 / BLAST |
-| Structure confidence | Mean pLDDT of pocket residues, PAE within the pocket | AlphaFold DB, P2Rank |
-| Structure availability | Whether an experimental PDB exists (90% identity over the pocket region) | PDB, SIFTS |
-| Target maturity | Pharos target development level (Tclin / Tchem / Tbio / Tdark) | Pharos, IDG |
-| Contamination axis | Publication date of the original measurement paper (before or after the LLM training cutoff) | ChEMBL, PubMed |
+| Coordinate             | Definition                                                                                   | Tools                |
+| ---------------------- | -------------------------------------------------------------------------------------------- | -------------------- |
+| Ligand novelty         | Maximum Tanimoto similarity to the training set, whether the Murcko scaffold matches         | RDKit                |
+| Target novelty         | Maximum sequence identity to training targets                                                | MMseqs2 / BLAST      |
+| Structure confidence   | Mean pLDDT of pocket residues, PAE within the pocket                                         | AlphaFold DB, P2Rank |
+| Structure availability | Whether an experimental PDB exists (90% identity over the pocket region)                     | PDB, SIFTS           |
+| Target maturity        | Pharos target development level (Tclin / Tchem / Tbio / Tdark)                               | Pharos, IDG          |
+| Contamination axis     | Publication date of the original measurement paper (before or after the LLM training cutoff) | ChEMBL, PubMed       |
 
 **Split protocol.** The 4 splits `random` / `cold-drug` / `cold-target` / `cold-both`, plus a ligand scaffold
 split, are **always all reported**. They are frozen at the end of W04 and no changes are allowed afterwards. If the
@@ -253,14 +252,14 @@ splits are touched later, all results must be rerun.
 
 ### Comparison conditions (4-way core + 2 extensions)
 
-| Item | Details | Owning track | Type |
-| --- | --- | --- | --- |
-| **A. Baseline (calibrated)** | ESM-2 embeddings + AlphaFold pocket features, with conformal prediction applied | ML | Core |
-| **B. Zero-shot LLM** | Prompt only, self-reported confidence | Agent | Core |
-| **C. Agent** | Tool calling based on ToolUniverse MCP + literature search. Cannot abstain | Agent | Core |
-| **D. Agent + abstention** | Same as C, but with an explicit abstention option | Agent | Core |
-| **E. Agent + conformal** | Applies the **same conformal procedure** as A to the confidence of C and D (self-reported or self-consistency) | Agent + ML | Extension (no GPU needed) |
-| **F. Boltz-2 co-folding** | Conformal applied to the affinity head + `ligand_iptm` of open-weight Boltz-2 | ML | Extension (GPU-conditional) |
+| Item                         | Details                                                                                                        | Owning track | Type                        |
+| ---------------------------- | -------------------------------------------------------------------------------------------------------------- | ------------ | --------------------------- |
+| **A. Baseline (calibrated)** | ESM-2 embeddings + AlphaFold pocket features, with conformal prediction applied                                | ML           | Core                        |
+| **B. Zero-shot LLM**         | Prompt only, self-reported confidence                                                                          | Agent        | Core                        |
+| **C. Agent**                 | Tool calling based on ToolUniverse MCP + literature search. Cannot abstain                                     | Agent        | Core                        |
+| **D. Agent + abstention**    | Same as C, but with an explicit abstention option                                                              | Agent        | Core                        |
+| **E. Agent + conformal**     | Applies the **same conformal procedure** as A to the confidence of C and D (self-reported or self-consistency) | Agent + ML   | Extension (no GPU needed)   |
+| **F. Boltz-2 co-folding**    | Conformal applied to the affinity head + `ligand_iptm` of open-weight Boltz-2                                  | ML           | Extension (GPU-conditional) |
 
 - **B → C → D is a staircase that adds one capability at a time.** It separates the effect of tools (B→C) from the
   effect of the abstention option (C→D).
@@ -277,15 +276,15 @@ splits are touched later, all results must be rerun.
 
 ### Input conventions (common to all conditions)
 
-| Item | Convention |
-| --- | --- |
-| **Input** | **Only** protein sequence + compound SMILES. Same for all conditions (A-F) |
-| **Excluded** | Target identifiers such as UniProt IDs are not given. With an identifier, an LLM can answer from memory without analyzing the sequence, or look up the answer directly in a DB, which defeats the cold-target split and the contamination axis. If an agent needs an identifier, it must find it on its own from the sequence using tools |
-| **Difficulty coordinates** | **Not given to the model as input.** Difficulty coordinates are tags attached to the question sheet and are used only when stratifying results for analysis |
-| **Binding threshold** | `binds = true` if pAffinity ≥ 6.0 (Kd / Ki / IC50 ≤ 1 µM). Applied identically to the ground truth and all conditions |
-| **LLM settings** | temperature 0.7 (at 0, flip rate is structurally 0). Model, token limit, and tool list are fixed across conditions and all logged |
-| **Output** | JSON schema enforced (see `track_agent/prompts/`). Use the API's structured output feature where possible |
-| **Freeze** | Prompts are frozen after the W08 pilot, like the splits, and their version is committed |
+| Item                       | Convention                                                                                                                                                                                                                                                                                                                                |
+| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Input**                  | **Only** protein sequence + compound SMILES. Same for all conditions (A-F)                                                                                                                                                                                                                                                                |
+| **Excluded**               | Target identifiers such as UniProt IDs are not given. With an identifier, an LLM can answer from memory without analyzing the sequence, or look up the answer directly in a DB, which defeats the cold-target split and the contamination axis. If an agent needs an identifier, it must find it on its own from the sequence using tools |
+| **Difficulty coordinates** | **Not given to the model as input.** Difficulty coordinates are tags attached to the question sheet and are used only when stratifying results for analysis                                                                                                                                                                               |
+| **Binding threshold**      | `binds = true` if pAffinity ≥ 6.0 (Kd / Ki / IC50 ≤ 1 µM). Applied identically to the ground truth and all conditions                                                                                                                                                                                                                     |
+| **LLM settings**           | temperature 0.7 (at 0, flip rate is structurally 0). Model, token limit, and tool list are fixed across conditions and all logged                                                                                                                                                                                                         |
+| **Output**                 | JSON schema enforced (see `track_agent/prompts/`). Use the API's structured output feature where possible                                                                                                                                                                                                                                 |
+| **Freeze**                 | Prompts are frozen after the W08 pilot, like the splits, and their version is committed                                                                                                                                                                                                                                                   |
 
 **Direct lookup tracking.** Conditions C and D include `identified_target` (the target inferred from the sequence)
 and `direct_measurement_found` (whether a measured value for that pair was found) in their output. Because these are
@@ -307,11 +306,11 @@ as pAffinity = 6 - y.
 2. Set the threshold to the quantile corresponding to the target coverage (90%).
 3. For a new input, collect the labels that pass the threshold into a prediction set.
 
-| Prediction set | Interpretation |
-| --- | --- |
-| `{binds}` or `{not binds}` | Answers |
-| `{binds, not binds}` | **Abstains** |
-| `{}` | Outlier. Counted separately |
+| Prediction set             | Interpretation              |
+| -------------------------- | --------------------------- |
+| `{binds}` or `{not binds}` | Answers                     |
+| `{binds, not binds}`       | **Abstains**                |
+| `{}`                       | Outlier. Counted separately |
 
 For regression, a prediction interval is produced, and if the interval width exceeds the threshold it is treated as
 an abstention. The implementation uses MAPIE.
@@ -333,17 +332,17 @@ the decisive metrics.
 
 ### Metrics
 
-| Axis | Metric |
-| --- | --- |
-| Accuracy | AUROC / RMSE (depending on the task) |
-| Selective prediction | risk-coverage curve, AURC, selective accuracy **at the same coverage (80%)** |
-| Calibration | ECE (expected calibration error), conformal coverage. Measured value against the 90% target |
-| Difficulty stratification | Performance and confidence slope per range of the 6 coordinates above |
-| Reproducibility | **flip rate** of the abstention decision across 3 repeats of the same query. Not the variance of the answer, but flips in whether to answer |
-| Robustness | Detection rate of tool output perturbations |
-| Target identification | Fraction of cases where the agent correctly identified the target from the sequence (`identified_target`) |
-| Lookup vs prediction | Fraction of direct lookups of measured values (`direct_measurement_found`, verified with the evidence log), performance with lookups excluded |
-| Cost | Tokens per query, latency, USD. **A required column of the results table** (responding to *AI Agents That Matter*'s call for cost-controlled evaluation) |
+| Axis                      | Metric                                                                                                                                                   |
+| ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Accuracy                  | AUROC / RMSE (depending on the task)                                                                                                                     |
+| Selective prediction      | risk-coverage curve, AURC, selective accuracy **at the same coverage (80%)**                                                                             |
+| Calibration               | ECE (expected calibration error), conformal coverage. Measured value against the 90% target                                                              |
+| Difficulty stratification | Performance and confidence slope per range of the 6 coordinates above                                                                                    |
+| Reproducibility           | **flip rate** of the abstention decision across 3 repeats of the same query. Not the variance of the answer, but flips in whether to answer              |
+| Robustness                | Detection rate of tool output perturbations                                                                                                              |
+| Target identification     | Fraction of cases where the agent correctly identified the target from the sequence (`identified_target`)                                                |
+| Lookup vs prediction      | Fraction of direct lookups of measured values (`direct_measurement_found`, verified with the evidence log), performance with lookups excluded            |
+| Cost                      | Tokens per query, latency, USD. **A required column of the results table** (responding to _AI Agents That Matter_'s call for cost-controlled evaluation) |
 
 **Core hypotheses**
 
@@ -375,11 +374,11 @@ unique contribution.
 Structure information is used as real features, not decoration. Each stage is designed **to produce results
 independently**.
 
-| Stage | Details | Resources | This cohort |
-| --- | --- | --- | --- |
-| Stage 1 (required) | Bulk download from AlphaFold DB, pocket detection with P2Rank / fpocket, generate features for pocket pLDDT and PAE, volume, residue composition | CPU only | Core |
-| Stage 2 (recommended) | SaProt based on Foldseek 3Di tokens, or ESM-IF structure-aware embeddings. Converts structure information into a learnable form without docking | Small GPU | Core |
-| Stage 3 (challenge) | Run **OpenFold3** (Apache 2.0) on 50 targets, compare new MSA and single-sequence against AF DB. Optionally run **Boltz-2 open weights** (MIT, pinned to v2.2.x) co-folding on 200 pairs and compare directly with the affinity head | A100 / L4 | Extension Track |
+| Stage                 | Details                                                                                                                                                                                                                              | Resources | This cohort     |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------- | --------------- |
+| Stage 1 (required)    | Bulk download from AlphaFold DB, pocket detection with P2Rank / fpocket, generate features for pocket pLDDT and PAE, volume, residue composition                                                                                     | CPU only  | Core            |
+| Stage 2 (recommended) | SaProt based on Foldseek 3Di tokens, or ESM-IF structure-aware embeddings. Converts structure information into a learnable form without docking                                                                                      | Small GPU | Core            |
+| Stage 3 (challenge)   | Run **OpenFold3** (Apache 2.0) on 50 targets, compare new MSA and single-sequence against AF DB. Optionally run **Boltz-2 open weights** (MIT, pinned to v2.2.x) co-folding on 200 pairs and compare directly with the affinity head | A100 / L4 | Extension Track |
 
 > **Version caution.** Boltz 2.1 (2026-06) is closed source and runs only through Boltz's own hosted API. Numbers
 > used in the paper must be produced with the **open-weight version**, and the version string is stated in the
@@ -392,12 +391,12 @@ independently**.
 > **Allocation of the 200 Boltz-2 pairs.** Instead of spreading them evenly, they are stratified at the two extremes
 > of difficulty. The aim is to show "does confidence track difficulty" cleanly with few pairs.
 >
-> | Range | Pairs | What we want to see |
-> | --- | --- | --- |
-> | random split, high pocket pLDDT | 50 | Upper bound when it is easy |
-> | cold-target, high pocket pLDDT | 50 | Unseen target, but good structure |
-> | cold-target, low pocket pLDDT | 50 | The hardest range |
-> | cold-both | 50 | Extreme |
+> | Range                           | Pairs | What we want to see               |
+> | ------------------------------- | ----- | --------------------------------- |
+> | random split, high pocket pLDDT | 50    | Upper bound when it is easy       |
+> | cold-target, high pocket pLDDT  | 50    | Unseen target, but good structure |
+> | cold-target, low pocket pLDDT   | 50    | The hardest range                 |
+> | cold-both                       | 50    | Extreme                           |
 >
 > If GPU is plentiful, each range is increased in the same proportion. **MSAs are generated once per target and
 > cached** (no repeated `--use_msa_server` calls). The signals used are `affinity_probability_binary`
@@ -423,23 +422,23 @@ Each week is linked to a GitHub Milestone and a `week/WXX` label.
 
 This phase absorbs skill differences and identifies aptitudes. **Track assignment happens at the end of W04.**
 
-| Week | Period | Regular meeting (KST) | Main activities | Deliverables | Gate |
-| --- | --- | --- | --- | --- | --- |
+| Week    | Period      | Regular meeting (KST)        | Main activities                                                                                                                                                                                                                                                                                                                                                                                                                                              | Deliverables                                                   | Gate                                                                                                   |
+| ------- | ----------- | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
 | **W01** | 10.10-10.16 | 2026.10.10 (Sat) 10:00-12:00 | Kickoff. Team introductions and role preference survey, environment setup (GitHub / conda). Confirm actual GPU access (Colab Pro / university cluster / KISTI / NIPA). Secure LLM API credit sources and **fix the budget cap as a number**. Collect the whole team's schedules (check overlap with exam periods and year-end). **Decide whether to promote condition F (Boltz-2).** Record GPU type, VRAM, count, and available period in the resource memo | repo initialization, environment setup PR, resource check memo | **Resource gate.** Decide whether to run Stages 2 and 3 and the number of repeats for conditions B/C/D |
-| **W02** | 10.17-10.23 | 2026.10.17 (Sat) 10:00-12:00 | One paper per person review presentations (Appendix A below). **Verify every DOI and link.** Count the actual number of low-pLDDT and no-PDB targets | `/docs/literature` summaries, target availability statistics | If too few targets, decide whether to relax the pocket identity threshold |
-| **W03** | 10.24-10.30 | 2026.10.24 (Sat) 10:00-12:00 | Everyone builds their own tool-calling agent (calculator + search, 2 tools). **Connect ToolUniverse via MCP** and compare with the self-built implementation | Individual practice notebooks | None |
-| **W04** | 10.31-11.06 | 2026.10.31 (Sat) 10:00-12:00 | Load TDC data, final task selection. **Finalize the definitions of the 6 difficulty coordinates, freeze the split protocol.** Document the abstention, calibration, and reproducibility protocols, write the curation guidelines. **Track assignment.** **Finalize input conventions** (sequence + SMILES only, binding threshold pAffinity 6.0), commit `track_agent/prompts/` v0 | `results/benchmark/EVALUATION.md`, data loader code | **Freeze gate.** No changes to splits after this, tracks finalized |
+| **W02** | 10.17-10.23 | 2026.10.17 (Sat) 10:00-12:00 | One paper per person review presentations (Appendix A below). **Verify every DOI and link.** Count the actual number of low-pLDDT and no-PDB targets                                                                                                                                                                                                                                                                                                         | `/docs/literature` summaries, target availability statistics   | If too few targets, decide whether to relax the pocket identity threshold                              |
+| **W03** | 10.24-10.30 | 2026.10.24 (Sat) 10:00-12:00 | Everyone builds their own tool-calling agent (calculator + search, 2 tools). **Connect ToolUniverse via MCP** and compare with the self-built implementation                                                                                                                                                                                                                                                                                                 | Individual practice notebooks                                  | None                                                                                                   |
+| **W04** | 10.31-11.06 | 2026.10.31 (Sat) 10:00-12:00 | Load TDC data, final task selection. **Finalize the definitions of the 6 difficulty coordinates, freeze the split protocol.** Document the abstention, calibration, and reproducibility protocols, write the curation guidelines. **Track assignment.** **Finalize input conventions** (sequence + SMILES only, binding threshold pAffinity 6.0), commit `track_agent/prompts/` v0                                                                           | `results/benchmark/EVALUATION.md`, data loader code            | **Freeze gate.** No changes to splits after this, tracks finalized                                     |
 
 ### Phase 2. Parallel development (W05-W08, by track)
 
 The three tracks run at the same time. **Work is done in pairs, and moving between tracks is allowed.**
 
-| Week | Period | Regular meeting (KST) | ML & Calibration (4) | Agent & Perturbation (4) | Curation (4) |
-| --- | --- | --- | --- | --- | --- |
-| **W05** | 11.07-11.13 | 2026.11.07 (Sat) 10:00-12:00 | Cache ESM-2 embeddings + Morgan fingerprints, collect AlphaFold DB structures, extract P2Rank pockets. **Dependency license audit** | Connect ToolUniverse MCP, build a logging system for every call. Include **token, latency, and cost fields** in the logging schema. Design the confidence and abstention output schema | 20 draft queries, assign author and verifier pairs |
-| **W06** | 11.14-11.20 | 2026.11.14 (Sat) 10:00-12:00 | First baseline. Logistic regression / XGBoost. Baselines on **all 4 splits** | Connect literature search (PubMed API) and compound and protein DB lookups, compare 2 or more model backends | 40 queries cumulative, start the coordinate computation pipeline |
-| **W07** | 11.21-11.27 | 2026.11.21 (Sat) 10:00-12:00 | Compare structure representations. Add pocket features, SaProt / ESM-IF, **2D vs 3D ablation** | Implement the perturbation harness. Injection of 4 error types and detection logic | 60 queries, first computation of the 6 coordinates |
-| **W08** | 11.28-12.04 | 2026.11.28 (Sat) 10:00-12:00 | Calibration. conformal prediction (MAPIE), risk-coverage curves, **variance measurement with fixed seeds** | Run the **40-query pilot**, fix parsing failures, measure total cost. Use the pilot results to **check the distribution of self-reported confidence** (if values cluster on a few levels, switch E to the self-consistency score), **freeze prompts** | Two-person cross-verification, finalize `results/benchmark/queries.jsonl` and `results/benchmark/difficulty.tsv` |
+| Week    | Period      | Regular meeting (KST)        | ML & Calibration (4)                                                                                                                | Agent & Perturbation (4)                                                                                                                                                                                                                              | Curation (4)                                                                                                     |
+| ------- | ----------- | ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| **W05** | 11.07-11.13 | 2026.11.07 (Sat) 10:00-12:00 | Cache ESM-2 embeddings + Morgan fingerprints, collect AlphaFold DB structures, extract P2Rank pockets. **Dependency license audit** | Connect ToolUniverse MCP, build a logging system for every call. Include **token, latency, and cost fields** in the logging schema. Design the confidence and abstention output schema                                                                | 20 draft queries, assign author and verifier pairs                                                               |
+| **W06** | 11.14-11.20 | 2026.11.14 (Sat) 10:00-12:00 | First baseline. Logistic regression / XGBoost. Baselines on **all 4 splits**                                                        | Connect literature search (PubMed API) and compound and protein DB lookups, compare 2 or more model backends                                                                                                                                          | 40 queries cumulative, start the coordinate computation pipeline                                                 |
+| **W07** | 11.21-11.27 | 2026.11.21 (Sat) 10:00-12:00 | Compare structure representations. Add pocket features, SaProt / ESM-IF, **2D vs 3D ablation**                                      | Implement the perturbation harness. Injection of 4 error types and detection logic                                                                                                                                                                    | 60 queries, first computation of the 6 coordinates                                                               |
+| **W08** | 11.28-12.04 | 2026.11.28 (Sat) 10:00-12:00 | Calibration. conformal prediction (MAPIE), risk-coverage curves, **variance measurement with fixed seeds**                          | Run the **40-query pilot**, fix parsing failures, measure total cost. Use the pilot results to **check the distribution of self-reported confidence** (if values cluster on a few levels, switch E to the self-consistency score), **freeze prompts** | Two-person cross-verification, finalize `results/benchmark/queries.jsonl` and `results/benchmark/difficulty.tsv` |
 
 > **W08 is the peak load point of this schedule.** Calibration work and the pilot run at the same time, and the
 > evaluation set must also be finalized. The pilot is set at **40 queries** because if parsing failures show up in
@@ -458,19 +457,19 @@ The three tracks run at the same time. **Work is done in pairs, and moving betwe
 
 ### Phase 3. Comparative evaluation (W09-W11)
 
-| Week | Period | Regular meeting (KST) | ML & Calibration | Agent & Perturbation | Curation |
-| --- | --- | --- | --- | --- | --- |
-| **W09** | 12.05-12.11 | 2026.12.05 (Sat) 10:00-12:00 | Full run of condition A | Full runs of conditions B, C, D, **3 repeats** | First review of error logs produced during runs |
-| **W10** | 12.12-12.18 | 2026.12.12 (Sat) 10:00-12:00 | Compute risk-coverage, AURC, ECE, difficulty-stratified analysis | Compute abstention **flip rate**, aggregate cost per condition. **Produce the reduced condition E** from the 3-repeat logs (based on answer agreement, zero extra cost), verify `direct_measurement_found` | Collect and organize wrong-answer cases |
-| **W11** | 12.19-12.25 | 2026.12.19 (Sat) 10:00-12:00 | Finalize the final metrics table. **Freeze gate** | Log-based root-cause tracing | Qualitative classification of failure modes (search failure / reasoning error / tool selection error / unit error) |
+| Week    | Period      | Regular meeting (KST)        | ML & Calibration                                                 | Agent & Perturbation                                                                                                                                                                                       | Curation                                                                                                           |
+| ------- | ----------- | ---------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| **W09** | 12.05-12.11 | 2026.12.05 (Sat) 10:00-12:00 | Full run of condition A                                          | Full runs of conditions B, C, D, **3 repeats**                                                                                                                                                             | First review of error logs produced during runs                                                                    |
+| **W10** | 12.12-12.18 | 2026.12.12 (Sat) 10:00-12:00 | Compute risk-coverage, AURC, ECE, difficulty-stratified analysis | Compute abstention **flip rate**, aggregate cost per condition. **Produce the reduced condition E** from the 3-repeat logs (based on answer agreement, zero extra cost), verify `direct_measurement_found` | Collect and organize wrong-answer cases                                                                            |
+| **W11** | 12.19-12.25 | 2026.12.19 (Sat) 10:00-12:00 | Finalize the final metrics table. **Freeze gate**                | Log-based root-cause tracing                                                                                                                                                                               | Qualitative classification of failure modes (search failure / reasoning error / tool selection error / unit error) |
 
 ### Phase 4. Release and wrap-up (W12-W14)
 
-| Week | Period | Regular meeting (KST) | Main activities | Deliverables |
-| --- | --- | --- | --- | --- |
-| **W12** | 12.26-01.01 | 2026.12.26 (Sat) 10:00-12:00 | **Buffer week (year-end).** Absorb backlog. No cleanup work is scheduled for this week | Clear backlog items |
-| **W13** | 01.02-01.08 | 2027.01.02 (Sat) 10:00-12:00 | Open-source cleanup. README (install, run, reproduce), `CONTRIBUTING.md`, Issue and PR templates, MIT license, one reproducible example notebook, apply license audit results. Reproducibility check: *complete the example notebook in a fresh environment using only the README* | Release-ready repository, reproducibility check log |
-| **W14** | 01.09 (Sat) | 2027.01.09 (Sat) 10:00-12:00 | Final presentation materials, repo release, demo. Write up extension plans (router training, abstention head fine-tuning). **Hand off to the Extension Track** | Presentation materials, retrospective notes, Extension Track owners confirmed |
+| Week    | Period      | Regular meeting (KST)        | Main activities                                                                                                                                                                                                                                                                    | Deliverables                                                                  |
+| ------- | ----------- | ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| **W12** | 12.26-01.01 | 2026.12.26 (Sat) 10:00-12:00 | **Buffer week (year-end).** Absorb backlog. No cleanup work is scheduled for this week                                                                                                                                                                                             | Clear backlog items                                                           |
+| **W13** | 01.02-01.08 | 2027.01.02 (Sat) 10:00-12:00 | Open-source cleanup. README (install, run, reproduce), `CONTRIBUTING.md`, Issue and PR templates, MIT license, one reproducible example notebook, apply license audit results. Reproducibility check: _complete the example notebook in a fresh environment using only the README_ | Release-ready repository, reproducibility check log                           |
+| **W14** | 01.09 (Sat) | 2027.01.09 (Sat) 10:00-12:00 | Final presentation materials, repo release, demo. Write up extension plans (router training, abstention head fine-tuning). **Hand off to the Extension Track**                                                                                                                     | Presentation materials, retrospective notes, Extension Track owners confirmed |
 
 > Documentation is not something to cram into the last week. README and `results/benchmark/EVALUATION.md` are
 > filled in **a little with each PR starting in W05**.
@@ -488,24 +487,24 @@ The three tracks run at the same time. **Work is done in pairs, and moving betwe
 The 5 milestone slots on the Pseudo-Lab platform and the GitHub Milestones are **matched 1:1.** Completion criteria
 list **only items that can be verified by eye**, so the Builder can check them and administrators can approve them.
 
-| # | GitHub Milestone | Week | Due | Completion criteria |
-| --- | --- | --- | --- | --- |
-| **1** | `M1 · 기반 확정` | W01-W04 | 2026-11-06 | Everyone's environment setup PR merged · resource check memo recording GPU and API budget · `results/benchmark/EVALUATION.md` written · **freeze commit** of the 4 splits · track assignment table published |
-| **2** | `M2 · 첫 baseline과 도구 연결` | W05-W07 | 2026-11-27 | XGBoost performance table exists for **all 4 splits** · structure feature ablation results · ToolUniverse call log collection confirmed · 60 draft queries |
-| **3** | `M3 · 최소 척추 완주` | W08 | 2026-12-04 | conformal risk-coverage curve produced · 4-type perturbation harness working · `queries.jsonl` and `difficulty.tsv` finalized · 40-query pilot run and **cost measured** |
-| **4** | `M4 · 비교와 결과 동결` | W09-W11 | 2026-12-25 | Raw run logs published · AURC, ECE, flip rate tables · difficulty stratification figure · failure mode classification table · **numbers freeze tag** |
-| **5** | `M5 · 공개와 재현` | W12-W14 | 2027-01-09 | Example notebook completed in a fresh environment using only the README · `CONTRIBUTING.md` and `LICENSE-AUDIT.md` written · final presentation materials · repo public |
+| #     | GitHub Milestone               | Week    | Due        | Completion criteria                                                                                                                                                                                          |
+| ----- | ------------------------------ | ------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **1** | `M1 · 기반 확정`               | W01-W04 | 2026-11-06 | Everyone's environment setup PR merged · resource check memo recording GPU and API budget · `results/benchmark/EVALUATION.md` written · **freeze commit** of the 4 splits · track assignment table published |
+| **2** | `M2 · 첫 baseline과 도구 연결` | W05-W07 | 2026-11-27 | XGBoost performance table exists for **all 4 splits** · structure feature ablation results · ToolUniverse call log collection confirmed · 60 draft queries                                                   |
+| **3** | `M3 · 최소 척추 완주`          | W08     | 2026-12-04 | conformal risk-coverage curve produced · 4-type perturbation harness working · `queries.jsonl` and `difficulty.tsv` finalized · 40-query pilot run and **cost measured**                                     |
+| **4** | `M4 · 비교와 결과 동결`        | W09-W11 | 2026-12-25 | Raw run logs published · AURC, ECE, flip rate tables · difficulty stratification figure · failure mode classification table · **numbers freeze tag**                                                         |
+| **5** | `M5 · 공개와 재현`             | W12-W14 | 2027-01-09 | Example notebook completed in a fresh environment using only the README · `CONTRIBUTING.md` and `LICENSE-AUDIT.md` written · final presentation materials · repo public                                      |
 
 ### Per-track completion criteria (M2-M5)
 
 M1 is before track assignment, so everyone works on the same tasks.
 
-| Milestone | ML & Calibration | Agent & Perturbation | Curation |
-| --- | --- | --- | --- |
-| **M2** (W05-07) | ESM-2 embedding and Morgan fingerprint cache · AlphaFold DB collection and P2Rank pocket extraction · XGBoost baselines on 4 splits · pocket and SaProt feature ablation table · `LICENSE-AUDIT.md` | ToolUniverse MCP connected · call logs including token, latency, and cost fields · confidence and abstention output schema finalized · PubMed and compound DB lookups working · 2 model backends compared | 60 draft queries · coordinate computation pipeline working · first computed values for the 6 coordinates |
-| **M3** (W08) | conformal prediction applied · risk-coverage curve and AURC produced · variance measured with fixed seeds | 4-type perturbation injection harness · detection logic · 40-query pilot run · measured cost per query | Two-person cross-verification complete · `queries.jsonl` and `difficulty.tsv` finalized · curation guide document |
-| **M4** (W09-11) | Full run of condition A · stratified analysis by range for the 6 difficulty coordinates · per-condition metrics table produced | Full runs of conditions B, C, D with 3 repeats · abstention flip rate computed · log-based root-cause tracing | Qualitative failure mode classification · annotated wrong-answer cases · review per stratification range |
-| **M5** (W12-14) | `track_ml-baselines` module cleanup · result reproduction scripts · one reproducible example notebook | `track_agent` and `track_agent/perturb` directory cleanup · run examples and cost guidance · demo | Documentation of the `track_curation` and `results/benchmark` directories · contribution guide for extending coordinates · open `good first issue` items |
+| Milestone       | ML & Calibration                                                                                                                                                                                    | Agent & Perturbation                                                                                                                                                                                      | Curation                                                                                                                                                 |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **M2** (W05-07) | ESM-2 embedding and Morgan fingerprint cache · AlphaFold DB collection and P2Rank pocket extraction · XGBoost baselines on 4 splits · pocket and SaProt feature ablation table · `LICENSE-AUDIT.md` | ToolUniverse MCP connected · call logs including token, latency, and cost fields · confidence and abstention output schema finalized · PubMed and compound DB lookups working · 2 model backends compared | 60 draft queries · coordinate computation pipeline working · first computed values for the 6 coordinates                                                 |
+| **M3** (W08)    | conformal prediction applied · risk-coverage curve and AURC produced · variance measured with fixed seeds                                                                                           | 4-type perturbation injection harness · detection logic · 40-query pilot run · measured cost per query                                                                                                    | Two-person cross-verification complete · `queries.jsonl` and `difficulty.tsv` finalized · curation guide document                                        |
+| **M4** (W09-11) | Full run of condition A · stratified analysis by range for the 6 difficulty coordinates · per-condition metrics table produced                                                                      | Full runs of conditions B, C, D with 3 repeats · abstention flip rate computed · log-based root-cause tracing                                                                                             | Qualitative failure mode classification · annotated wrong-answer cases · review per stratification range                                                 |
+| **M5** (W12-14) | `track_ml-baselines` module cleanup · result reproduction scripts · one reproducible example notebook                                                                                               | `track_agent` and `track_agent/perturb` directory cleanup · run examples and cost guidance · demo                                                                                                         | Documentation of the `track_curation` and `results/benchmark` directories · contribution guide for extending coordinates · open `good first issue` items |
 
 > After finalizing the evaluation set in M3, the Curation track **moves on to qualitative failure mode
 > classification in M4**. Reading and classifying wrong answers needs domain knowledge and has a low coding burden,
@@ -513,12 +512,12 @@ M1 is before track assignment, so everyone works on the same tasks.
 
 ### Four things we keep even if the schedule slips
 
-| Item | Reason |
-| --- | --- |
-| W04 split freeze | If this slips, everything after it slips. The only point that cannot be undone |
-| 3 repeated runs | Abstention flip rate is this project's unique contribution. Cutting to 1 run removes the reproducibility axis entirely, and half of the benchmark is gone |
-| 60 queries + 6 coordinates | We can give up on 100, but 60 queries and 6 coordinates are the floor. The Curation track runs in parallel, so this does not affect the overall schedule |
-| conformal prediction | Without it, there is no basis at all for calling anything "calibrated" |
+| Item                       | Reason                                                                                                                                                    |
+| -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| W04 split freeze           | If this slips, everything after it slips. The only point that cannot be undone                                                                            |
+| 3 repeated runs            | Abstention flip rate is this project's unique contribution. Cutting to 1 run removes the reproducibility axis entirely, and half of the benchmark is gone |
+| 60 queries + 6 coordinates | We can give up on 100, but 60 queries and 6 coordinates are the floor. The Curation track runs in parallel, so this does not affect the overall schedule  |
+| conformal prediction       | Without it, there is no basis at all for calling anything "calibrated"                                                                                    |
 
 ### GitHub operating conventions
 
@@ -566,28 +565,28 @@ logs. Templates: Issue (bug / task / question) and PR templates.
 <summary>19 risks, from failing to secure a GPU to not making it to a paper (click to expand)</summary>
 <br>
 
-| Risk | Mitigation |
-| --- | --- |
-| Failing to secure a GPU | The minimum spine is designed to **complete on CPU only**. Stages 2 and 3 are split off as optional tasks |
-| LLM API credits run out early | **Fix the budget cap as a number** in W01. Measure total cost in the pilot, then finalize the number of repeats (3). If over budget, shrink condition B and prioritize C and D |
-| Latest Boltz version is closed source | Pin to open-weight v2.2.x and state the version in the results table. Stage 3's first priority is OpenFold3 (Apache 2.0), so the challenge experiment survives if one path is blocked |
-| Too few targets with no PDB or low pLDDT | Check actual counts in W02. If too few, relax the filter with a pocket-level identity threshold |
-| Agent does not give confidence as a number | Add **condition D** with an explicit abstention option, produce substitute confidence with self-consistency sampling |
-| Dependency license conflicts | License audit in W05. On conflict, switch to a ToolUniverse-only setup |
-| Citation errors and phantom citations | **Mandatory verification of every DOI** in W02 |
-| Evaluation set quality degrades | Two-person cross-verification, guidelines finalized in W04 |
-| Participant dropout | At least 2 people per track, mandatory documentation |
-| 3D and structure representations do not improve performance | Keep 2D as the default condition, run structure only as ablation. **Report negative results as they are** |
-| Results differ from expectations | The design makes confirming that something does not work a result as well |
-| Exam periods or year-end overlap key weeks | Collect the whole team's schedules in W01 to check overlaps. Treat overlapping weeks as lost and absorb them with the W12 buffer |
-| Mass parsing failures in the W09 full run | Expand the W08 pilot to **40 queries** |
-| Target workshop is not held in 2027 | Secure 2-3 candidates when the ICLR workshop list is published in December. If all fall through, switch to an ISMB/ECCB 2027 poster |
-| Not making it to a paper | **Releasing the repository is the primary goal.** All submission deadlines are after the cohort ends, so there is time to write the draft |
-| Agent looks up the answer directly in a DB (search rather than prediction) | Exclude identifiers from the input. Report lookup cases separately using `direct_measurement_found` and the evidence log. Designate the contamination axis "after cutoff" range as the key range |
-| LLM self-reported confidence clusters on discrete values, so conformal quantiles cannot be computed | Check the distribution in the W08 pilot. If it clusters, switch to the self-consistency score |
-| Cost of condition E explodes (K samples × 3 repeats) | Limit E to 1 run + K internal samples, measure flip rate only on B, C, D. First produce the reduced version from the 3-repeat logs |
-| Evaluation set is too small to split off a conformal calibration set | Use cross-conformal. Do not create extra calibration-only queries |
-| Mixed affinity measurement types (Kd/Ki/IC50) distort comparisons | Keep a measurement type column, report per type. Convert Boltz-2 output to pAffinity before comparison |
+| Risk                                                                                                | Mitigation                                                                                                                                                                                       |
+| --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Failing to secure a GPU                                                                             | The minimum spine is designed to **complete on CPU only**. Stages 2 and 3 are split off as optional tasks                                                                                        |
+| LLM API credits run out early                                                                       | **Fix the budget cap as a number** in W01. Measure total cost in the pilot, then finalize the number of repeats (3). If over budget, shrink condition B and prioritize C and D                   |
+| Latest Boltz version is closed source                                                               | Pin to open-weight v2.2.x and state the version in the results table. Stage 3's first priority is OpenFold3 (Apache 2.0), so the challenge experiment survives if one path is blocked            |
+| Too few targets with no PDB or low pLDDT                                                            | Check actual counts in W02. If too few, relax the filter with a pocket-level identity threshold                                                                                                  |
+| Agent does not give confidence as a number                                                          | Add **condition D** with an explicit abstention option, produce substitute confidence with self-consistency sampling                                                                             |
+| Dependency license conflicts                                                                        | License audit in W05. On conflict, switch to a ToolUniverse-only setup                                                                                                                           |
+| Citation errors and phantom citations                                                               | **Mandatory verification of every DOI** in W02                                                                                                                                                   |
+| Evaluation set quality degrades                                                                     | Two-person cross-verification, guidelines finalized in W04                                                                                                                                       |
+| Participant dropout                                                                                 | At least 2 people per track, mandatory documentation                                                                                                                                             |
+| 3D and structure representations do not improve performance                                         | Keep 2D as the default condition, run structure only as ablation. **Report negative results as they are**                                                                                        |
+| Results differ from expectations                                                                    | The design makes confirming that something does not work a result as well                                                                                                                        |
+| Exam periods or year-end overlap key weeks                                                          | Collect the whole team's schedules in W01 to check overlaps. Treat overlapping weeks as lost and absorb them with the W12 buffer                                                                 |
+| Mass parsing failures in the W09 full run                                                           | Expand the W08 pilot to **40 queries**                                                                                                                                                           |
+| Target workshop is not held in 2027                                                                 | Secure 2-3 candidates when the ICLR workshop list is published in December. If all fall through, switch to an ISMB/ECCB 2027 poster                                                              |
+| Not making it to a paper                                                                            | **Releasing the repository is the primary goal.** All submission deadlines are after the cohort ends, so there is time to write the draft                                                        |
+| Agent looks up the answer directly in a DB (search rather than prediction)                          | Exclude identifiers from the input. Report lookup cases separately using `direct_measurement_found` and the evidence log. Designate the contamination axis "after cutoff" range as the key range |
+| LLM self-reported confidence clusters on discrete values, so conformal quantiles cannot be computed | Check the distribution in the W08 pilot. If it clusters, switch to the self-consistency score                                                                                                    |
+| Cost of condition E explodes (K samples × 3 repeats)                                                | Limit E to 1 run + K internal samples, measure flip rate only on B, C, D. First produce the reduced version from the 3-repeat logs                                                               |
+| Evaluation set is too small to split off a conformal calibration set                                | Use cross-conformal. Do not create extra calibration-only queries                                                                                                                                |
+| Mixed affinity measurement types (Kd/Ki/IC50) distort comparisons                                   | Keep a measurement type column, report per type. Convert Boltz-2 output to pAffinity before comparison                                                                                           |
 
 </details>
 
@@ -601,23 +600,23 @@ The 12-week core aims **up to releasing the repository**. The items below are co
 on. The main submission target, the ICLR 2027 workshop, has a deadline in February, so there is time after the
 cohort ends in January.
 
-| When | What | Owner |
-| --- | --- | --- |
-| 2027.01 | AlphaFold **Stage 3 challenge experiment.** OpenFold3 on 50 targets, optionally Boltz-2 on 200 pairs | Volunteers |
-| 2027.01 | Check the ICLR 2027 workshop list, compile deadlines, page limits, and formats for 2-3 candidates | Leader + volunteers |
-| 2027.01 | Write the arXiv preprint draft, then condense it to workshop format (4-8 pages). Consider in parallel once the ISMB proceedings deadline is confirmed | 2 writers |
-| 2027.02 | **ICLR 2027 workshop submission** | 2 writers |
-| 2027.04 | Submit ISMB/ECCB 2027 poster abstract (250 words). If the workshop paper is accepted, present on 4/29-30 | Those able to attend |
+| When    | What                                                                                                                                                  | Owner                |
+| ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- |
+| 2027.01 | AlphaFold **Stage 3 challenge experiment.** OpenFold3 on 50 targets, optionally Boltz-2 on 200 pairs                                                  | Volunteers           |
+| 2027.01 | Check the ICLR 2027 workshop list, compile deadlines, page limits, and formats for 2-3 candidates                                                     | Leader + volunteers  |
+| 2027.01 | Write the arXiv preprint draft, then condense it to workshop format (4-8 pages). Consider in parallel once the ISMB proceedings deadline is confirmed | 2 writers            |
+| 2027.02 | **ICLR 2027 workshop submission**                                                                                                                     | 2 writers            |
+| 2027.04 | Submit ISMB/ECCB 2027 poster abstract (250 words). If the workshop paper is accepted, present on 4/29-30                                              | Those able to attend |
 
-**Paper title (working)**: *Calibrated abstention in therapeutic AI agents, a difficulty-grounded benchmark
-for drug-target prediction*
+**Paper title (working)**: _Calibrated abstention in therapeutic AI agents, a difficulty-grounded benchmark
+for drug-target prediction_
 
-| Event | Dates | Relation to this project |
-| --- | --- | --- |
-| **ICLR 2027 workshops** (MLDD / GEM family) | Workshops 2027-04-29~30, Moscone Center, San Francisco. Deadline usually February | **Main submission target.** Main conference 4/26-28, with workshops on the last two days. ICLR 2026 held 40 workshops. Individual workshops and deadlines are confirmed after the list is published around December |
-| **ISMB/ECCB 2027** | 2027-07, Bella Center, Copenhagen. Proceedings in January / abstracts around April (unconfirmed) | Secondary submission target. Proceedings require a public repository link and reproducibility, so **the W13 repository cleanup directly meets the submission requirements**. Posters are reviewed on a 250-word abstract alone |
-| **4th AI Drug Discovery Competition (4th JUMP AI)** | Finals 2026-09-07~10-02, results 11-06 | The topic overlaps exactly, but the finals conflict with Phase 1. Not participating this cohort, deferred to the next round |
-| **2027 AI Co-Scientist Challenge Korea** | Announcement expected in December of the previous year | Could apply to Track 2 (science and technology AI agent development) with this project's deliverables. An extension path after the cohort ends |
+| Event                                               | Dates                                                                                            | Relation to this project                                                                                                                                                                                                       |
+| --------------------------------------------------- | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **ICLR 2027 workshops** (MLDD / GEM family)         | Workshops 2027-04-29~30, Moscone Center, San Francisco. Deadline usually February                | **Main submission target.** Main conference 4/26-28, with workshops on the last two days. ICLR 2026 held 40 workshops. Individual workshops and deadlines are confirmed after the list is published around December            |
+| **ISMB/ECCB 2027**                                  | 2027-07, Bella Center, Copenhagen. Proceedings in January / abstracts around April (unconfirmed) | Secondary submission target. Proceedings require a public repository link and reproducibility, so **the W13 repository cleanup directly meets the submission requirements**. Posters are reviewed on a 250-word abstract alone |
+| **4th AI Drug Discovery Competition (4th JUMP AI)** | Finals 2026-09-07~10-02, results 11-06                                                           | The topic overlaps exactly, but the finals conflict with Phase 1. Not participating this cohort, deferred to the next round                                                                                                    |
+| **2027 AI Co-Scientist Challenge Korea**            | Announcement expected in December of the previous year                                           | Could apply to Track 2 (science and technology AI agent development) with this project's deliverables. An extension path after the cohort ends                                                                                 |
 
 The individual ICLR 2027 workshop deadlines and the ISMB/ECCB 2027 key dates were not public when this document was
 written. **In W11 we will recheck both official sites and update the table above.**
@@ -634,7 +633,7 @@ One paper per person. Starred papers are **required reading for everyone**.
 
 **A-1. Agents and AI Scientists**
 
-- Huang et al., **Autonomous biomedical research with an artificial intelligence agent** (*Science*, 2026).
+- Huang et al., **Autonomous biomedical research with an artificial intelligence agent** (_Science_, 2026).
   DOI [10.1126/science.adz4351](https://doi.org/10.1126/science.adz4351). The preprint title was "Biomni", and the
   title changed on journal publication. Latest SOTA agent, code and data public
 - **ToolUniverse: An open platform for democratizing AI scientists** (arXiv 2509.23426). The infrastructure layer we
@@ -647,7 +646,7 @@ One paper per person. Starred papers are **required reading for everyone**.
 
 - Abramson et al., **Accurate structure prediction of biomolecular interactions with AlphaFold 3** (Nature, 2024)
 - ★ Karelina, Noh, Dror, **How accurately can one predict drug binding modes using AlphaFold models?**
-  (*eLife* 12:RP89386, 2023). DOI [10.7554/eLife.89386.2](https://doi.org/10.7554/eLife.89386.2),
+  (_eLife_ 12:RP89386, 2023). DOI [10.7554/eLife.89386.2](https://doi.org/10.7554/eLife.89386.2),
   <https://elifesciences.org/articles/89386>. Limits of using predicted structures for ligand binding. **The
   starting point of our hypothesis**
 - Buttenschoen et al., **PoseBusters: AI-based docking methods fail to generate physically valid poses**
@@ -678,8 +677,8 @@ One paper per person. Starred papers are **required reading for everyone**.
   prediction** (arXiv:2505.18890, 2025). The closest prior work to condition A. Compares across data split
   scenarios
 - Guo et al., **On calibration of modern neural networks** (ICML, 2017). The source of ECE
-- Supplementary: Tibshirani et al., *Conformal prediction under covariate shift* (NeurIPS, 2019); Geifman &
-  El-Yaniv, *Selective classification for deep neural networks* (NeurIPS, 2017)
+- Supplementary: Tibshirani et al., _Conformal prediction under covariate shift_ (NeurIPS, 2019); Geifman &
+  El-Yaniv, _Selective classification for deep neural networks_ (NeurIPS, 2017)
 
 **A-5. Molecule and protein representations**
 
@@ -714,18 +713,18 @@ One paper per person. Starred papers are **required reading for everyone**.
 ## 📚 Archive
 
 - Repository: <https://github.com/Pseudo-Lab/abstain-dti>
-- Benchmark: `results/benchmark/queries.jsonl` · `results/benchmark/difficulty.tsv` *(finalized at M3)*
-- Evaluation protocol: [`results/benchmark/EVALUATION.md`](results/benchmark/EVALUATION.md) *(finalized at M1)*
-- Demo: `URL` *(M5)*
-- Preprint: `URL` *(Extension Track)*
-- Presentation: `URL` *(W14)*
+- Benchmark: `results/benchmark/queries.jsonl` · `results/benchmark/difficulty.tsv` _(finalized at M3)_
+- Evaluation protocol: [`results/benchmark/EVALUATION.md`](results/benchmark/EVALUATION.md) _(finalized at M1)_
+- Demo: `URL` _(M5)_
+- Preprint: `URL` _(Extension Track)_
+- Presentation: `URL` _(W14)_
 
-| Date | Content | Link |
-| --- | --- | --- |
-| `2026.10.10` | Project kickoff | `URL` |
-| `2026.11.06` | M1 · split protocol frozen | `URL` |
-| `2026.12.04` | M3 · minimum spine complete | `URL` |
-| `2026.12.25` | M4 · results frozen | `URL` |
+| Date         | Content                                   | Link  |
+| ------------ | ----------------------------------------- | ----- |
+| `2026.10.10` | Project kickoff                           | `URL` |
+| `2026.11.06` | M1 · split protocol frozen                | `URL` |
+| `2026.12.04` | M3 · minimum spine complete               | `URL` |
+| `2026.12.25` | M4 · results frozen                       | `URL` |
 | `2027.01.09` | M5 · final results shared · repo released | `URL` |
 
 ---
