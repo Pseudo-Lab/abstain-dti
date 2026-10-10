@@ -178,7 +178,7 @@ W04 말에 희망과 적성을 반영해 트랙을 정합니다. 페어로 진�
 | Runner | 최호재 | ML과 보정 |
 | Runner | 박소정 | ML과 보정 |
 | Runner | 김태엽 | 에이전트와 교란 감사 |
-| Runner | 서동영 | 에이전트와 교란 감사 |
+| Runner | [@wez-97](https://github.com/wez-97) | 에이전트와 교란 감사 |
 | Runner | 차재민 | 에이전트와 교란 감사 |
 | Runner | [@motto7](https://github.com/motto7) | 에이전트와 교란 감사 |
 | Runner | 권예진 | 난이도 좌표 큐레이션 |
