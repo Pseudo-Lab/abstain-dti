@@ -188,7 +188,7 @@ GitHub handles will be filled in at kickoff.
 | Runner | 박소정 | ML & Calibration |
 | Runner | 김태엽 | Agent & Perturbation Audit |
 | Runner | 서동영 | Agent & Perturbation Audit |
-| Runner | 차재민 | Agent & Perturbation Audit |
+| Runner | [차재민](https://github.com/chahero) | Agent & Perturbation Audit |
 | Runner | 정재훈 | Agent & Perturbation Audit |
 | Runner | 권예진 | Difficulty-Coordinate Curation |
 | Runner | 김시은 | Difficulty-Coordinate Curation |
