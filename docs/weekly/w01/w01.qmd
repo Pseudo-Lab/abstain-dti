@@ -1,0 +1,255 @@
+---
+title: "Abstain-DTI"
+subtitle: "week 1 · 2026.10.10"
+author: "가짜연구소 13기 배예지"
+lang: ko
+format:
+  pptx:
+    reference-doc: ../_template/reference.pptx
+    slide-level: 2
+---
+
+## Agenda
+
+- 스터디 룰 소개
+- 자기소개 (업무, 위치, 취미 1개)
+- Abstain-DTI를 위한 온보딩
+- 트랙 선정 및 트랙 리더 선정
+- 주차별 회의록 담당자 선정
+- GPU 실물 확보 및 LLM API credit
+- 트랙별로 모여서 다음 주 발표할 논문 고르기
+- **오늘의 목표:** PR 하나씩 올리기
+- **HW:** 논문 발표자료 정리해서 깃헙에 올리기
+
+## 스터디 룰 소개
+
+- 2회 이상 무단 불참 시 제명
+- 카메라 on 필수
+
+## 자기소개
+
+**Yeji Bae**
+
+Data Scientist / Computational Biologist at Seattle Children's Hospital & Research Institute
+
+- Multi-omics Analysis
+- DL model development (fine-tuning)
+- Agent Engineering
+
+## Abstain-DTI를 위한 온보딩
+
+- 문제 정의 : 
+- 난이도 정의 : 
+- INPUT & OUTPUT : 
+
+# 문제 정의
+
+## 무엇이 문제인가
+
+"LLM이 DTI 예측을 못 하는데도 그냥 답한다"에는 두 상황이 섞여 있습니다.
+
+| 상황 | 문제인가 |
+| --- | --- |
+| 약이 타겟에 붙지 않는다 | 아닙니다. 정답이 `binds = false`일 뿐입니다 |
+| 답할 근거가 없는 입력에 쉬운 입력과 같은 신뢰도로 답한다 | 문제입니다 |
+
+- LLM만의 문제가 아닙니다. 지도학습 모델(A)과 Boltz-2(F)에도 같은 질문을 합니다.
+- 기권 기능이 없어서 생기는 문제도 아닙니다. 신뢰도 점수가 난이도를 담고 있지 않으면, 기권 기능이 있어도 엉뚱한 문항에서 기권합니다.
+
+## Problem statement
+
+> DTI 예측기(지도학습 모델이든 LLM 에이전트든)는 입력이 자기가 아는 범위를 벗어나도 신뢰도를 낮추지 않을 수 있다.
+> DTI 불확실성 연구는 random split과 cold split을 비교했을 뿐, 타겟·리간드 신규성이나 근거 가용성 같은 연속적인 난이도로 신뢰도와 기권을 층화하지 않았다. LLM 에이전트의 DTI 신뢰도를 잰 연구는 찾지 못했다.
+
+**벤치마크의 질문은 하나입니다.** 신뢰도, 또는 기권 결정이 사전에 정한 난이도 d(x)를 따라가는가?
+
+- "결함이 있다"가 아니라 "연속적인 난이도로 잰 곳이 없다"고 씁니다. DTI에서 결함의 직접 근거는 아직 없고, 인접 분야의 근거는 뒤에 정리했습니다.
+- 정답을 보기 전에 정할 수 있는 난이도 좌표가 필요합니다. 다음 절에서 정의합니다.
+
+## 근거는 어디까지 있나
+
+선행 문헌(Medea, Biomni, ToolUniverse, DrugAgent, LAB-Bench, BixBench) 중 AURC나 risk-coverage로 신뢰도의 순위를 잰 곳은 없습니다.
+
+**LAB-Bench**
+
+LAB-Bench는 생물학 연구 과제로 LLM을 시험하는 벤치마크입니다. 모든 문항에 "정보가 부족해 답할 수 없다" 보기를 주고, 답한 문항 비율(coverage)과 답한 문항 중 정답 비율(precision)을 따로 봅니다.
+
+- Cloning Scenarios 과제에서 Gemini 1.5 Pro와 GPT-4-turbo는 다른 모델보다 기권을 많이 했습니다.
+- 그런데 답한 문항만 놓고 봐도 정답률이 가장 낮았습니다. 기권을 많이 해도 정답률은 오르지 않았습니다.
+
+**DrugAgent (kinase)**
+
+DrugAgent는 LLM 여러 개가 문헌과 DB를 찾아보고 약이 타겟에 붙는지 판단하는 에이전트입니다. 저자들은 kinase 평가 문제를 "그 약-타겟 쌍을 직접 다룬 논문이 몇 편 있는가"로 나눠서 정확도를 봤습니다.
+
+- 논문이 1편 이상 있으면 DrugAgent가 일반 ML 모델(ML+KG)보다 잘 맞혔습니다.
+- 논문이 0편이면 일반 ML 모델과 비슷하거나 더 못했습니다.
+
+출처: LAB-Bench arXiv:2407.10362 · DrugAgent arXiv:2408.13378
+
+## 근거는 어디까지 있나 (계속)
+
+**기권 채점**
+
+기권을 점수에 어떻게 넣을지는 논문마다 다릅니다. 같은 기권이라도 채점 방식에 따라 점수가 달라집니다.
+
+- ToolUniverse는 기권을 오답으로 셉니다.
+- Medea와 BixBench는 기권한 문항을 빼고 나머지로 정답률을 계산합니다.
+- LAB-Bench는 두 방식을 모두 보고합니다.
+
+**BixBench (객관식)**
+
+BixBench는 컴퓨터 생물학 분석 과제로 LLM 에이전트를 시험하는 벤치마크입니다. 객관식 문항에 "정보가 부족하다" 보기를 넣은 조건과 뺀 조건을 비교했습니다.
+
+- 기권 보기가 있으면 성능이 무작위로 찍는 수준에 가까워졌습니다.
+- 기권 보기가 없으면 무작위보다 높았습니다.
+
+출처: ToolUniverse arXiv:2509.23426 · Medea DOI 10.64898/2026.01.16.696667 · BixBench arXiv:2503.00096 · LAB-Bench arXiv:2407.10362
+
+## 최근 근거: DTI 불확실성
+
+**Rakhshaninejad et al. (2025), DTI conformal prediction**
+
+DTI 예측에 conformal prediction을 적용하고, KIBA 데이터를 네 방식(random, 처음 보는 약물, 처음 보는 단백질, 둘 다 처음)으로 나눠 시험했습니다.
+
+- 처음 보는 약물과 단백질이 섞일수록 예측이 어려워졌습니다.
+- 처음 보는 약물 split에서는 어떤 방법도 목표 coverage(95%)를 일관되게 맞추지 못했습니다.
+- 난이도는 split 종류 하나뿐이고, LLM은 다루지 않았습니다.
+
+**EviDTI (Nat Commun 2025)**
+
+불확실성을 함께 출력하는 DTI 모델입니다. 학습에 없던 약물 10%로 테스트셋을 만들었습니다.
+
+- 틀린 예측일수록 불확실성이 높았습니다.
+- 약물이 얼마나 새로운지에 따라 불확실성이 변하는지는 보지 않았습니다.
+
+출처: Rakhshaninejad arXiv:2505.18890 · EviDTI DOI 10.1038/s41467-025-62235-6
+
+## 최근 근거: co-folding과 화학 LLM
+
+**Škrinjar et al. (2025), co-folding**
+
+AlphaFold3, Chai-1, Protenix, Boltz-1을 학습 cutoff 이후 공개된 복합체 2,600개로 시험했습니다.
+
+- 학습 데이터와 비슷한 복합체일수록 결합 자세를 잘 맞혔습니다.
+- 모델의 confidence 점수로 걸러도 이 문제는 남았습니다.
+- affinity가 아니라 결합 자세 예측입니다.
+
+**ChemBench (Nat Chem 2025)**
+
+화학 문제로 LLM을 시험하고, 문제마다 자신감을 1-5로 답하게 했습니다. 우리 조건 B, C, D와 같은 자기보고 방식입니다.
+
+- 대부분의 모델이 보정되지 않았고, 자신감이 오해를 부르는 경우가 있었습니다.
+- 저자들은 많은 모델이 자기 한계를 믿을 만하게 추정하지 못한다고 결론지었습니다.
+
+출처: Škrinjar bioRxiv 10.1101/2025.02.03.636309 (v1) · ChemBench DOI 10.1038/s41557-025-01815-x
+
+# 난이도 정의
+
+## 난이도는 무엇에 대한 난이도인가
+
+- 난이도는 (서열, SMILES) 자체의 속성이 아닙니다. **기준 코퍼스**에 대한 상대적 속성입니다.
+- 조건 A의 기준은 BindingDB 학습 split입니다. LLM 에이전트의 기준은 사전학습 데이터와 도구가 닿는 모든 DB입니다.
+- 예를 들어 A의 학습셋에 없는 타겟도, ChEMBL을 검색하는 에이전트에게는 단순 조회일 수 있습니다.
+- 그래서 축마다 기준 코퍼스와 유효한 조건을 함께 적습니다.
+
+## 난이도 좌표: 네 묶음
+
+| 묶음 | 축 | 유효한 조건 |
+| --- | --- | --- |
+| 보편 난이도 | 타겟 성숙도 (Pharos TDL), 문헌 가용성 (새로 추가) | 전 조건 |
+| 학습 split 기준 | 리간드 신규성 (Tanimoto, Murcko scaffold), 타겟 신규성 (서열 identity) | A에 직접. 나머지 조건에 통하는지는 검증 전 가정 |
+| 구조 (조건부) | pocket pLDDT/PAE, 실험 구조 유무 | 구조를 쓰는 A, F. 티켓 04 실측 후 확정 |
+| Boltz-2 (조건부) | 리간드 크기 (heavy atom 56개 초과), cofactor가 필요한 타겟 | F |
+| 유효성 플래그 | 오염 축 (원측정 발행일), 실측값 직접 조회 여부 | 난이도가 아닙니다. 쿼리가 "예측"인지를 판정합니다 |
+
+난이도 좌표는 모델에 입력하지 않습니다. 결과를 층화해 분석할 때만 씁니다.
+
+## 난이도가 아닌 것: 라벨 노이즈
+
+- "이 scaffold는 처음 본다"는 예측기가 알아차릴 수 있습니다.
+- "이 IC50은 특이한 조건에서 쟀다", "5.9와 6.1의 경계다"는 알아차릴 수 없습니다. 입력이 아니라 정답의 속성입니다.
+- 그래서 난이도 축에서 빼고, 평가셋 **포함 기준**으로 처리합니다.
+  - 1 µM 경계를 걸치는 검열값, 반복 측정, 회색 구간(5.5-6.5 제외 권고), degrader
+- 각 축이 실제 난이도를 대변하는지는 W06 baseline 오차가 축을 따라 커지는지로 검증합니다(티켓 05).
+
+# INPUT & OUTPUT
+
+## 모든 조건 공통
+
+| 항목 | 정의 |
+| --- | --- |
+| 입력 | 단백질 서열 + 화합물 SMILES만. 타겟 식별자(UniProt ID 등)는 주지 않습니다 |
+| 주 결정 | 결합 여부 `binds`. pAffinity ≥ 6.0 (Kd / Ki / IC50 ≤ 1 µM)이면 true |
+| 출력 | `binds`와 신뢰도, 또는 기권 |
+| 주 지표 | AURC, coverage 80%에서의 selective accuracy |
+| 보조 | 회귀(pAffinity). Ki와 Kd 정확값 부분집합에서만 보고 |
+| 데이터 | BindingDB `202610` 스냅샷의 CC BY 4.0 부분 (1,436,782행) |
+| 음성 | 검열값 `>10 µM` + 측정된 약한 결합 (pAffinity < 6). decoy 합성은 쓰지 않습니다 |
+
+## 트랙 간 흐름
+
+1. **큐레이션 트랙**이 평가 쿼리와 난이도 좌표를 만듭니다 (`results/benchmark/`).
+2. **ML과 보정 트랙**이 같은 쿼리로 조건 A와 F를 돌리고, conformal 절차를 구현합니다.
+3. **에이전트 트랙**이 같은 쿼리로 조건 B, C, D를 돌리고 신뢰도 로그를 남깁니다.
+4. 조건 E는 에이전트 신뢰도 로그에 ML 트랙의 conformal 절차를 씌운 것입니다.
+5. 모든 조건의 출력을 난이도 좌표로 층화해 비교합니다.
+
+## 큐레이션 트랙
+
+| 단계 | 입력 | 출력 |
+| --- | --- | --- |
+| 쿼리 선정 | BindingDB `202610` CC BY 부분 (Articles + Patents) | 평가 쿼리 60-100개 (서열, SMILES, 정답 `binds`, 측정 종류, 출처) |
+| 포함 기준 | 측정 메타데이터 (부등호, 반복 측정, 리간드 크기 등) | 제외 및 플래그 기록 |
+| 좌표 계산 | 쿼리, A의 학습 split, Pharos, AlphaFold DB, PDB/SIFTS, 발행일 | 쿼리별 난이도 좌표와 유효성 플래그 |
+| 교차 검증 | 쿼리 초안 | 2인 검증 기록, `results/benchmark/` 확정본 |
+
+## ML과 보정 트랙
+
+| 조건 | 입력 | 출력 |
+| --- | --- | --- |
+| A. 보정된 baseline | ESM-2 단백질 임베딩, Morgan fingerprint, AlphaFold DB pocket feature, 학습 split | `binds` 확률, conformal 예측 집합 (`{binds, not binds}`이면 기권) |
+| F. Boltz-2 (GPU 조건부) | 서열 + SMILES, 난이도 층화 200쌍 | `affinity_probability_binary`, `ligand_iptm`, conformal 예측 집합 |
+| E 절차 | 에이전트 트랙의 신뢰도 로그 | A와 같은 conformal 절차를 적용한 예측 집합 |
+
+OpenFold3는 F에서 빠지고 구조 품질 레퍼런스로 씁니다. 조사한 co-folding 모델 7개 중 affinity를 출력하는 것은 Boltz-2뿐입니다.
+
+## 에이전트 트랙
+
+| 조건 | 입력 | 출력 (JSON) |
+| --- | --- | --- |
+| B. Zero-shot LLM | 서열 + SMILES, 도구 없음 | `binds`, `confidence`, `pAffinity`, `reasoning` |
+| C. Agent | 서열 + SMILES, ToolUniverse MCP 도구 | B 필드 + `identified_target`, `direct_measurement_found`, `evidence` |
+| D. Agent + 기권 | C와 같음, 기권 허용 | C 필드 + `abstain` |
+| 반복 실행 | 같은 쿼리 3회, temperature 0.7 | flip rate, 조건 E용 신뢰도 로그, 토큰·지연·비용 |
+| 교란 감사 | 도구 출력에 오류 4종 주입 (단위, 엔트리, 동일성, 식별자) | 교란 탐지율 |
+
+## 온보딩 자료
+
+:::: {.columns}
+::: {.column}
+![](assets/onboarding-artifact.png)
+:::
+::: {.column}
+- 웹: <https://claude.ai/artifact/VkNjGDDxE9S8b8eZsnMpjv>
+- 저장소: [docs/onboarding/w01-drug_development_onboarding.html](https://github.com/Pseudo-Lab/abstain-dti/blob/dev/docs/onboarding/w01-drug_development_onboarding.html) (내려받아 브라우저로 열기)
+:::
+::::
+
+## PR 올리기
+
+<https://github.com/Pseudo-Lab/abstain-dti>
+
+- 트랙 작업: 작업 브랜치 → 자기 트랙 브랜치 → dev 로 PR (리뷰어 1명 이상)
+- 트랙과 무관한 작업: dev에서 브랜치 → dev 로 PR
+- README.md 팀 테이블 이름에 깃헙 링크 달기
+- HW: 다음 주 발표할 논문 정리해서 자료 올리기
+  -  논문 → 실행: <https://github.com/ybaeus/Paper2Agent>
+
+## Feedbacks will be given by
+
+- UW Andre Berndt Lab postdoc 이다호 박사님 ([scholar](https://scholar.google.com/citations?user=hpQO_7QAAAAJ&hl=en))
+- UW David Baker Lab postdoc 신호정 박사님 ([scholar](https://scholar.google.com/citations?user=_PQ86mEAAAAJ&hl=ko))
+- Duke PhD candidate 김종현님
+  - Kim, J. and Romero, P.A. (2026) 'Benchmarking and behavioral characterization of LLM agents for protein design', bioRxiv
+
+## Thank you! {.unnumbered}
