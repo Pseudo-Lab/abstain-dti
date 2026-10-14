@@ -179,11 +179,11 @@ W04 말에 희망과 적성을 반영해 트랙을 정합니다. 페어로 진�
 | Runner | [@sosopark92](https://github.com/sosopark92) | ML과 보정 |
 | Runner | [@siuunni](https://github.com/siuunni) | ML과 보정 |
 | Runner | [@tae-yeop](https://github.com/tae-yeop) | 에이전트와 교란 감사 |
-| Runner | 서동영 | 에이전트와 교란 감사 |
+| Runner | [@wez-97](https://github.com/wez-97) | 에이전트와 교란 감사 |
 | Runner | [차재민](https://github.com/chahero) | 에이전트와 교란 감사 |
-| Runner | 정재훈 | 에이전트와 교란 감사 |
+| Runner | [@motto7](https://github.com/motto7) | 에이전트와 교란 감사 |
 | Runner | 권예진 | 난이도 좌표 큐레이션 |
-| Runner | 이성주 | 난이도 좌표 큐레이션 |
+| Runner | [@Leokong-C](https://github.com/Leokong-C) | 난이도 좌표 큐레이션 |
 | Runner | 전소연 | 난이도 좌표 큐레이션 |
 
 **빌더 소개.** 가짜연구소 5기 리더 경험(NGS 분석 프로젝트 운영). Bioinformatics와 spatial biology
