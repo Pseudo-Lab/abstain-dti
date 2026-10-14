@@ -181,18 +181,19 @@ GitHub handles will be filled in at kickoff.
 
 | Role    | Name                                         | Responsibility                                                          |
 | ------- | -------------------------------------------- | ----------------------------------------------------------------------- |
-| Builder | [@ybaeus](https://github.com/ybaeus)         | Project lead, evaluation design, participates in ML & Calibration track |
-| Runner  | 하민주                                       | ML & Calibration                                                        |
-| Runner  | 최호재                                       | ML & Calibration                                                        |
-| Runner  | [@sosopark92](https://github.com/sosopark92) | ML & Calibration                                                        |
-| Runner  | 김태엽                                       | Agent & Perturbation Audit                                              |
-| Runner  | 서동영                                       | Agent & Perturbation Audit                                              |
-| Runner  | 차재민                                       | Agent & Perturbation Audit                                              |
-| Runner  | 정재훈                                       | Agent & Perturbation Audit                                              |
-| Runner  | 권예진                                       | Difficulty-Coordinate Curation                                          |
-| Runner  | 김시은                                       | Difficulty-Coordinate Curation                                          |
-| Runner  | 이성주                                       | Difficulty-Coordinate Curation                                          |
-| Runner  | 전소연                                       | Difficulty-Coordinate Curation                                          |
+| Builder | [@ybaeus](https://github.com/ybaeus)    | Project lead, evaluation design, participates in ML & Calibration track |
+| Runner  | 하민주                                         | ML & Calibration                                                        |
+| Runner  | 최호재                                         | ML & Calibration                                                        |
+| Runner  | [박소정](https://github.com/sosopark92)        | ML & Calibration                                                        |
+| Runner  | [김시은](https://github.com/siuunni)           | ML & Calibration                                                        |
+| Runner  | 김태엽                                         | Agent & Perturbation Audit                                              |
+| Runner  | 서동영                                         | Agent & Perturbation Audit                                              |
+| Runner  | [차재민](https://github.com/chahero)           | Agent & Perturbation Audit                                              |
+| Runner  | 정재훈                                         | Agent & Perturbation Audit                                              |
+| Runner  | 권예진                                         | Difficulty-Coordinate Curation                                          |
+| Runner  | 이성주                                         | Difficulty-Coordinate Curation                                          |
+| Runner  | 전소연                                         | Difficulty-Coordinate Curation                                          |
+
 
 **About the Builder.** Led a project in Pseudo-Lab's 5th cohort (ran an NGS analysis project). Hands-on experience
 in bioinformatics and spatial biology. Currently lives in Seattle.
