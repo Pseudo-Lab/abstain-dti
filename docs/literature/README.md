@@ -12,5 +12,6 @@
 | | 서동영 | [SMDD-Bench: Can LLMs Solve Real-World Small Molecule Drug Design Tasks?](https://arxiv.org/abs/2605.21740) | |
 | | 전소연 | [Most ligand-based classification benchmarks reward memorization rather than generalization](https://pubs.acs.org/jcisd8/article/58/5/916/863748/Most-Ligand-Based-Classification-Benchmarks-Reward) (JCIM, 2018) | |
 | | 권예진 | [How accurately can one predict drug binding models using AlphaFold models?](https://pmc.ncbi.nlm.nih.gov/articles/PMC10746139/) | |
+| | 차재민 | [AI Agents That Matter? (TMLR, 2025](https://arxiv.org/pdf/2407.01502) | |
 
 <!-- Row example: | github-id | Name | Paper title | [tooluniverse-facts.md](tooluniverse-facts.md) | -->
