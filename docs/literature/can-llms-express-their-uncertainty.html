@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Can LLMs express their uncertainty? | Literature Review</title>
+<style>
+:root{--ink:#18313a;--muted:#526771;--line:#d8e4df;--paper:#f6f8f5;--teal:#086f69;--navy:#102e3a}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);background:var(--paper);font:16px/1.7 -apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;word-break:keep-all}
+a{color:var(--teal);text-underline-offset:3px}.wrap{max-width:1020px;margin:auto;padding:0 26px}
+header{background:var(--navy);color:#f6fbf9}header .wrap{padding-top:31px;padding-bottom:57px}.project{color:#aee3d6;font-size:.8rem;font-weight:800;letter-spacing:.1em;margin:0 0 26px}h1{font-size:clamp(2.2rem,4.7vw,4rem);line-height:1.18;letter-spacing:-.035em;margin:0 0 13px}.paper-title{font-size:1.13rem;color:#e1eee9;margin:0}.byline{font-size:.85rem;color:#bdd7d0;margin:17px 0 0}
+nav{position:sticky;top:0;z-index:3;background:#fff;border-bottom:1px solid var(--line)}nav .wrap{display:flex;flex-wrap:wrap;gap:9px 22px;padding-top:11px;padding-bottom:11px}nav a{font-size:.85rem;font-weight:700;text-decoration:none;white-space:nowrap}
+main{padding-bottom:70px}section{padding-top:53px;scroll-margin-top:78px;border-bottom:1px solid var(--line);padding-bottom:45px}section:last-child{border:0}h2{font-size:1.75rem;line-height:1.3;letter-spacing:-.025em;margin:0 0 19px}h3{font-size:1.1rem;margin:28px 0 9px;color:#155e57}p{margin:0 0 14px}
+ul{padding-left:24px;margin:0}li{margin-bottom:11px}li ul{margin-top:8px}li li{margin-bottom:5px}.keywords{display:flex;flex-wrap:wrap;gap:7px;list-style:none;padding:0}.keywords li{background:#e4f1eb;border-radius:8px;padding:5px 11px;margin:0;color:#164f49;font-size:.9rem}
+figure{margin:23px 0 28px;padding:14px;border:1px solid var(--line);background:white;border-radius:10px}figure img{display:block;width:100%;height:auto}.scope{color:var(--muted);font-size:.94rem}
+@media(max-width:690px){section{padding-top:40px;padding-bottom:32px}figure{padding:6px}nav .wrap{gap:6px 13px}}
+@media print{nav{position:static}figure{break-inside:avoid}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <p class="project">ABSTAIN-DTI · Literature Review</p>
+  <h1>Can LLMs express their uncertainty?</h1>
+  <p class="paper-title">An Empirical Evaluation of Confidence Elicitation in LLMs</p>
+  <p class="byline">Xiong et al. · ICLR 2024 · 하민주</p>
+</div></header>
+<nav aria-label="목차"><div class="wrap">
+  <a href="#keywords">Keywords</a><a href="#introduction">Introduction</a><a href="#framework">Framework</a><a href="#metrics">Experimental Setup — metrics</a><a href="#analysis">Analysis</a><a href="#abstain-dti">ABSTAIN-DTI</a>
+</div></nav>
+<main class="wrap">
+<section id="keywords">
+  <h2>Keywords</h2>
+  <ul class="keywords"><li>confidence elicitation; 확신도 추출</li><li>prompting</li><li>sampling</li><li>aggregation</li><li>failure prediction</li></ul>
+</section>
+<section id="introduction">
+  <h2>Introduction</h2>
+  <ul>
+    <li>confidence를 아는 것은 model reliability에 중요하다. 확신도가 틀린 답을 가려내면, 모델이 답할지 기권할지 결정할 수 있다.</li>
+    <li>기존 confidence 추정은 모델 내부 정보 또는 fine-tuning에 주로 의존한다.
+      <ul><li>token likelihood</li><li>confidence calibration</li><li>fine-tuning to express confidence</li></ul>
+    </li>
+    <li>Black-box 모델에서도 confidence를 구할 방법이 필요하다.
+      <ul>
+        <li>closed-model API는 내부 점수를 제공하지 않을 수 있다.</li>
+        <li>next-token likelihood는 답의 의미가 맞을 확률과 다르다.</li>
+        <li>fine-tuning에는 computing resource가 든다.</li>
+      </ul>
+    </li>
+    <li>이 논문은 confidence를 직접 말하게 한 값과, 여러 응답을 비교해 계산한 값을 평가한다. 질문에 대한 정답 여부를 알아야 두 값의 품질을 비교할 수 있다.</li>
+    <li>핵심은 두 가지다. 80% confidence인 답이 실제로 80% 맞는가? 틀릴 답에 더 낮은 confidence를 주는가?</li>
+    <li>결과 요약
+      <ul>
+        <li>verbalized confidence는 대체로 over-confident하다. 값이 80–100%에 몰리고 5% 단위로 나타난다. 논문은 사람의 확신 표현을 모방했을 가능성을 제시한다.</li>
+        <li>prompting은 over-confidence를 일부 줄인다. failure prediction까지 항상 좋아지지는 않는다.</li>
+        <li>sampling과 aggregation은 일부 과제에서 failure prediction을 높인다.</li>
+      </ul>
+    </li>
+  </ul>
+</section>
+<section id="framework">
+  <h2>Framework</h2>
+  <p>Prompting → Sampling → Aggregation. 질문 방식, 응답 생성 방식, 여러 답을 합치는 방식을 각각 고른다.</p>
+  <figure><img src="images/xiong-figure-1-framework.png" alt="논문 Figure 1: Prompting, Sampling, Aggregation 순서와 세 응답을 합치는 예시."></figure>
+  <ul>
+    <li><strong>Prompting</strong>
+      <ul>
+        <li>Vanilla: 답과 confidence를 바로 요청한다.</li>
+        <li>CoT: 단계별로 생각한 뒤 답과 confidence를 요청한다.</li>
+        <li>Self-Probing: 만든 답을 별도 대화에서 다시 평가한다.</li>
+        <li>Multi-Step: 단계마다 confidence를 구하고 곱한다.</li>
+        <li>Top-K: 여러 답 후보와 각 후보의 confidence를 요청한다.</li>
+      </ul>
+    </li>
+    <li><strong>Sampling</strong>
+      <ul>
+        <li>Self-Random: 같은 prompt로 여러 응답을 받는다.</li>
+        <li>Prompt (paraphrasing): 질문을 바꿔 써서 응답을 받는다.</li>
+        <li>Misleading: 잘못된 힌트를 주고 답이 바뀌는지 본다.</li>
+      </ul>
+    </li>
+    <li><strong>Aggregation</strong>
+      <ul>
+        <li>Consistency: 같은 답이 나온 비율을 계산한다.</li>
+        <li>Avg-Conf: 답의 일치도에 verbalized confidence를 함께 반영한다.</li>
+        <li>Pair-Rank: 후보 두 개의 순위를 반복 비교해 답의 분포를 추정한다.</li>
+      </ul>
+    </li>
+  </ul>
+  <figure><img src="images/xiong-table-1-prompts.png" alt="논문 Table 1: Vanilla, CoT, Self-Probing, Multi-Step, Top-K의 실제 prompt 비교."></figure>
+</section>
+<section id="metrics">
+  <h2>Experimental Setup — metrics</h2>
+  <ul>
+    <li><strong>Datasets</strong>: 5개 유형, 8개 데이터셋.
+      <ul>
+        <li>Commonsense: Sports Understanding, StrategyQA</li>
+        <li>Arithmetic: GSM8K, SVAMP</li>
+        <li>Symbolic: Date Understanding, Object Counting</li>
+        <li>Professional / Ethical Knowledge: Professional Law, Business Ethics</li>
+      </ul>
+    </li>
+    <li><strong>Models</strong>: GPT-3 175B, GPT-3.5-turbo, GPT-4, Vicuna 13B, LLaMA 2 70B.</li>
+    <li><strong>비교 순서</strong>: Vanilla confidence를 기준으로 보고 → prompt를 바꾸고 → 여러 응답을 sampling하고 → aggregation 방법을 비교한다.</li>
+    <li><strong>Calibration</strong>: expressed confidence가 actual accuracy와 얼마나 맞는가? ECE로 평가한다. 낮을수록 좋다.</li>
+    <li><strong>Failure Prediction</strong>: 맞는 답에 더 높은 confidence를 주는가? AUROC, AUPRC-P, AUPRC-N으로 평가한다. 높을수록 좋다.</li>
+    <li>예를 들어 confidence 80%인 답 100개 중 80개가 맞으면 그 구간은 calibration이 맞는다. 반면 failure prediction은 개별 정답과 오답을 구분할 수 있어야 한다.</li>
+    <li>두 지표는 다르다. 모든 답에 같은 confidence를 주면 오류를 구별할 수 없다. 정답률이 높으면 ECE는 낮을 수도 있다.</li>
+  </ul>
+</section>
+<section id="analysis">
+  <h2>Analysis</h2>
+  <h3>Overconfident when verbalizing</h3>
+  <ul>
+    <li>GSM8K에서 confidence는 주로 80–100%다. 실제 accuracy는 confidence보다 낮다.</li>
+    <li>GPT-4의 vanilla verbalized confidence도 8개 데이터셋 평균 AUROC가 0.627이다. 정답과 오답 구분이 충분하지 않다.</li>
+  </ul>
+  <figure><img src="images/xiong-figure-2-confidence.png" alt="논문 Figure 2: GSM8K에서 네 모델의 확신도 분포와 실제 정답률."></figure>
+  <ul>
+    <li>Table 2의 평균 ECE: GPT-3 0.520 → GPT-4 0.180. 이 비교에서는 모델 성능과 함께 calibration도 개선된다.</li>
+    <li>평균 AUROC: GPT-3 0.513 → GPT-4 0.627. GPT-4도 오답을 가리는 능력은 제한적이다.</li>
+    <li>Table 2의 숫자는 원문에서 ×100으로 표시한다.</li>
+  </ul>
+  <figure><img src="images/xiong-table-2-vanilla.png" alt="논문 Table 2: 다섯 모델과 여덟 데이터셋의 Vanilla confidence ECE, AUROC, AUPRC 비교."></figure>
+  <h3>Human-inspired prompting partially reduces over-confidence</h3>
+  <ul>
+    <li>CoT, Self-Probing 등은 일부 조건에서 ECE를 낮춘다.</li>
+    <li>ECE가 낮아져도 틀린 답을 더 잘 찾는다는 뜻은 아니다. 모든 과제에서 가장 좋은 prompt도 없다.</li>
+    <li>Figure 3에서 GPT-3.5는 prompt에 따른 ECE 차이가 크다. GPT-4의 ECE는 상대적으로 낮지만, AUROC 개선은 제한적이다.</li>
+    <li>GPT-4에서는 Self-Probing, GPT-3.5에서는 Top-K가 비교적 좋은 결과를 보인다. 과제와 모델을 바꾸면 순위도 달라진다.</li>
+    <li>GPT-4의 GSM8K CoT 예시: 모든 답에 100% confidence, accuracy 93.6%, ECE 0.064. 이 경우 답 사이의 오류 순위를 매길 수 없다.</li>
+  </ul>
+  <figure><img src="images/xiong-figure-3-prompting.png" alt="논문 Figure 3: GPT-3.5와 GPT-4에서 prompt별 ECE 및 AUROC 비교."></figure>
+  <h3>Variance among multiple responses improves failure prediction</h3>
+  <ul>
+    <li>GPT-3.5, GSM8K: CoT 단일 응답의 AUROC 0.548 → Self-Random 5회와 Consistency의 AUROC 0.927.</li>
+    <li>Table 3의 5개 과제 평균: CoT 단일 응답 AUROC 0.564 → Self-Random 5회 0.730. ECE는 0.250 → 0.187.</li>
+    <li>sampling 효과는 과제마다 다르다. GSM8K의 개선폭이 크고, 다른 과제에서는 작을 수 있다.</li>
+  </ul>
+  <figure><img src="images/xiong-table-3-sampling.png" alt="논문 Table 3: GPT-3.5의 sampling 방법별 ECE와 AUROC 비교."></figure>
+  <ul>
+    <li>Figure 7에서 Misleading hint를 늘리면 AUROC는 올라가다가 증가폭이 줄어든다. ECE는 약 4개 hint 이후 다시 커진다.</li>
+    <li>반복 응답 수를 늘리는 만큼 호출 비용도 증가한다. 응답 수는 성능과 비용을 함께 보고 정해야 한다.</li>
+  </ul>
+  <figure><img src="images/xiong-figure-7-responses.png" alt="논문 Figure 7: Misleading hint 수에 따른 GPT-3.5의 ECE와 AUROC 변화."></figure>
+  <h3>Aggregation: 원하는 지표에 따라 선택</h3>
+  <ul>
+    <li>GPT-4 비교에서 Pair-Rank의 평균 ECE가 가장 낮다: 0.069.</li>
+    <li>평균 AUROC는 Pair-Rank 0.676, Avg-Conf 0.669. 데이터셋별 결과는 다르다.</li>
+    <li>Avg-Conf는 6개 과제 중 5개에서 AUROC가 가장 높지만, GSM8K에서는 0.410으로 낮다. 평균만 보고 선택하기 어렵다.</li>
+    <li>Consistency는 답의 일치율만 본다. Avg-Conf는 각 응답의 confidence를 반영하고, Pair-Rank는 Top-K 후보 순위를 이용한다.</li>
+    <li>논문은 Top-K + Self-Random에 Avg-Conf 또는 Pair-Rank를 결합하는 방법을 권한다. 어떤 지표를 중시하는지에 따라 선택한다.</li>
+  </ul>
+  <figure><img src="images/xiong-table-4-aggregation.png" alt="논문 Table 4: GPT-4의 Consistency, Avg-Conf, Pair-Rank 비교."></figure>
+  <h3>해석 범위</h3>
+  <ul>
+    <li>실험은 정답이 하나인 QA 중심이다. DTI의 결합 측정값처럼 실험 종류와 조건에 따라 달라지는 값까지 검증한 결과는 아니다.</li>
+    <li>논문의 추천 조합도 모든 과제에서 우세하지 않다. Professional Law처럼 어려운 과제에서는 failure prediction이 여전히 약하다.</li>
+  </ul>
+</section>
+<section id="abstain-dti">
+  <h2>ABSTAIN-DTI takeaway</h2>
+  <p class="scope">논문은 QA 실험이다. 아래는 우리 프로젝트에서 검증할 적용안이다.</p>
+  <h3>Confidence를 그대로 믿을 수 있는가?</h3>
+  <ul>
+    <li>W08 파일럿에서 자기보고 confidence의 분포를 먼저 본다. 80–100% 또는 5% 단위에 몰리는지, 오답에서도 높게 유지되는지 확인한다.</li>
+    <li>ECE만 보지 않는다. 정답·오답 구분은 failure-prediction AUROC로, 실제 기권 효용은 risk–coverage 곡선과 AURC로 본다. 결합 여부를 맞히는 AUROC와는 다른 지표다.</li>
+    <li>정답과 오답 수가 크게 다르면 AUPRC-P/N도 함께 본다. confidence를 일괄적으로 낮춰 ECE만 개선한 경우는 기권 순위가 좋아졌다고 볼 수 없다.</li>
+    <li>random, cold-drug, cold-target, cold-both, scaffold split을 따로 보고한다. 타겟 서열 identity와 pocket pLDDT가 낮을 때 confidence와 기권율이 함께 변하는지도 본다.</li>
+  </ul>
+  <h3>반복 응답을 어떻게 쓸 것인가?</h3>
+  <ul>
+    <li>B·C·D의 동일 쿼리 3회 로그에서 <code>binds</code> 일치율을 계산한다. 단일 자기보고 confidence와 같은 쿼리에서 비교한다.</li>
+    <li>조건 E에서는 이 일치율과 자기보고 confidence를 각각 점수로 써서 동일한 conformal 절차에 넣는다. 반복 로그를 재사용하면 추가 호출이 없다.</li>
+    <li>회귀 <code>pAffinity</code>는 값이 연속적이므로 답의 완전 일치율을 쓰지 않는다. 반복 예측의 분산 또는 미리 정한 허용오차를 별도로 평가한다.</li>
+    <li>반복 호출의 이득은 쿼리당 토큰·지연·USD와 함께 보고한다. 논문의 5회 sampling 수치를 우리 3회 설계의 성능으로 가정하지 않는다.</li>
+  </ul>
+  <h3>기권을 평가할 때</h3>
+  <ul>
+    <li>D의 명시적 <code>abstain</code>과 confidence 기반 선택적 예측을 구분한다. 동일 coverage(예: 80%)에서 selective accuracy를 비교한다.</li>
+    <li>3회 실행 사이 기권 결정이 바뀌는 flip rate를 기록한다. 답의 일치율과 기권 결정의 안정성은 다른 값이다.</li>
+    <li>실측값 직접 조회가 확인된 쿼리와 실제 예측 쿼리를 분리한다. 조회로 맞힌 답이 confidence 품질을 높여 보이게 할 수 있다.</li>
+    <li>Top-K·Pair-Rank는 이진 <code>binds</code>에서 순위 정보가 제한적이다. 우선 단일 confidence와 consistency를 기준으로 검증하고, 추가 방법은 파일럿 결과와 비용을 보고 정한다.</li>
+  </ul>
+</section>
+<section id="references">
+  <h2>References</h2>
+  <ul><li><a href="https://arxiv.org/abs/2306.13063">Xiong et al., Can LLMs Express Their Uncertainty? An Empirical Evaluation of Confidence Elicitation in LLMs, ICLR 2024</a></li><li><a href="https://app.notion.com/p/Can-LLMs-express-their-uncertainty-3fca5f390efe803f9385fba6b07f0b4b?source=copy_link">Notion 정리</a></li></ul>
+</section>
+</main>
+</body>
+</html>
