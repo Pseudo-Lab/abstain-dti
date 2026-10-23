@@ -15,3 +15,11 @@
 | | 차재민 | [AI Agents That Matter? (TMLR, 2025](https://arxiv.org/pdf/2407.01502) | |
 
 <!-- Row example: | github-id | Name | Paper title | [tooluniverse-facts.md](tooluniverse-facts.md) | -->
+
+## ToolUniverse 자료
+
+| 자료 | 내용 | 보기 |
+| --- | --- | --- |
+| [`tooluniverse-slides.html`](tooluniverse-slides.html) | ToolUniverse 소개 발표자료. Tool · MCP · Skill 차이, 내부 모듈, 질문 처리 흐름 | [slide](https://htmlpreview.github.io/?https://github.com/Pseudo-Lab/abstain-dti/blob/main/docs/literature/tooluniverse-slides.html) |
+| [`tooluniverse-catalog.html`](tooluniverse-catalog.html) | ToolUniverse 도구 · 스킬 분야별 목록 | [view](https://htmlpreview.github.io/?https://github.com/Pseudo-Lab/abstain-dti/blob/main/docs/literature/tooluniverse-catalog.html) |
+| [`dpp4-research-journey.html`](dpp4-research-journey.html) | ToolUniverse로 진행한 제2형 당뇨병 치료제 탐색 실습. 타겟 DPP4 선정, 시타글립틴 구조 변형, 결합 예측과 ADMET 비교 | [view](https://htmlpreview.github.io/?https://github.com/Pseudo-Lab/abstain-dti/blob/main/docs/literature/dpp4-research-journey.html) |
