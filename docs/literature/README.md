@@ -4,7 +4,7 @@
 | ID | Name | Paper | Update |
 | --- | --- | --- | --- |
 | [@MinJu-Ha](https://github.com/MinJu-Ha) | 하민주 | [Can LLMs Express Their Uncertainty? An Empirical Evaluation of Confidence Elicitation in LLMs](https://arxiv.org/abs/2306.13063) (ICLR, 2024) | [HTML review](can-llms-express-their-uncertainty.html) · [Notion notes](https://app.notion.com/p/Can-LLMs-express-their-uncertainty-3fca5f390efe803f9385fba6b07f0b4b?source=copy_link) |
-| | 김시은 | [Boltz-2: Towards Accurate and Efficient Binding Affinity Prediction](https://pmc.ncbi.nlm.nih.gov/articles/PMC12262699/) (PMC, preprint)  [slide](boltz2_slides.pdf) |
+| | 김시은 | [Boltz-2: Towards Accurate and Efficient Binding Affinity Prediction](https://pmc.ncbi.nlm.nih.gov/articles/PMC12262699/) (PMC, preprint) | [slide](boltz2_slides.pdf) |
 | | 정재훈 | [Autonomous biomedical research with an artificial intelligence agent](https://www.science.org/doi/abs/10.1126/science.adz4351) (Science, 2026) | |
 | [@ybaeus](https://github.com/ybaeus) | 배예지 | [DTIAM: a unified framework for predicting drug-target interactions, binding affinities and drug mechanisms](https://www.nature.com/articles/s41467-025-57828-0) (Nature Communications, 2025) | [slide](https://claude.ai/artifact/H5GdWJXuEZLLToAxc8gTGK#slide-3dd33bdac6c2) |
 | | 박소정 | [BindingDB in 2024: a FAIR Knowledgebase of Protein-Small Molecule Binding Data](https://chemrxiv.org/doi/10.26434/chemrxiv-2024-v9ckg) | |
