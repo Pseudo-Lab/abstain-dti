@@ -5,14 +5,14 @@
 | --- | --- | --- | --- |
 | [@MinJu-Ha](https://github.com/MinJu-Ha) | 하민주 | [Can LLMs Express Their Uncertainty? An Empirical Evaluation of Confidence Elicitation in LLMs](https://arxiv.org/abs/2306.13063) (ICLR, 2024) | [HTML review](can-llms-express-their-uncertainty.html) · [Notion notes](https://app.notion.com/p/Can-LLMs-express-their-uncertainty-3fca5f390efe803f9385fba6b07f0b4b?source=copy_link) |
 | | 김시은 | [Boltz-2: Towards Accurate and Efficient Binding Affinity Prediction](https://pmc.ncbi.nlm.nih.gov/articles/PMC12262699/) (PMC, preprint) | [slide](boltz2_slides.pdf) |
-| | 정재훈 | [Autonomous biomedical research with an artificial intelligence agent](https://www.science.org/doi/abs/10.1126/science.adz4351) (Science, 2026) | |
+| [@motto7](http://github.com/motto7) | 정재훈 | [Autonomous biomedical research with an artificial intelligence agent](https://www.science.org/doi/abs/10.1126/science.adz4351) (Science, 2026) | [slide](http://github.com/Pseudo-Lab/abstain-dti/blob/main/docs/literature/jaehoon_jung_biomni_presentation.pptx) |
 | [@ybaeus](https://github.com/ybaeus) | 배예지 | [DTIAM: a unified framework for predicting drug-target interactions, binding affinities and drug mechanisms](https://www.nature.com/articles/s41467-025-57828-0) (Nature Communications, 2025) | [slide](https://claude.ai/artifact/H5GdWJXuEZLLToAxc8gTGK#slide-3dd33bdac6c2) |
 | | 박소정 | [BindingDB in 2024: a FAIR Knowledgebase of Protein-Small Molecule Binding Data](https://chemrxiv.org/doi/10.26434/chemrxiv-2024-v9ckg) | |
-| [@Leokong-c](https://github.com/Leokong-c) | 이성주 | [Evolutionary-scale prediction of atomic-level protein structure with a language model](https://www.science.org/doi/10.1126/science.ade2574) (Science, 2023) | |
+| [@Leokong-c](https://github.com/Leokong-c) | 이성주 | [Evolutionary-scale prediction of atomic-level protein structure with a language model](https://www.science.org/doi/10.1126/science.ade2574) (Science, 2023) | [slide](https://github.com/Pseudo-Lab/abstain-dti/blob/main/docs/literature/Evolutionary-scale%20Protein%20Structure%20(W02-W03_%ED%86%B5%ED%95%A9%EB%B0%9C%ED%91%9C)_LSJ.pdf) |
 | [@wez-97](https://github.com/wez-97) | 서동영 | [SMDD-Bench: Can LLMs Solve Real-World Small Molecule Drug Design Tasks?](https://arxiv.org/abs/2605.21740) | [slide](https://htmlpreview.github.io/?https://github.com/Pseudo-Lab/abstain-dti/blob/main/docs/literature/smdd_bench_review.html) |
-| | 전소연 | [Most ligand-based classification benchmarks reward memorization rather than generalization](https://pubs.acs.org/jcisd8/article/58/5/916/863748/Most-Ligand-Based-Classification-Benchmarks-Reward) (JCIM, 2018) | |
-| | 권예진 | [How accurately can one predict drug binding models using AlphaFold models?](https://pmc.ncbi.nlm.nih.gov/articles/PMC10746139/) | |
-| | 차재민 | [AI Agents That Matter? (TMLR, 2025](https://arxiv.org/pdf/2407.01502) | |
+| [@ocean-all](https://github.com/ocean-all)| 전소연 | [Most ligand-based classification benchmarks reward memorization rather than generalization](https://pubs.acs.org/jcisd8/article/58/5/916/863748/Most-Ligand-Based-Classification-Benchmarks-Reward) (JCIM, 2018) | [slide](AVE_Journal.pdf)|
+| [@yejinkwon01](https://github.com/yejinkwon01) | 권예진 | [How accurately can one predict drug binding models using AlphaFold models?](https://pmc.ncbi.nlm.nih.gov/articles/PMC10746139/) | [slide](https://github.com/Pseudo-Lab/abstain-dti/blob/main/docs/literature/presentation_how%20accurately%20can%20one%20predict%20binding%20modes%20using%20AF%20models.pdf) | 
+| [@chahero](https://github.com/chahero) | 차재민 | [AI Agents That Matter](https://arxiv.org/pdf/2407.01502) (TMLR, 2025) | [slide](https://chahero.github.io/abstain-dti-learning/papers/ai-agents-that-matter/) |
 
 <!-- Row example: | github-id | Name | Paper title | [tooluniverse-facts.md](tooluniverse-facts.md) | -->
 
