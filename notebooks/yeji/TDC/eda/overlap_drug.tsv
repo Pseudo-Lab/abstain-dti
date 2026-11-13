@@ -1,0 +1,6 @@
+	davis	bindingdb_kd	bindingdb_ki	kiba	bindingdb_ic50
+davis	68	43	29	9	44
+bindingdb_kd	43	10642	1522	17	3442
+bindingdb_ki	29	1522	174319	132	29745
+kiba	9	17	132	2068	583
+bindingdb_ic50	44	3442	29745	583	547976

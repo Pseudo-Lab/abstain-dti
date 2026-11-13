@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
 """
-TDC DTI 탐색 (EDA) — 보기만 하고 아무것도 만들지 않는다.
+TDC DTI 탐색 (EDA). 보기만 하고 병합 테이블은 만들지 않는다.
 
-6종 전부에 대해:
+기본 5종 (davis, bindingdb_kd, bindingdb_ki, kiba, bindingdb_ic50) 에 대해.
+bindingdb_patent 는 측정 종류와 단위가 확인되지 않아 기본에서 뺐다:
   - 분포 (p-scale, censoring 포함/제외)
   - assay 상한 탐지
   - ID 붕괴율 (cold-split leakage 위험 지표)
   - 중복과 conflict
   - pos/neg 비율, degree 분포
-  - 데이터셋 간 겹침
+  - 데이터셋 간 겹침 heatmap (5x5, 그리고 병합 대상 3종의 3x3)
   - Kd+Ki 와 IC50 의 차이 (섞으면 안 되는 이유를 수치로)
 
 벤치마크 파일 생성은 build_dta_benchmark.py 가 한다.
@@ -33,22 +34,24 @@ import numpy as np
 import pandas as pd
 
 from dta_common import (
-    C, INK, INK_MUTED, P_THRESHOLDS, SEQ_RAMP, SURFACE, _f,
-    aggregate_pairs, list_dti_datasets, load_dataset, prepare, to_long,
+    C, DEFAULT_BENCHMARK_DATASETS, DEFAULT_LABEL_RULE, EDA_DATASETS, INK,
+    INK_MUTED, LABEL_RULES, SURFACE, _f, aggregate_pairs, label_counts,
+    load_dataset, overlap_matrices, plot_overlap_heatmaps, prepare, to_long,
     write_provenance,
 )
 
 LANG: dict[str, dict[str, str]] = {
     "ko": {
         "fig1": "데이터셋별 affinity 분포",
-        "fig2": "데이터셋 규모 — ID 아닌 구조·서열 기준",
+        "fig2": "데이터셋 규모: ID 아닌 구조·서열 기준",
         "fig3": "positive / negative 비율",
-        "fig4": "공유 (화합물, 타겟) 쌍",
-        "fig5": "Kd + Ki vs IC50 — 섞어도 되는가",
+        "fig4": "데이터셋 간 겹침 ({n}x{n}), 고유 구조와 서열 기준",
+        "fig5": "Kd + Ki vs IC50: 섞어도 되는가",
         "fig5l": "같은 쌍, 두 측정방식  (n={n:,}, r={r})",
-        "fig5r": "차이 분포 — 0.5 이내 {pct:.0%}",
-        "fig6": "{name} — 상한값이 전체의 {pct:.0%}",
+        "fig5r": "차이 분포: 0.5 이내 {pct:.0%}",
+        "fig6": "{name} - 검열 행이 전체 측정의 {pct:.0%}",
         "cen_raw_all": "원본 단위: 전체",
+        "meas_count": "측정 수",
         "cen_raw_ex": "원본 단위: {v} nM 이상 제외",
         "cen_p_all": "p-scale: 전체",
         "cen_p_ex": "p-scale: {v} nM 이상 제외",
@@ -59,16 +62,17 @@ LANG: dict[str, dict[str, str]] = {
     },
     "en": {
         "fig1": "Affinity distribution by dataset",
-        "fig2": "Dataset scale — by structure and sequence, not ID",
+        "fig2": "Dataset scale: by structure and sequence, not ID",
         "fig3": "Positive / negative ratio",
-        "fig4": "Shared (compound, target) pairs",
-        "fig5": "Kd + Ki vs IC50 — can they be pooled?",
+        "fig4": "Overlap between datasets ({n}x{n}), unique structures and sequences",
+        "fig5": "Kd + Ki vs IC50: can they be pooled?",
         "fig5l": "Same pairs, two measurement types  (n={n:,}, r={r})",
-        "fig5r": "Difference distribution — {pct:.0%} within 0.5",
-        "fig6": "{name} — censored values are {pct:.0%} of all pairs",
-        "cen_raw_all": "Raw units: all pairs",
+        "fig5r": "Difference distribution: {pct:.0%} within 0.5",
+        "fig6": "{name} - censored rows are {pct:.0%} of all measurements",
+        "cen_raw_all": "Raw units: all measurements",
         "cen_raw_ex": "Raw units: excluding >= {v} nM",
-        "cen_p_all": "p-scale: all pairs",
+        "meas_count": "measurement count",
+        "cen_p_all": "p-scale: all measurements",
         "cen_p_ex": "p-scale: excluding >= {v} nM",
         "count_log": "count (log)", "fraction": "fraction",
         "median": "median", "pair_count": "Pair count",
@@ -126,14 +130,9 @@ def eda_one(df: pd.DataFrame, info: dict, spread_threshold: float) -> dict:
         posneg["binary"] = _ratio(int(vc.get(1.0, 0)), int(vc.get(0.0, 0)))
     elif has_p:
         # censored 를 뺀 쪽도 함께. 상한 덩어리가 negative 를 부풀린다
-        for t in P_THRESHOLDS:
-            posneg[f"pY>={t}"] = _ratio(int((df["_pY"] >= t).sum()),
-                                        int((df["_pY"] < t).sum()))
+        posneg.update(label_counts(df["_pY"], df["_censored"]))
         if df["_censored"].any():
-            u = df.loc[~df["_censored"], "_pY"]
-            posneg["uncensored_only"] = {
-                f"pY>={t}": _ratio(int((u >= t).sum()), int((u < t).sum()))
-                for t in P_THRESHOLDS}
+            posneg["uncensored_only"] = label_counts(df.loc[~df["_censored"], "_pY"])
     else:
         posneg["note"] = ("스케일이 nM 이 아니라 임계값을 정할 수 없음. "
                           "문헌 관례를 확인해 직접 지정할 것")
@@ -187,25 +186,17 @@ def _ratio(pos: int, neg: int) -> dict:
 # ==========================================================================
 
 def overlaps(frames: dict[str, pd.DataFrame]) -> dict:
-    names = list(frames)
-    sets = {n: {
-        "drug": set(frames[n]["_ik"].dropna()),
-        "target": set(frames[n]["_sh"].dropna()),
-        "pair": set(map(tuple, frames[n].dropna(subset=["_ik", "_sh"])
-                        [["_ik", "_sh"]].values)),
-    } for n in names}
-    out = {}
-    for kind in ("drug", "target", "pair"):
-        m = pd.DataFrame(0, index=names, columns=names, dtype=int)
-        for a in names:
-            for b in names:
-                m.loc[a, b] = len(sets[a][kind] & sets[b][kind])
-        out[kind] = m
-    return out
+    """InChIKey, 서열 hash 기준 고유값으로 센 데이터셋 간 겹침."""
+    sets = {}
+    for n, df in frames.items():
+        ok = df.dropna(subset=["_ik", "_sh"])
+        sets[n] = {"drug": set(ok["_ik"]), "target": set(ok["_sh"]),
+                   "pair": set(zip(ok["_ik"], ok["_sh"]))}
+    return overlap_matrices(sets)
 
 
 # ==========================================================================
-# Kd+Ki vs IC50 — 섞으면 안 되는 이유를 수치로
+# Kd+Ki vs IC50: 섞으면 안 되는 이유를 수치로
 # ==========================================================================
 
 def compare_kdki_vs_ic50(prepared: dict[str, tuple[pd.DataFrame, dict]],
@@ -267,6 +258,9 @@ def compare_kdki_vs_ic50(prepared: dict[str, tuple[pd.DataFrame, dict]],
 # ==========================================================================
 # 그림
 # ==========================================================================
+
+RAW_XMAX_NM = 10_000.0
+
 
 def make_plots(eda: list[dict], frames: dict[str, pd.DataFrame], ov: dict,
                cmp_j: pd.DataFrame | None, cmp_res: dict,
@@ -350,8 +344,8 @@ def make_plots(eda: list[dict], frames: dict[str, pd.DataFrame], ov: dict,
     rows = []
     for e in eda:
         pn = e["pos_neg"]
-        k = "binary" if "binary" in pn else ("pY>=7.0" if "pY>=7.0" in pn
-                                             else None)
+        k = "binary" if "binary" in pn else (
+            DEFAULT_LABEL_RULE if DEFAULT_LABEL_RULE in pn else None)
         if k and isinstance(pn.get(k), dict) and pn[k]["pos_frac"] is not None:
             rows.append((f"{e['dataset']}\n({k})", pn[k]["pos_frac"]))
     if rows:
@@ -374,27 +368,17 @@ def make_plots(eda: list[dict], frames: dict[str, pd.DataFrame], ov: dict,
         p = outdir / "03_pos_neg.png"
         fig.savefig(p, dpi=150); plt.close(fig); made.append(str(p))
 
-    # --- 4. 겹침 ---
-    m = ov["pair"]
-    if len(m) > 1:
-        from matplotlib.colors import LinearSegmentedColormap
-        cmap = LinearSegmentedColormap.from_list("seq", SEQ_RAMP)
-        norm = np.log10(m.values + 1)
-        fig, ax = plt.subplots(figsize=(1.3 * len(m) + 3, 1.1 * len(m) + 2.6))
-        ax.imshow(norm, cmap=cmap, aspect="auto")
-        ax.set_xticks(range(len(m))); ax.set_xticklabels(m.columns, rotation=38,
-                                                         ha="right", fontsize=9)
-        ax.set_yticks(range(len(m))); ax.set_yticklabels(m.index, fontsize=9)
-        hi = norm.max() or 1
-        for i in range(len(m)):
-            for jj in range(len(m)):
-                ax.text(jj, i, f"{m.values[i, jj]:,}", ha="center",
-                        va="center", fontsize=8.5,
-                        color=SURFACE if norm[i, jj] > hi * 0.55 else INK)
-        ax.set_title(L["fig4"], loc="left", pad=12); ax.grid(False)
-        fig.tight_layout()
-        p = outdir / "04_pair_overlap.png"
-        fig.savefig(p, dpi=150); plt.close(fig); made.append(str(p))
+    # --- 4. 겹침 heatmap: 전체, 그리고 병합 대상 3종 ---
+    if len(ov["pair"]) > 1:
+        p = outdir / "04_overlap_all.png"
+        plot_overlap_heatmaps(ov, p, L["fig4"].format(n=len(ov["pair"])))
+        made.append(str(p))
+        core = [n for n in DEFAULT_BENCHMARK_DATASETS if n in ov["pair"].index]
+        if len(core) > 1:
+            sub = {k: m.loc[core, core] for k, m in ov.items()}
+            p = outdir / "04_overlap_davis_kd_ki.png"
+            plot_overlap_heatmaps(sub, p, L["fig4"].format(n=len(core)))
+            made.append(str(p))
 
     # --- 5. Kd+Ki vs IC50 ---
     if cmp_j is not None and len(cmp_j) >= 5:
@@ -451,13 +435,27 @@ def make_plots(eda: list[dict], frames: dict[str, pd.DataFrame], ov: dict,
              L["cen_p_ex"].format(v=f"{ceil:,.0f}"), "p-scale (-log10 M)",
              n_keep),
         ]
+        raw_axes = (axes[0][0], axes[0][1])
         for ax, data, title, xlab, nn in panels:
             if data.empty:
                 ax.set_visible(False); continue
-            ax.hist(data, bins=45, color=C["blue"], edgecolor=SURFACE,
-                    linewidth=0.4)
+            if ax in raw_axes:
+                # Raw nM panels share a fixed 0-10,000 nM window so the three
+                # datasets read on one scale. Values above it are counted, not drawn.
+                n_over = int((data > RAW_XMAX_NM).sum())
+                ax.hist(data[data <= RAW_XMAX_NM], bins=50,
+                        range=(0, RAW_XMAX_NM), color=C["blue"],
+                        edgecolor=SURFACE, linewidth=0.4)
+                ax.set_xlim(0, RAW_XMAX_NM)
+                if n_over:
+                    ax.text(0.98, 0.86, f"> {RAW_XMAX_NM:,.0f} nM: {n_over:,} (not shown)",
+                            transform=ax.transAxes, ha="right", va="top",
+                            fontsize=9, color=INK_MUTED)
+            else:
+                ax.hist(data, bins=45, color=C["blue"], edgecolor=SURFACE,
+                        linewidth=0.4)
             ax.set_title(title, loc="center", pad=8)
-            ax.set_xlabel(xlab); ax.set_ylabel(L["pair_count"])
+            ax.set_xlabel(xlab); ax.set_ylabel(L["meas_count"])
             ax.grid(axis="y", alpha=0.7); ax.set_axisbelow(True)
             ax.set_ylim(top=ax.get_ylim()[1] * 1.16)
             ax.text(0.98, 0.95, f"n={nn:,}", transform=ax.transAxes,
@@ -481,7 +479,7 @@ def main() -> int:
     ap.add_argument("--out", type=Path, default=Path("./eda"))
     ap.add_argument("--data-path", default="./data")
     ap.add_argument("--datasets", nargs="+", default=None,
-                    help="기본값은 DTI 전량")
+                    help=f"기본값 {EDA_DATASETS}")
     ap.add_argument("--spread-threshold", type=float, default=1.0)
     ap.add_argument("--censor-rule", choices=["at-or-above", "exact-spikes"],
                     default="at-or-above",
@@ -494,7 +492,7 @@ def main() -> int:
     args = ap.parse_args()
     args.out.mkdir(parents=True, exist_ok=True)
 
-    names = args.datasets or list_dti_datasets()
+    names = args.datasets or list(EDA_DATASETS)
     print(f"대상 {len(names)}종: {', '.join(names)}\n", file=sys.stderr)
 
     prepared, eda, failed = {}, [], {}
@@ -517,14 +515,14 @@ def main() -> int:
         sc = e["scale_check"]
         if sc["agrees"] is False:
             print(f"  !! 스케일 불일치: 선언 '{sc['declared']}' vs 실제 "
-                  f"'{sc['looks_like']}' — SCALE 을 고칠 것", file=sys.stderr)
+                  f"'{sc['looks_like']}': SCALE 을 고칠 것", file=sys.stderr)
         c = e.get("censoring")
         if c:
             lst = ", ".join(f"{s['value_nM']:,.0f}" for s in c["all_spikes"][:4])
-            print(f"  ! 상한 {lst} nM — {c['censored_share']:.1%} censored "
+            print(f"  ! 상한 {lst} nM: {c['censored_share']:.1%} censored "
                   f"(규칙 {c['rule']})", file=sys.stderr)
             if c.get("multi_ceiling_warning"):
-                print(f"  ! 상한 후보 {c['n_spikes']}개 — 규칙 선택 필요",
+                print(f"  ! 상한 후보 {c['n_spikes']}개: 규칙 선택 필요",
                       file=sys.stderr)
         if ent["target_id_collapse"]:
             print(f"  ! target ID 붕괴율 {ent['target_id_collapse']:.1%}",
@@ -552,7 +550,7 @@ def main() -> int:
               f"Δmedian {cmp_res['delta_median']}, r {cmp_res['pearson_r']}",
               file=sys.stderr)
         nv = cmp_res["naive_if_censoring_ignored"]
-        print(f"  (censoring 무시 시 Δmedian {nv['delta_median']} — "
+        print(f"  (censoring 무시 시 Δmedian {nv['delta_median']}: "
               f"차이가 크면 censoring 처리가 결과를 바꾼다는 뜻)",
               file=sys.stderr)
     else:
@@ -584,12 +582,12 @@ def main() -> int:
     summary.to_csv(args.out / "eda_summary.tsv", sep="\t", index=False)
 
     write_provenance(args.out / "provenance.json", "tdc_dta_eda.py", {
-        "mode": "exploration only — 벤치마크 파일을 만들지 않는다",
+        "mode": "exploration only. 병합 테이블은 build_dta_benchmark.py 가 만든다",
         "datasets_requested": names,
         "datasets_failed": failed,
         "parameters": {
             "spread_threshold_log_units": args.spread_threshold,
-            "p_thresholds": list(P_THRESHOLDS),
+            "label_rules": list(LABEL_RULES),
             "censor_rule": args.censor_rule,
             "censor_ceiling": args.censor_ceiling,
         },

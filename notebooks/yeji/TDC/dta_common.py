@@ -2,9 +2,12 @@
 TDC DTA 작업 공용 모듈.
 
 tdc_dta_eda.py (탐색) 와 build_dta_benchmark.py (생성) 가 함께 쓴다.
-로딩 · 구조/서열 정규화 · 단위 변환 · censoring 탐지 · 쌍 단위 집계.
+로딩 · 구조/서열 정규화 · 단위 변환 · censoring 탐지 · 쌍 단위 집계 · 겹침 heatmap.
 
-Esaki & Ikeda (2026) J Cheminform 18:43 의 curation framework 를 따른다.
+중복 병합은 Esaki & Ikeda (2026) J Cheminform 18:43 의 권고 중 InChIKey 키,
+median 대표값, 불일치 플래그, 병합 이력 기록을 따른다. 그 논문은 검열값과
+Kd/Ki 혼합을 다루지 않으므로 그 두 규칙은 이 프로젝트의 결정이다
+(.scratch/tdc-dta-merge/issues/03-merge-rule.md).
 """
 
 from __future__ import annotations
@@ -42,7 +45,8 @@ SCALE: dict[str, dict] = {
     "davis": {
         "unit": "nM", "measurement": "Kd",
         "note": "kinase panel, 행렬 밀도 100%. 안 붙는 조합이 전부 상한값으로 "
-                "들어가 있다. 구조 다양성이 없어 주 데이터에서 제외",
+                "들어가 있다. 화합물 68개뿐이라 구조 다양성은 낮다. "
+                "BindingDB_Kd 와 같은 측정이 많다 (Davis 2011 이 ChEMBL 경유로 들어감)",
     },
     "kiba": {
         "unit": "score", "measurement": "KIBA",
@@ -51,18 +55,33 @@ SCALE: dict[str, dict] = {
     },
     "bindingdb_patent": {
         "unit": "unverified", "measurement": "mixed",
-        "note": "특허 유래, 243,344 rows. binary 아니라 REGRESSION — TDC 의 "
+        "note": "특허 유래, 243,344 rows. binary 아니라 REGRESSION: TDC 의 "
                 "DTI_DG benchmark 가 metric='pcc' 로 쓴다. Year 컬럼이 있고 "
                 "DTI_DG 는 group_column='Year' 로 분할한다 (오염 축에 쓸 수 "
                 "있는 유일한 셋). Y 가 nM 인지 p-scale 인지 미확인",
     },
 }
 
-# 벤치마크의 기본 구성원. 열역학적 상수만.
-DEFAULT_BENCHMARK_DATASETS = ["bindingdb_kd", "bindingdb_ki"]
+# 벤치마크의 구성원. 열역학적 상수만.
+DEFAULT_BENCHMARK_DATASETS = ["davis", "bindingdb_kd", "bindingdb_ki"]
 
-# pos/neg 비율을 볼 임계값 (p-scale). 7 = 100 nM, 6 = 1 uM
-P_THRESHOLDS = (6.0, 7.0, 8.0)
+# EDA 기본 대상. bindingdb_patent 는 측정 종류와 단위가 확인되지 않아 뺀다.
+# kiba 와 bindingdb_ic50 은 병합하지 않고 비교용으로만 본다.
+EDA_DATASETS = ["davis", "bindingdb_kd", "bindingdb_ki", "kiba", "bindingdb_ic50"]
+
+# 측정 상한. 10 uM = 10,000 nM = pY 5. 이 값 이상은 right-censored 로 보고,
+# 넘는 값은 이 값으로 자른다 (2026-11-13 결정).
+CEILING_NM = 10_000.0
+
+# 양성/음성 규칙. 표에는 라벨을 저장하지 않고 README 와 provenance 에서
+# 비율만 보고한다. 첫 항목이 현재 기본값이다.
+#   (양성 조건, 음성 조건). 둘 다 아니면 라벨 없음.
+LABEL_RULES: dict[str, tuple] = {
+    "pY>5 | pY<=5": (lambda p: p > 5.0, lambda p: p <= 5.0),
+    "pY>=6 | pY<=5": (lambda p: p >= 6.0, lambda p: p <= 5.0),
+    "pY>=7 | pY<=5": (lambda p: p >= 7.0, lambda p: p <= 5.0),
+}
+DEFAULT_LABEL_RULE = next(iter(LABEL_RULES))
 
 # 검증된 categorical 팔레트 (light surface 통과)
 C = {"blue": "#2a78d6", "orange": "#eb6834", "aqua": "#1baf7a",
@@ -126,7 +145,7 @@ def pytdc_version() -> str:
 
 
 # ==========================================================================
-# 정규화 — Pillar 1(구조) 과 Pillar 3(타겟) 의 최소 버전
+# 정규화: Pillar 1(구조) 과 Pillar 3(타겟) 의 최소 버전
 # ==========================================================================
 
 def inchikeys(smiles: pd.Series) -> pd.Series:
@@ -141,7 +160,7 @@ def inchikeys(smiles: pd.Series) -> pd.Series:
         from rdkit import Chem, RDLogger
         RDLogger.DisableLog("rdApp.*")
     except ImportError:
-        print("  ! rdkit 없음 — SMILES 문자열을 키로 사용 (중복 과소추정됨)",
+        print("  ! rdkit 없음: SMILES 문자열을 키로 사용 (중복 과소추정됨)",
               file=sys.stderr)
         return smiles.astype(str)
 
@@ -149,7 +168,11 @@ def inchikeys(smiles: pd.Series) -> pd.Series:
         if not isinstance(s, str):
             return None
         m = Chem.MolFromSmiles(s)
-        return Chem.MolToInchiKey(m) if m is not None else None
+        if m is None:
+            return None
+        # InChI 생성이 실패하면 RDKit 은 None 이 아니라 "" 를 돌려준다.
+        # "" 를 키로 두면 서로 다른 분자가 한 쌍으로 묶이므로 None 으로 바꾼다.
+        return Chem.MolToInchiKey(m) or None
 
     table = {s: one(s) for s in smiles.dropna().unique()}
     return smiles.map(table)
@@ -177,7 +200,7 @@ def to_pscale(y: pd.Series, unit: str) -> pd.Series | None:
 
 
 # ==========================================================================
-# Censoring — assay 상한 탐지와 적용
+# Censoring: assay 상한 탐지와 적용
 # ==========================================================================
 
 def detect_ceiling(y_nM: pd.Series, min_share: float = 0.02) -> dict | None:
@@ -235,8 +258,8 @@ def apply_censoring(df: pd.DataFrame, y_num: pd.Series, unit: str,
     df 에 _censored 불리언 컬럼을 세우고 탐지 결과를 돌려준다.
 
     rule:
-      at-or-above  — 상한 이상을 전부 censored (보수적. 실측도 같이 묶일 수 있음)
-      exact-spikes — 탐지된 스파이크 값과 정확히 일치하는 것만 (실측을 보존)
+      at-or-above : 상한 이상을 전부 censored (보수적. 실측도 같이 묶일 수 있음)
+      exact-spikes: 탐지된 스파이크 값과 정확히 일치하는 것만 (실측을 보존)
 
     비교는 반드시 원본 nM 에서 한다. p-scale 변환 뒤 부동소수 비교는 위험하다.
     """
@@ -345,7 +368,7 @@ def prepare(name: str, df: pd.DataFrame, ceiling: float | None = None,
 
 
 # ==========================================================================
-# 쌍 단위 집계 — 중복 측정을 하나로
+# 쌍 단위 집계: 중복 측정을 하나로
 # ==========================================================================
 
 def aggregate_pairs(long: pd.DataFrame, spread_threshold: float = 1.0
@@ -359,7 +382,7 @@ def aggregate_pairs(long: pd.DataFrame, spread_threshold: float = 1.0
 
     대표값은 median. 이상치가 흔한 데이터라 mean 은 끌려간다.
     퍼짐(spread)을 함께 남기는 이유: median 만 남기면 "얼마나 의견이 갈렸는지"가
-    사라진다. 임계값을 넘으면 플래그만 세우고 버리지는 않는다 — 판단은 사람이.
+    사라진다. 임계값을 넘으면 플래그만 세우고 버리지는 않는다. 판단은 사람이 한다.
 
     censored 와 실측은 섞어서 median 을 내면 안 된다. 비검열만의 median 을
     따로 계산해 pY_median_uncensored 로 둔다.
@@ -442,3 +465,82 @@ def write_provenance(path: Path, tool: str, payload: dict) -> None:
         ],
     }
     path.write_text(json.dumps(doc, indent=2, ensure_ascii=False, default=str))
+
+
+# ==========================================================================
+# 양성/음성 비율과 겹침 heatmap
+# ==========================================================================
+
+def label_counts(pY: pd.Series, censored: pd.Series | None = None) -> dict:
+    """
+    LABEL_RULES 마다 양성, 음성, 라벨 없음 개수.
+
+    검열 값 c 는 "실제 pY < c" 라는 상한이다. 그래서 검열 행은 양성이 될 수
+    없고, c 가 음성 경계 이하일 때만 음성이다. 예: ">1000 nM" (c = 6) 은 pY 가
+    5 와 6 사이일 수도, 5 이하일 수도 있으므로 라벨 없음.
+    """
+    if censored is None:
+        censored = pd.Series(False, index=pY.index)
+    ok = pY.notna()
+    pY, censored = pY[ok], censored[ok].fillna(False).astype(bool)
+    out = {}
+    for name, (is_pos, is_neg) in LABEL_RULES.items():
+        pos = int((is_pos(pY) & ~censored).sum())
+        neg = int(is_neg(pY).sum())
+        out[name] = {"positive": pos, "negative": neg,
+                     "unlabelled": int(len(pY) - pos - neg),
+                     "pos_frac": _f(pos / (pos + neg)) if pos + neg else None}
+    return out
+
+
+def overlap_matrices(sets: dict[str, dict[str, set]]) -> dict[str, pd.DataFrame]:
+    """sets[dataset][kind] -> 데이터셋 x 데이터셋 교집합 크기. kind = pair/drug/target."""
+    names = list(sets)
+    out = {}
+    for kind in ("pair", "drug", "target"):
+        m = pd.DataFrame(0, index=names, columns=names, dtype=int)
+        for a in names:
+            for b in names:
+                m.loc[a, b] = len(sets[a][kind] & sets[b][kind])
+        out[kind] = m
+    return out
+
+
+def plot_overlap_heatmaps(ov: dict[str, pd.DataFrame], path: Path,
+                          title: str) -> None:
+    """쌍 / 약물 / 타겟 겹침을 나란히 그린다. 색은 log10(count+1)."""
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    from matplotlib.colors import LinearSegmentedColormap
+
+    cmap = LinearSegmentedColormap.from_list("seq", SEQ_RAMP)
+    kinds = [("pair", "pairs (InChIKey x sequence)"),
+             ("drug", "compounds (InChIKey)"),
+             ("target", "targets (sequence)")]
+    n = len(ov["pair"])
+    fig, axes = plt.subplots(1, 3, figsize=(3 * (1.25 * n + 1.6), 1.05 * n + 2.6),
+                             facecolor=SURFACE)
+    for ax, (kind, label) in zip(axes, kinds):
+        m = ov[kind]
+        norm = np.log10(m.values.astype(float) + 1)
+        ax.imshow(norm, cmap=cmap, aspect="auto")
+        ax.set_xticks(range(n)); ax.set_xticklabels(m.columns, rotation=38,
+                                                    ha="right", fontsize=9)
+        ax.set_yticks(range(n)); ax.set_yticklabels(m.index, fontsize=9)
+        img = ax.images[0]
+        for i in range(n):
+            for j in range(n):
+                r, g, b, _ = img.cmap(img.norm(norm[i, j]))
+                dark = 0.2126 * r + 0.7152 * g + 0.0722 * b < 0.5
+                ax.text(j, i, f"{m.values[i, j]:,}", ha="center", va="center",
+                        fontsize=8, color=SURFACE if dark else INK)
+        ax.set_title(label, fontsize=11, pad=8)
+        ax.grid(False)
+        for sp in ax.spines.values():
+            sp.set_visible(False)
+    fig.suptitle(title, fontsize=13, fontweight="bold", x=0.01, ha="left")
+    fig.tight_layout(rect=[0, 0, 1, 0.93])
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(path, dpi=150)
+    plt.close(fig)

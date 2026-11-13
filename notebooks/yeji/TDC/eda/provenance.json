@@ -1,0 +1,744 @@
+{
+  "generated_at_utc": "2026-11-13T16:05:40.286978+00:00",
+  "tool": "tdc_dta_eda.py",
+  "source": "Therapeutics Data Commons (PyTDC), DTI loaders",
+  "pytdc_version": "1.1.14",
+  "mode": "exploration only. 병합 테이블은 build_dta_benchmark.py 가 만든다",
+  "datasets_requested": [
+    "davis",
+    "bindingdb_kd",
+    "bindingdb_ki",
+    "kiba",
+    "bindingdb_ic50"
+  ],
+  "datasets_failed": {},
+  "parameters": {
+    "spread_threshold_log_units": 1.0,
+    "label_rules": [
+      "pY>5 | pY<=5",
+      "pY>=6 | pY<=5",
+      "pY>=7 | pY<=5"
+    ],
+    "censor_rule": "at-or-above",
+    "censor_ceiling": null
+  },
+  "eda": [
+    {
+      "dataset": "davis",
+      "measurement_type": "Kd",
+      "unit": "nM",
+      "note": "kinase panel, 행렬 밀도 100%. 안 붙는 조합이 전부 상한값으로 들어가 있다. 화합물 68개뿐이라 구조 다양성은 낮다. BindingDB_Kd 와 같은 측정이 많다 (Davis 2011 이 ChEMBL 경유로 들어감)",
+      "n_rows": 25772,
+      "is_binary": false,
+      "scale_check": {
+        "declared": "nM",
+        "looks_like": "concentration (nM-like)",
+        "agrees": true,
+        "min": 0.016,
+        "max": 10000.0,
+        "orders_of_magnitude": 5.7959
+      },
+      "censoring": {
+        "ceiling_nM": 10000.0,
+        "ceiling_pY": 5.0,
+        "exactly_at_ceiling": 18343,
+        "exactly_at_ceiling_share": 0.7117,
+        "at_or_above_ceiling": 18343,
+        "at_or_above_share": 0.7117,
+        "all_spikes": [
+          {
+            "value_nM": 10000.0,
+            "count": 18343,
+            "share": 0.7117
+          }
+        ],
+        "n_spikes": 1,
+        "note": "점측정이 아니라 right-censored (실제 값은 그 이상). drop / 분류 threshold / censored regression 중 택일",
+        "source": "자동 탐지",
+        "rule": "at-or-above",
+        "censored_rows": 18343,
+        "censored_share": 0.7117
+      },
+      "n_pairs": 25772,
+      "entities": {
+        "unique_drug_id": 68,
+        "unique_inchikey": 68,
+        "drug_id_collapse": 0.0,
+        "unique_target_id": 379,
+        "unique_target_sequence": 379,
+        "target_id_collapse": 0.0,
+        "matrix_density": 1.0
+      },
+      "duplicates": {
+        "by_id": 0,
+        "by_structure": 0,
+        "conflicts_over_threshold": 0,
+        "conflict_threshold_log_units": 1.0,
+        "worst_conflicts": []
+      },
+      "distribution": {
+        "scale": "p-scale (-log10 M)",
+        "n": 25772,
+        "min": 5.0,
+        "q1": 5.0,
+        "median": 5.0,
+        "q3": 5.4231,
+        "max": 10.7959,
+        "mean": 5.4085,
+        "std": 0.8311
+      },
+      "distribution_excluding_censored": {
+        "n": 7429,
+        "min": 5.0044,
+        "q1": 5.6576,
+        "median": 6.2007,
+        "q3": 6.9586,
+        "max": 10.7959,
+        "mean": 6.417,
+        "std": 0.9834
+      },
+      "pos_neg": {
+        "pY>5 | pY<=5": {
+          "positive": 7429,
+          "negative": 18343,
+          "unlabelled": 0,
+          "pos_frac": 0.2883
+        },
+        "pY>=6 | pY<=5": {
+          "positive": 4418,
+          "negative": 18343,
+          "unlabelled": 3011,
+          "pos_frac": 0.1941
+        },
+        "pY>=7 | pY<=5": {
+          "positive": 1845,
+          "negative": 18343,
+          "unlabelled": 5584,
+          "pos_frac": 0.0914
+        },
+        "uncensored_only": {
+          "pY>5 | pY<=5": {
+            "positive": 7429,
+            "negative": 0,
+            "unlabelled": 0,
+            "pos_frac": 1.0
+          },
+          "pY>=6 | pY<=5": {
+            "positive": 4418,
+            "negative": 0,
+            "unlabelled": 3011,
+            "pos_frac": 1.0
+          },
+          "pY>=7 | pY<=5": {
+            "positive": 1845,
+            "negative": 0,
+            "unlabelled": 5584,
+            "pos_frac": 1.0
+          }
+        }
+      },
+      "degree": {
+        "per_drug": {
+          "median": 379.0,
+          "max": 379,
+          "p95": 379.0
+        },
+        "per_target": {
+          "median": 68.0,
+          "max": 68,
+          "p95": 68.0
+        },
+        "top_target_share": 0.0026
+      },
+      "invalid": {
+        "unparsable_smiles": 0,
+        "empty_sequence": 0,
+        "non_numeric_Y": 0
+      }
+    },
+    {
+      "dataset": "bindingdb_kd",
+      "measurement_type": "Kd",
+      "unit": "nM",
+      "note": "열역학적 결합 상수. 주력 데이터",
+      "n_rows": 52274,
+      "is_binary": false,
+      "scale_check": {
+        "declared": "nM",
+        "looks_like": "concentration (nM-like)",
+        "agrees": true,
+        "min": 0.0,
+        "max": 10000000.0,
+        "orders_of_magnitude": 13.0
+      },
+      "censoring": {
+        "ceiling_nM": 10000.0,
+        "ceiling_pY": 5.0,
+        "exactly_at_ceiling": 22184,
+        "exactly_at_ceiling_share": 0.4244,
+        "at_or_above_ceiling": 26116,
+        "at_or_above_share": 0.4996,
+        "all_spikes": [
+          {
+            "value_nM": 10000.0,
+            "count": 22184,
+            "share": 0.4244
+          }
+        ],
+        "n_spikes": 1,
+        "note": "점측정이 아니라 right-censored (실제 값은 그 이상). drop / 분류 threshold / censored regression 중 택일",
+        "source": "자동 탐지",
+        "rule": "at-or-above",
+        "censored_rows": 26116,
+        "censored_share": 0.4996
+      },
+      "n_pairs": 52274,
+      "entities": {
+        "unique_drug_id": 10636,
+        "unique_inchikey": 10642,
+        "drug_id_collapse": -0.0006,
+        "unique_target_id": 1090,
+        "unique_target_sequence": 1413,
+        "target_id_collapse": -0.2963,
+        "matrix_density": 0.0035
+      },
+      "duplicates": {
+        "by_id": 8220,
+        "by_structure": 6176,
+        "conflicts_over_threshold": 1571,
+        "conflict_threshold_log_units": 1.0,
+        "worst_conflicts": [
+          {
+            "inchikey": "ZSVATMHGHAZWON-UHFFFAOYSA-N",
+            "seq_hash": "bfecab79b2b07939",
+            "spread_log_units": 8.5
+          },
+          {
+            "inchikey": "IWRDVSYRRQXOBK-UHFFFAOYSA-N",
+            "seq_hash": "bfecab79b2b07939",
+            "spread_log_units": 7.6
+          },
+          {
+            "inchikey": "XSZPFAQPQNXBLL-UHFFFAOYSA-N",
+            "seq_hash": "bfecab79b2b07939",
+            "spread_log_units": 7.5
+          },
+          {
+            "inchikey": "LMYRWZFENFIFIT-UHFFFAOYSA-N",
+            "seq_hash": "12be6bbff2f65d2e",
+            "spread_log_units": 6.74
+          },
+          {
+            "inchikey": "ZRNPUKBJZYJWCD-UHFFFAOYSA-N",
+            "seq_hash": "bfecab79b2b07939",
+            "spread_log_units": 6.7
+          }
+        ]
+      },
+      "distribution": {
+        "scale": "p-scale (-log10 M)",
+        "n": 52272,
+        "min": 2.0,
+        "q1": 5.0,
+        "median": 5.0072,
+        "q3": 6.6576,
+        "max": 15.0,
+        "mean": 5.8887,
+        "std": 1.3946
+      },
+      "distribution_excluding_censored": {
+        "n": 26156,
+        "min": 5.0035,
+        "q1": 5.9401,
+        "median": 6.6576,
+        "q3": 7.8,
+        "max": 15.0,
+        "mean": 6.9202,
+        "std": 1.2491
+      },
+      "pos_neg": {
+        "pY>5 | pY<=5": {
+          "positive": 26156,
+          "negative": 26116,
+          "unlabelled": 0,
+          "pos_frac": 0.5004
+        },
+        "pY>=6 | pY<=5": {
+          "positive": 19291,
+          "negative": 26116,
+          "unlabelled": 6865,
+          "pos_frac": 0.4248
+        },
+        "pY>=7 | pY<=5": {
+          "positive": 11103,
+          "negative": 26116,
+          "unlabelled": 15053,
+          "pos_frac": 0.2983
+        },
+        "uncensored_only": {
+          "pY>5 | pY<=5": {
+            "positive": 26156,
+            "negative": 0,
+            "unlabelled": 0,
+            "pos_frac": 1.0
+          },
+          "pY>=6 | pY<=5": {
+            "positive": 19291,
+            "negative": 0,
+            "unlabelled": 6865,
+            "pos_frac": 1.0
+          },
+          "pY>=7 | pY<=5": {
+            "positive": 11103,
+            "negative": 0,
+            "unlabelled": 15053,
+            "pos_frac": 1.0
+          }
+        }
+      },
+      "degree": {
+        "per_drug": {
+          "median": 1.0,
+          "max": 742,
+          "p95": 5.0
+        },
+        "per_target": {
+          "median": 8.0,
+          "max": 814,
+          "p95": 104.4
+        },
+        "top_target_share": 0.0156
+      },
+      "invalid": {
+        "unparsable_smiles": 0,
+        "empty_sequence": 0,
+        "non_numeric_Y": 0
+      }
+    },
+    {
+      "dataset": "bindingdb_ki",
+      "measurement_type": "Ki",
+      "unit": "nM",
+      "note": "열역학적 저해 상수. Kd 와 함께 쓴다",
+      "n_rows": 374820,
+      "is_binary": false,
+      "scale_check": {
+        "declared": "nM",
+        "looks_like": "concentration (nM-like)",
+        "agrees": true,
+        "min": 0.0,
+        "max": 10000000.0,
+        "orders_of_magnitude": 12.9872
+      },
+      "censoring": {
+        "ceiling_nM": 10000.0,
+        "ceiling_pY": 5.0,
+        "exactly_at_ceiling": 17000,
+        "exactly_at_ceiling_share": 0.0454,
+        "at_or_above_ceiling": 53312,
+        "at_or_above_share": 0.1422,
+        "all_spikes": [
+          {
+            "value_nM": 10000.0,
+            "count": 17000,
+            "share": 0.0454
+          }
+        ],
+        "n_spikes": 1,
+        "note": "점측정이 아니라 right-censored (실제 값은 그 이상). drop / 분류 threshold / censored regression 중 택일",
+        "source": "자동 탐지",
+        "rule": "at-or-above",
+        "censored_rows": 53312,
+        "censored_share": 0.1422
+      },
+      "n_pairs": 374820,
+      "entities": {
+        "unique_drug_id": 171831,
+        "unique_inchikey": 174319,
+        "drug_id_collapse": -0.0145,
+        "unique_target_id": 2420,
+        "unique_target_sequence": 3068,
+        "target_id_collapse": -0.2678,
+        "matrix_density": 0.0007
+      },
+      "duplicates": {
+        "by_id": 50473,
+        "by_structure": 40363,
+        "conflicts_over_threshold": 7349,
+        "conflict_threshold_log_units": 1.0,
+        "worst_conflicts": [
+          {
+            "inchikey": "LJGUZUROJOJEMI-UHFFFAOYSA-N",
+            "seq_hash": "86b802a1ba02981b",
+            "spread_log_units": 8.0
+          },
+          {
+            "inchikey": "YOSHYTLCDANDAN-UHFFFAOYSA-N",
+            "seq_hash": "1240d5a3025c1a54",
+            "spread_log_units": 8.0
+          },
+          {
+            "inchikey": "HFEKDTCAMMOLQP-RRKCRQDMSA-N",
+            "seq_hash": "b0522ec60e385702",
+            "spread_log_units": 7.17
+          },
+          {
+            "inchikey": "FBOZXECLQNJBKD-ZDUSSCGKSA-N",
+            "seq_hash": "e32a22b4efc44e96",
+            "spread_log_units": 7.11
+          },
+          {
+            "inchikey": "HZSAJDVWZRBGIF-UHFFFAOYSA-O",
+            "seq_hash": "e23cfb05d3eed84e",
+            "spread_log_units": 6.93
+          }
+        ]
+      },
+      "distribution": {
+        "scale": "p-scale (-log10 M)",
+        "n": 374765,
+        "min": 2.0,
+        "q1": 5.7122,
+        "median": 6.9101,
+        "q3": 8.0088,
+        "max": 14.9872,
+        "mean": 6.8613,
+        "std": 1.5647
+      },
+      "distribution_excluding_censored": {
+        "n": 321453,
+        "min": 5.0004,
+        "q1": 6.224,
+        "median": 7.2147,
+        "q3": 8.1805,
+        "max": 14.9872,
+        "mean": 7.265,
+        "std": 1.2788
+      },
+      "pos_neg": {
+        "pY>5 | pY<=5": {
+          "positive": 321453,
+          "negative": 53312,
+          "unlabelled": 0,
+          "pos_frac": 0.8577
+        },
+        "pY>=6 | pY<=5": {
+          "positive": 264643,
+          "negative": 53312,
+          "unlabelled": 56810,
+          "pos_frac": 0.8323
+        },
+        "pY>=7 | pY<=5": {
+          "positive": 181008,
+          "negative": 53312,
+          "unlabelled": 140445,
+          "pos_frac": 0.7725
+        },
+        "uncensored_only": {
+          "pY>5 | pY<=5": {
+            "positive": 321453,
+            "negative": 0,
+            "unlabelled": 0,
+            "pos_frac": 1.0
+          },
+          "pY>=6 | pY<=5": {
+            "positive": 264643,
+            "negative": 0,
+            "unlabelled": 56810,
+            "pos_frac": 1.0
+          },
+          "pY>=7 | pY<=5": {
+            "positive": 181008,
+            "negative": 0,
+            "unlabelled": 140445,
+            "pos_frac": 1.0
+          }
+        }
+      },
+      "degree": {
+        "per_drug": {
+          "median": 1.0,
+          "max": 573,
+          "p95": 5.0
+        },
+        "per_target": {
+          "median": 10.0,
+          "max": 8794,
+          "p95": 568.1
+        },
+        "top_target_share": 0.0235
+      },
+      "invalid": {
+        "unparsable_smiles": 0,
+        "empty_sequence": 0,
+        "non_numeric_Y": 0
+      }
+    },
+    {
+      "dataset": "kiba",
+      "measurement_type": "KIBA",
+      "unit": "score",
+      "note": "KIBA score 는 Kd/Ki/IC50 을 융합한 점수. nM 아님. p-scale 변환 금지, 다른 셋과 병합 불가",
+      "n_rows": 117657,
+      "is_binary": false,
+      "scale_check": {
+        "declared": "score",
+        "looks_like": "ambiguous",
+        "agrees": true,
+        "min": 0.0,
+        "max": 17.2002,
+        "orders_of_magnitude": 1.1941
+      },
+      "censoring": null,
+      "n_pairs": 117657,
+      "entities": {
+        "unique_drug_id": 2068,
+        "unique_inchikey": 2068,
+        "drug_id_collapse": 0.0,
+        "unique_target_id": 229,
+        "unique_target_sequence": 229,
+        "target_id_collapse": 0.0,
+        "matrix_density": 0.2484
+      },
+      "duplicates": {
+        "by_id": 0,
+        "by_structure": 0,
+        "conflicts_over_threshold": null,
+        "conflict_threshold_log_units": 1.0,
+        "worst_conflicts": []
+      },
+      "distribution": {
+        "scale": "raw (score)",
+        "n": 117657,
+        "min": 0.0,
+        "q1": 11.2,
+        "median": 11.5202,
+        "q3": 11.9239,
+        "max": 17.2002,
+        "mean": 11.7207,
+        "std": 0.8343
+      },
+      "distribution_excluding_censored": null,
+      "pos_neg": {
+        "note": "스케일이 nM 이 아니라 임계값을 정할 수 없음. 문헌 관례를 확인해 직접 지정할 것"
+      },
+      "degree": {
+        "per_drug": {
+          "median": 31.0,
+          "max": 166,
+          "p95": 138.0
+        },
+        "per_target": {
+          "median": 567.0,
+          "max": 1432,
+          "p95": 1061.8
+        },
+        "top_target_share": 0.0122
+      },
+      "invalid": {
+        "unparsable_smiles": 0,
+        "empty_sequence": 0,
+        "non_numeric_Y": 0
+      }
+    },
+    {
+      "dataset": "bindingdb_ic50",
+      "measurement_type": "IC50",
+      "unit": "nM",
+      "note": "substrate/ATP 농도 의존. 참고용으로 분포만 보고 벤치마크에는 넣지 않는다",
+      "n_rows": 990630,
+      "is_binary": false,
+      "scale_check": {
+        "declared": "nM",
+        "looks_like": "concentration (nM-like)",
+        "agrees": true,
+        "min": 0.0,
+        "max": 10000000.0,
+        "orders_of_magnitude": 14.6126
+      },
+      "censoring": {
+        "ceiling_nM": 10000.0,
+        "ceiling_pY": 5.0,
+        "exactly_at_ceiling": 40637,
+        "exactly_at_ceiling_share": 0.041,
+        "at_or_above_ceiling": 239394,
+        "at_or_above_share": 0.2417,
+        "all_spikes": [
+          {
+            "value_nM": 10000.0,
+            "count": 40637,
+            "share": 0.041
+          },
+          {
+            "value_nM": 100000.0,
+            "count": 24377,
+            "share": 0.0246
+          }
+        ],
+        "n_spikes": 2,
+        "note": "점측정이 아니라 right-censored (실제 값은 그 이상). drop / 분류 threshold / censored regression 중 택일",
+        "multi_ceiling_warning": "상한 후보가 2개다: 10,000 nM(4.1%), 100,000 nM(2.5%). 출처마다 최고 시험 농도가 다르다는 뜻이다. at-or-above 규칙은 스파이크 사이의 실측값까지 묶으므로, exact-spikes 규칙이나 --censor-ceiling 을 고려할 것",
+        "source": "자동 탐지",
+        "rule": "at-or-above",
+        "censored_rows": 239394,
+        "censored_share": 0.2417
+      },
+      "n_pairs": 990630,
+      "entities": {
+        "unique_drug_id": 538540,
+        "unique_inchikey": 547976,
+        "drug_id_collapse": -0.0175,
+        "unique_target_id": 3975,
+        "unique_target_sequence": 5077,
+        "target_id_collapse": -0.2772,
+        "matrix_density": 0.0004
+      },
+      "duplicates": {
+        "by_id": 136510,
+        "by_structure": 106418,
+        "conflicts_over_threshold": 25083,
+        "conflict_threshold_log_units": 1.0,
+        "worst_conflicts": [
+          {
+            "inchikey": "VYFYYTLLBUKUHU-UHFFFAOYSA-N",
+            "seq_hash": "4b96de0a9c0e6a94",
+            "spread_log_units": 10.1
+          },
+          {
+            "inchikey": "YLJREFDVOIBQDA-UHFFFAOYSA-N",
+            "seq_hash": "9a5efaa94022f3c2",
+            "spread_log_units": 10.06
+          },
+          {
+            "inchikey": "YLJREFDVOIBQDA-UHFFFAOYSA-N",
+            "seq_hash": "e23cfb05d3eed84e",
+            "spread_log_units": 9.94
+          },
+          {
+            "inchikey": "DLLULNTXJPATBC-UHFFFAOYSA-N",
+            "seq_hash": "2853d3ab6698ece8",
+            "spread_log_units": 9.0
+          },
+          {
+            "inchikey": "PLPASNDHHOWESN-GFKCAOEUSA-N",
+            "seq_hash": "53dd0d4387f00479",
+            "spread_log_units": 9.0
+          }
+        ]
+      },
+      "distribution": {
+        "scale": "p-scale (-log10 M)",
+        "n": 990380,
+        "min": 2.0,
+        "q1": 5.0549,
+        "median": 6.301,
+        "q3": 7.4949,
+        "max": 16.6126,
+        "mean": 6.3389,
+        "std": 1.5274
+      },
+      "distribution_excluding_censored": {
+        "n": 750986,
+        "min": 5.0,
+        "q1": 6.0,
+        "median": 6.9208,
+        "q3": 7.8239,
+        "max": 16.6126,
+        "mean": 6.9606,
+        "std": 1.1762
+      },
+      "pos_neg": {
+        "pY>5 | pY<=5": {
+          "positive": 750986,
+          "negative": 239394,
+          "unlabelled": 0,
+          "pos_frac": 0.7583
+        },
+        "pY>=6 | pY<=5": {
+          "positive": 576740,
+          "negative": 239394,
+          "unlabelled": 174246,
+          "pos_frac": 0.7067
+        },
+        "pY>=7 | pY<=5": {
+          "positive": 364292,
+          "negative": 239394,
+          "unlabelled": 386694,
+          "pos_frac": 0.6034
+        },
+        "uncensored_only": {
+          "pY>5 | pY<=5": {
+            "positive": 750986,
+            "negative": 0,
+            "unlabelled": 0,
+            "pos_frac": 1.0
+          },
+          "pY>=6 | pY<=5": {
+            "positive": 576740,
+            "negative": 0,
+            "unlabelled": 174246,
+            "pos_frac": 1.0
+          },
+          "pY>=7 | pY<=5": {
+            "positive": 364292,
+            "negative": 0,
+            "unlabelled": 386694,
+            "pos_frac": 1.0
+          }
+        }
+      },
+      "degree": {
+        "per_drug": {
+          "median": 1.0,
+          "max": 438,
+          "p95": 4.0
+        },
+        "per_target": {
+          "median": 22.0,
+          "max": 8858,
+          "p95": 943.4
+        },
+        "top_target_share": 0.0089
+      },
+      "invalid": {
+        "unparsable_smiles": 0,
+        "empty_sequence": 0,
+        "non_numeric_Y": 0
+      }
+    }
+  ],
+  "kdki_vs_ic50": {
+    "shared_pairs": 28180,
+    "comparable_pairs": 22244,
+    "excluded_censored": 5936,
+    "value_basis": "비검열 측정만의 median",
+    "delta_median": 0.4089,
+    "delta_abs_median": 0.5573,
+    "delta_std": 0.9123,
+    "frac_within_0.5_log": 0.462,
+    "frac_within_1.0_log": 0.7367,
+    "pearson_r": 0.7121,
+    "naive_if_censoring_ignored": {
+      "delta_median": 0.3802,
+      "pearson_r": 0.8088,
+      "note": "censored 를 점값으로 취급했을 때. 위 값과 차이가 크면 censoring 을 무시한 분석은 신뢰할 수 없다는 뜻"
+    }
+  },
+  "plots": [
+    "/data/hps/assoc/private/rsc/user/ybae/RSC/abstain-dti/notebooks/yeji/TDC/eda/plots/01_distributions.png",
+    "/data/hps/assoc/private/rsc/user/ybae/RSC/abstain-dti/notebooks/yeji/TDC/eda/plots/02_scale.png",
+    "/data/hps/assoc/private/rsc/user/ybae/RSC/abstain-dti/notebooks/yeji/TDC/eda/plots/03_pos_neg.png",
+    "/data/hps/assoc/private/rsc/user/ybae/RSC/abstain-dti/notebooks/yeji/TDC/eda/plots/04_overlap_all.png",
+    "/data/hps/assoc/private/rsc/user/ybae/RSC/abstain-dti/notebooks/yeji/TDC/eda/plots/04_overlap_davis_kd_ki.png",
+    "/data/hps/assoc/private/rsc/user/ybae/RSC/abstain-dti/notebooks/yeji/TDC/eda/plots/05_kdki_vs_ic50.png",
+    "/data/hps/assoc/private/rsc/user/ybae/RSC/abstain-dti/notebooks/yeji/TDC/eda/plots/06_censoring_davis.png",
+    "/data/hps/assoc/private/rsc/user/ybae/RSC/abstain-dti/notebooks/yeji/TDC/eda/plots/06_censoring_bindingdb_kd.png",
+    "/data/hps/assoc/private/rsc/user/ybae/RSC/abstain-dti/notebooks/yeji/TDC/eda/plots/06_censoring_bindingdb_ki.png",
+    "/data/hps/assoc/private/rsc/user/ybae/RSC/abstain-dti/notebooks/yeji/TDC/eda/plots/06_censoring_bindingdb_ic50.png"
+  ],
+  "standing_caveats": [
+    "TDC 의 BindingDB 스냅샷 시점은 TDC 가 문서화하지 않는다 (TDC issue #135). 이 파일과 원본 캐시를 함께 보관할 것",
+    "InChIKey 는 표준화 없이 원본 SMILES 에서 바로 계산했다. salt/tautomer 표준화를 먼저 하면 중복이 더 잡힌다",
+    "target 은 서열 해시로만 묶었다. UniProt accession 매핑, isoform, mutant, construct 구분은 아직 없다 (Pillar 3 미완)"
+  ]
+}
