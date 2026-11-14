@@ -23,3 +23,9 @@
 | [`tooluniverse-slides.html`](tooluniverse-slides.html) | ToolUniverse 소개 발표자료. Tool · MCP · Skill 차이, 내부 모듈, 질문 처리 흐름 | [slide](https://htmlpreview.github.io/?https://github.com/Pseudo-Lab/abstain-dti/blob/main/docs/literature/tooluniverse-slides.html) |
 | [`tooluniverse-catalog.html`](tooluniverse-catalog.html) | ToolUniverse 도구 · 스킬 분야별 목록 | [view](https://htmlpreview.github.io/?https://github.com/Pseudo-Lab/abstain-dti/blob/main/docs/literature/tooluniverse-catalog.html) |
 | [`dpp4-research-journey.html`](dpp4-research-journey.html) | ToolUniverse로 진행한 제2형 당뇨병 치료제 탐색 실습. 타겟 DPP4 선정, 시타글립틴 구조 변형, 결합 예측과 ADMET 비교 | [view](https://htmlpreview.github.io/?https://github.com/Pseudo-Lab/abstain-dti/blob/main/docs/literature/dpp4-research-journey.html) |
+
+## 모델 스택 조사
+
+| 자료 | 내용 | 보기 |
+| --- | --- | --- |
+| [`dti-model-stack.docx`](dti-model-stack.docx) | SMILES 임베딩 21종, DTI 모델이 쓰는 분자 인코더 7종, 단백질 임베딩 13종, 서열 기반 DTI·DTA 모델 17종, 구조 기반 친화도 예측 5종, 불확실성·기권 방법 11종. 각 항목에 발표 시점, 논문, 저장소, 학습 데이터를 1차 출처에서 확인해 기재. 2026-10-29 기준 | [download](dti-model-stack.docx) |
