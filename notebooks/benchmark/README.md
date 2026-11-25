@@ -13,6 +13,7 @@ DTI 벤치마크의 출발 데이터이고, 병합(같은 쌍 합치기)은 아�
 | 1 | `01_bindingdb_columns.py` | 640 열의 채움율, qualifier 형식, 사슬 수 집계 | `out/bindingdb_colfill.csv` 등 |
 | 1b | `01b_common_columns.py` | 열 1-52 의 이름과 예시 값 | `out/bindingdb_columns_1_52.csv` |
 | 2 | `02_build_kdki.py` | Kd·Ki 측정만 뽑아 19 열 표로 | `data/bindingdb_kdki.tsv` |
+| 3 | `03_make_inputs.py` | Kd 와 Ki 로 나눠 입력 파일과 map 파일로 | `data/bindingdb_{kd,ki}_{input,map}.tsv` |
 
 실행은 compute node 에서 합니다. 로그인 노드는 인터넷이 안 되고 9 GB 파일을 읽기에도 적절하지 않습니다.
 
@@ -115,6 +116,42 @@ srun -A rsc -p cpu-core -c 1 --mem=7500M -t 01:00:00 bash -c \
 
 측정 722,720 건이 고유 쌍 523,790 개에 들어 있으므로, 같은 쌍에 값이 여럿인 경우가 있습니다.
 합치는 규칙은 아직 정하지 않았습니다.
+
+## 모델 입력 파일 (단계 3)
+
+`bindingdb_kdki.tsv` 를 측정 종류로 나눠, 모델에 바로 넣는 좁은 파일과 추적용 map 파일을 만듭니다.
+두 파일은 같은 `id` 로 **행 순서까지 똑같이** 맞춰져 있습니다.
+
+| 파일 | 행 | 크기 | 열 |
+| --- | --- | --- | --- |
+| `data/bindingdb_kd_input.tsv` | 128,381 | 97 MB | `id`, `smiles`, `protein_sequence`, `kd_nm` |
+| `data/bindingdb_kd_map.tsv` | 128,381 | 22 MB | `id` + 메타데이터 15 열 |
+| `data/bindingdb_ki_input.tsv` | 594,339 | 360 MB | `id`, `smiles`, `protein_sequence`, `ki_nm` |
+| `data/bindingdb_ki_map.tsv` | 594,339 | 101 MB | `id` + 메타데이터 15 열 |
+
+`id` 는 그 입력 파일 안에서의 행 번호입니다 (1 부터). 종류를 앞에 붙여 `kd_1`, `ki_1` 로 적습니다.
+두 파일의 id 를 섞어 써도 어느 쪽 것인지 바로 보이게 하려는 것입니다.
+
+map 파일의 열: `reactant_set_id`, `ligand_inchikey`, `pubchem_cid`, `chembl_id`, `target_name`,
+`uniprot_swissprot`, `organism`, `qualifier`, `ph`, `temp_c`, `curation_source`, `pmid`,
+`article_doi`, `date_publication`, `date_in_bindingdb`.
+
+```python
+import pandas as pd
+x = pd.read_csv("data/bindingdb_kd_input.tsv", sep="\t")
+m = pd.read_csv("data/bindingdb_kd_map.tsv", sep="\t")
+full = x.merge(m, on="id", validate="one_to_one")
+```
+
+> **경고: 입력 파일만 보면 검열값을 알 수 없습니다.**
+> `kd_nm` 과 `ki_nm` 에는 숫자만 있고 부등호가 없습니다. 원본이 `">10000"` 이었던 측정도
+> `10000` 으로만 적힙니다. 부등호는 map 파일의 `qualifier` 열에만 있습니다.
+> Kd 의 **37.45 %**, Ki 의 **13.10 %** 가 검열값이므로, 입력 파일만으로 학습하면 "10 µM 보다 약하다"
+> 를 "정확히 10 µM" 로 가르치게 됩니다. 학습 전에 map 을 합쳐 `qualifier` 를 확인하십시오.
+
+```python
+exact = full[full.qualifier.isna()]          # 부등호 없는 측정만
+```
 
 ## 다음 단계에서 정할 것
 
