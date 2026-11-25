@@ -1,0 +1,7 @@
+# TDC cache (1.4 GB) and BindingDB 202610 dump (9 GB). Recreate with the commands in README.md.
+data/
+# SLURM job logs
+logs/
+# Build output: dta_long.csv is several hundred MB. Rebuild with run_dta.sbatch benchmark.
+benchmark/
+__pycache__/

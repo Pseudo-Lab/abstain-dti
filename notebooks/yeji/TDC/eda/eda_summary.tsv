@@ -1,0 +1,6 @@
+dataset	measurement	unit	n_pairs	compounds	targets	target_id_collapse	censored_share	n_ceilings	dup_by_structure	conflicts	median	median_uncensored
+davis	Kd	nM	25772	68	379	0.0	0.7117	1.0	0	0.0	5.0	6.2007
+bindingdb_kd	Kd	nM	52274	10642	1413	-0.2963	0.4996	1.0	6176	1571.0	5.0072	6.6576
+bindingdb_ki	Ki	nM	374820	174319	3068	-0.2678	0.1422	1.0	40363	7349.0	6.9101	7.2147
+kiba	KIBA	score	117657	2068	229	0.0			0		11.5202	
+bindingdb_ic50	IC50	nM	990630	547976	5077	-0.2772	0.2417	2.0	106418	25083.0	6.301	6.9208

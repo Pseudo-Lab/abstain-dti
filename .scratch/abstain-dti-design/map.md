@@ -30,6 +30,7 @@ W04 동결 게이트(2026-11-06) 전에 expert 검토까지 마칩니다.
 - 2026-10-09 (01, 잠정. 티켓 open): 음성은 검열값 `>10 µM`과 정확값 pAffinity < 6. decoy 합성은 쓰지 않음.
 - 2026-10-09 (01, 잠정. 티켓 open): 데이터는 BindingDB 원본 `202610`의 CC BY 4.0 부분(Articles + Patents)만. TDC 경로는 쓰지 않음.
 - 2026-10-09 (03, 잠정. 티켓 open): 조건 F는 Boltz-2 단일 모델로 재정의. OpenFold3는 구조 품질 레퍼런스.
+- 2026-11-13 (맵 `tdc-dta-merge`): 탐색 단계는 TDC 3종(Davis, BindingDB_Kd, BindingDB_Ki)으로 진행. 2026-10-09 의 "TDC 경로는 쓰지 않음" 은 최종 벤치마크 소스에만 해당하며 그 결정은 아직 열려 있음.
 
 ## Not yet specified
 

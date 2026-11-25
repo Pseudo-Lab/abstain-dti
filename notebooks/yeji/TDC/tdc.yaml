@@ -1,0 +1,51 @@
+# PyTDC environment for `from tdc.multi_pred import DTI`.
+#
+# Pins follow upstream requirements.txt:
+#   https://github.com/mims-harvard/TDC/blob/main/requirements.txt
+#
+# Everything comes from conda-forge, nothing from pip. Reason: pip wheels
+# (pyarrow in particular, pulled in by cellxgene-census -> anndata/somacore)
+# load the system /lib64/libstdc++.so.6, which on this cluster is too old
+# (GLIBCXX_3.4.30 missing). scipy/scikit-learn then fail to import.
+# conda-forge builds link against the env's own libstdc++, so the mix is
+# avoided entirely.
+#
+# Deviations from requirements.txt:
+#   - cellxgene-census: upstream pins ==1.15.0; conda-forge has >=1.16.2 only.
+#   - pytdc 1.1.14 is the newest conda-forge build (PyPI is 1.1.15).
+#   - pytorch pinned to the CPU build to keep the env small; drop the
+#     "=*=cpu*" suffix for a CUDA build.
+#
+# Create:  mamba env create -f tdc.yaml
+name: tdc
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pip
+  - setuptools<80              # PyTDC imports pkg_resources, removed in newer setuptools
+  # --- requirements.txt ---
+  - accelerate=0.33.0
+  - dataclasses>=0.6,<1.0
+  - datasets<2.20.0
+  - evaluate=0.4.2
+  - fuzzywuzzy>=0.18.0,<1.0
+  - huggingface_hub>=0.20.3,<1.0
+  - numpy>=1.26.4,<2.0.0
+  - openpyxl>=3.0.10,<4.0.0
+  - pandas>=2.1.4,<3.0.0
+  - requests>=2.31.0,<3.0.0
+  - scikit-learn>=1.2.2
+  - seaborn>=0.12.2,<1.0.0
+  - tqdm>=4.65.0,<5.0.0
+  - transformers>=4.43.0,<4.51.0
+  - cellxgene-census>=1.16.2  # upstream ==1.15.0, not on conda-forge
+  - gget>=0.28.4,<1.0.0
+  - pydantic>=2.6.3,<3.0.0
+  - rdkit>=2023.9.5,<2024.3.1
+  - tiledbsoma-py>=1.7.2,<2.0.0
+  # --- PyTDC itself (conda-forge build of the PyPI package) ---
+  - pytdc>=1.1.13
+  # --- transitive, pinned on purpose ---
+  - pytorch=*=cpu*             # pulled in by accelerate; CPU build
+  - scipy

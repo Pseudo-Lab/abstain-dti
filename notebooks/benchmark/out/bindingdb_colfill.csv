@@ -1,0 +1,641 @@
+col_index,col_name,nonempty_all,nonempty_kdki,pct_all,pct_kdki
+1,BindingDB Reactant_set_id,3243660,755162,100.0,100.0
+2,Ligand SMILES,3243585,755091,100.0,99.99
+3,Ligand InChI,3243434,755149,99.99,100.0
+4,Ligand InChI Key,3243434,755149,99.99,100.0
+5,BindingDB MonomerID,3243660,755162,100.0,100.0
+6,BindingDB Ligand Name,3243660,755162,100.0,100.0
+7,Target Name,3243660,755162,100.0,100.0
+8,Target Source Organism According to Curator or DataSource,3204208,747711,98.78,99.01
+9,Ki (nM),623701,623701,19.23,82.59
+10,IC50 (nM),2220490,3387,68.46,0.45
+11,Kd (nM),131531,131531,4.06,17.42
+12,EC50 (nM),270787,978,8.35,0.13
+13,kon (M-1-s-1),1006,287,0.03,0.04
+14,koff (s-1),1022,216,0.03,0.03
+15,pH,210587,41174,6.49,5.45
+16,Temp (C),198145,35567,6.11,4.71
+17,Curation/DataSource,3243660,755162,100.0,100.0
+18,Article DOI,1576301,507796,48.6,67.24
+19,BindingDB Entry DOI,3241889,754481,99.95,99.91
+20,PMID,1744488,547972,53.78,72.56
+21,PubChem AID,1403514,208706,43.27,27.64
+22,Patent Number,1357988,192215,41.87,25.45
+23,Authors,3243660,755162,100.0,100.0
+24,Date of publication,3243660,755162,100.0,100.0
+25,Date in BindingDB,3243660,755162,100.0,100.0
+26,Institution,3243660,755162,100.0,100.0
+27,Link to Ligand in BindingDB,3243660,755162,100.0,100.0
+28,Link to Target in BindingDB,3243660,755162,100.0,100.0
+29,Link to Ligand-Target Pair in BindingDB,3243660,755162,100.0,100.0
+30,Ligand HET ID in PDB,128065,57334,3.95,7.59
+31,PDB ID(s) for Ligand-Target Complex,113604,50077,3.5,6.63
+32,PubChem CID,3180376,742899,98.05,98.38
+33,PubChem SID,3180508,742964,98.05,98.38
+34,ChEBI ID of Ligand,2626,767,0.08,0.1
+35,ChEMBL ID of Ligand,1115882,381867,34.4,50.57
+36,DrugBank ID of Ligand,92126,48837,2.84,6.47
+37,IUPHAR_GRAC ID of Ligand,1059,484,0.03,0.06
+38,KEGG ID of Ligand,102923,40453,3.17,5.36
+39,ZINC ID of Ligand,36294,3289,1.12,0.44
+40,Number of Protein Chains in Target (>1 implies a multichain complex),3243660,755162,100.0,100.0
+41,BindingDB Target Chain Sequence 1,3243660,755162,100.0,100.0
+42,PDB ID(s) of Target Chain 1,2732073,595184,84.23,78.82
+43,UniProt (SwissProt) Recommended Name of Target Chain 1,3165799,740585,97.6,98.07
+44,UniProt (SwissProt) Entry Name of Target Chain 1,3166585,740585,97.62,98.07
+45,UniProt (SwissProt) Primary ID of Target Chain 1,3166585,740585,97.62,98.07
+46,UniProt (SwissProt) Secondary ID(s) of Target Chain 1,2858197,635357,88.12,84.14
+47,UniProt (SwissProt) Alternative ID(s) of Target Chain 1,0,0,0.0,0.0
+48,UniProt (TrEMBL) Submitted Name of Target Chain 1,141058,22808,4.35,3.02
+49,UniProt (TrEMBL) Entry Name of Target Chain 1,208722,43608,6.43,5.77
+50,UniProt (TrEMBL) Primary ID of Target Chain 1,208722,43608,6.43,5.77
+51,UniProt (TrEMBL) Secondary ID(s) of Target Chain 1,21239,2893,0.65,0.38
+52,UniProt (TrEMBL) Alternative ID(s) of Target Chain 1,0,0,0.0,0.0
+53,BindingDB Target Chain Sequence 2,187320,32512,5.77,4.31
+54,PDB ID(s) of Target Chain 2,154368,21314,4.76,2.82
+55,UniProt (SwissProt) Recommended Name of Target Chain 2,186138,32084,5.74,4.25
+56,UniProt (SwissProt) Entry Name of Target Chain 2,186138,32084,5.74,4.25
+57,UniProt (SwissProt) Primary ID of Target Chain 2,186138,32084,5.74,4.25
+58,UniProt (SwissProt) Secondary ID(s) of Target Chain 2,168995,24843,5.21,3.29
+59,UniProt (SwissProt) Alternative ID(s) of Target Chain 2,0,0,0.0,0.0
+60,UniProt (TrEMBL) Submitted Name of Target Chain 2,5975,1191,0.18,0.16
+61,UniProt (TrEMBL) Entry Name of Target Chain 2,6430,1378,0.2,0.18
+62,UniProt (TrEMBL) Primary ID of Target Chain 2,6430,1378,0.2,0.18
+63,UniProt (TrEMBL) Secondary ID(s) of Target Chain 2,826,0,0.03,0.0
+64,UniProt (TrEMBL) Alternative ID(s) of Target Chain 2,0,0,0.0,0.0
+65,BindingDB Target Chain Sequence 3,42034,13427,1.3,1.78
+66,PDB ID(s) of Target Chain 3,28944,8149,0.89,1.08
+67,UniProt (SwissProt) Recommended Name of Target Chain 3,42013,13415,1.3,1.78
+68,UniProt (SwissProt) Entry Name of Target Chain 3,42013,13415,1.3,1.78
+69,UniProt (SwissProt) Primary ID of Target Chain 3,42013,13415,1.3,1.78
+70,UniProt (SwissProt) Secondary ID(s) of Target Chain 3,38852,12782,1.2,1.69
+71,UniProt (SwissProt) Alternative ID(s) of Target Chain 3,0,0,0.0,0.0
+72,UniProt (TrEMBL) Submitted Name of Target Chain 3,512,12,0.02,0.0
+73,UniProt (TrEMBL) Entry Name of Target Chain 3,536,27,0.02,0.0
+74,UniProt (TrEMBL) Primary ID of Target Chain 3,536,27,0.02,0.0
+75,UniProt (TrEMBL) Secondary ID(s) of Target Chain 3,15,11,0.0,0.0
+76,UniProt (TrEMBL) Alternative ID(s) of Target Chain 3,0,0,0.0,0.0
+77,BindingDB Target Chain Sequence 4,16522,2249,0.51,0.3
+78,PDB ID(s) of Target Chain 4,13865,1656,0.43,0.22
+79,UniProt (SwissProt) Recommended Name of Target Chain 4,16514,2247,0.51,0.3
+80,UniProt (SwissProt) Entry Name of Target Chain 4,16514,2247,0.51,0.3
+81,UniProt (SwissProt) Primary ID of Target Chain 4,16514,2247,0.51,0.3
+82,UniProt (SwissProt) Secondary ID(s) of Target Chain 4,13639,1288,0.42,0.17
+83,UniProt (SwissProt) Alternative ID(s) of Target Chain 4,0,0,0.0,0.0
+84,UniProt (TrEMBL) Submitted Name of Target Chain 4,2,2,0.0,0.0
+85,UniProt (TrEMBL) Entry Name of Target Chain 4,116,2,0.0,0.0
+86,UniProt (TrEMBL) Primary ID of Target Chain 4,116,2,0.0,0.0
+87,UniProt (TrEMBL) Secondary ID(s) of Target Chain 4,1,1,0.0,0.0
+88,UniProt (TrEMBL) Alternative ID(s) of Target Chain 4,0,0,0.0,0.0
+89,BindingDB Target Chain Sequence 5,9572,1406,0.3,0.19
+90,PDB ID(s) of Target Chain 5,4141,541,0.13,0.07
+91,UniProt (SwissProt) Recommended Name of Target Chain 5,9570,1405,0.3,0.19
+92,UniProt (SwissProt) Entry Name of Target Chain 5,9570,1405,0.3,0.19
+93,UniProt (SwissProt) Primary ID of Target Chain 5,9570,1405,0.3,0.19
+94,UniProt (SwissProt) Secondary ID(s) of Target Chain 5,7638,763,0.24,0.1
+95,UniProt (SwissProt) Alternative ID(s) of Target Chain 5,0,0,0.0,0.0
+96,UniProt (TrEMBL) Submitted Name of Target Chain 5,2,1,0.0,0.0
+97,UniProt (TrEMBL) Entry Name of Target Chain 5,2,1,0.0,0.0
+98,UniProt (TrEMBL) Primary ID of Target Chain 5,2,1,0.0,0.0
+99,UniProt (TrEMBL) Secondary ID(s) of Target Chain 5,0,0,0.0,0.0
+100,UniProt (TrEMBL) Alternative ID(s) of Target Chain 5,0,0,0.0,0.0
+101,BindingDB Target Chain Sequence 6,4463,88,0.14,0.01
+102,PDB ID(s) of Target Chain 6,4179,33,0.13,0.0
+103,UniProt (SwissProt) Recommended Name of Target Chain 6,4460,87,0.14,0.01
+104,UniProt (SwissProt) Entry Name of Target Chain 6,4460,87,0.14,0.01
+105,UniProt (SwissProt) Primary ID of Target Chain 6,4460,87,0.14,0.01
+106,UniProt (SwissProt) Secondary ID(s) of Target Chain 6,4339,81,0.13,0.01
+107,UniProt (SwissProt) Alternative ID(s) of Target Chain 6,0,0,0.0,0.0
+108,UniProt (TrEMBL) Submitted Name of Target Chain 6,3,1,0.0,0.0
+109,UniProt (TrEMBL) Entry Name of Target Chain 6,3,1,0.0,0.0
+110,UniProt (TrEMBL) Primary ID of Target Chain 6,3,1,0.0,0.0
+111,UniProt (TrEMBL) Secondary ID(s) of Target Chain 6,0,0,0.0,0.0
+112,UniProt (TrEMBL) Alternative ID(s) of Target Chain 6,0,0,0.0,0.0
+113,BindingDB Target Chain Sequence 7,3646,63,0.11,0.01
+114,PDB ID(s) of Target Chain 7,296,21,0.01,0.0
+115,UniProt (SwissProt) Recommended Name of Target Chain 7,3644,62,0.11,0.01
+116,UniProt (SwissProt) Entry Name of Target Chain 7,3644,62,0.11,0.01
+117,UniProt (SwissProt) Primary ID of Target Chain 7,3644,62,0.11,0.01
+118,UniProt (SwissProt) Secondary ID(s) of Target Chain 7,3591,56,0.11,0.01
+119,UniProt (SwissProt) Alternative ID(s) of Target Chain 7,0,0,0.0,0.0
+120,UniProt (TrEMBL) Submitted Name of Target Chain 7,2,1,0.0,0.0
+121,UniProt (TrEMBL) Entry Name of Target Chain 7,2,1,0.0,0.0
+122,UniProt (TrEMBL) Primary ID of Target Chain 7,2,1,0.0,0.0
+123,UniProt (TrEMBL) Secondary ID(s) of Target Chain 7,0,0,0.0,0.0
+124,UniProt (TrEMBL) Alternative ID(s) of Target Chain 7,0,0,0.0,0.0
+125,BindingDB Target Chain Sequence 8,3644,63,0.11,0.01
+126,PDB ID(s) of Target Chain 8,2943,30,0.09,0.0
+127,UniProt (SwissProt) Recommended Name of Target Chain 8,3641,62,0.11,0.01
+128,UniProt (SwissProt) Entry Name of Target Chain 8,3641,62,0.11,0.01
+129,UniProt (SwissProt) Primary ID of Target Chain 8,3641,62,0.11,0.01
+130,UniProt (SwissProt) Secondary ID(s) of Target Chain 8,3569,35,0.11,0.0
+131,UniProt (SwissProt) Alternative ID(s) of Target Chain 8,0,0,0.0,0.0
+132,UniProt (TrEMBL) Submitted Name of Target Chain 8,3,1,0.0,0.0
+133,UniProt (TrEMBL) Entry Name of Target Chain 8,3,1,0.0,0.0
+134,UniProt (TrEMBL) Primary ID of Target Chain 8,3,1,0.0,0.0
+135,UniProt (TrEMBL) Secondary ID(s) of Target Chain 8,0,0,0.0,0.0
+136,UniProt (TrEMBL) Alternative ID(s) of Target Chain 8,0,0,0.0,0.0
+137,BindingDB Target Chain Sequence 9,3592,59,0.11,0.01
+138,PDB ID(s) of Target Chain 9,3190,26,0.1,0.0
+139,UniProt (SwissProt) Recommended Name of Target Chain 9,3591,58,0.11,0.01
+140,UniProt (SwissProt) Entry Name of Target Chain 9,3591,58,0.11,0.01
+141,UniProt (SwissProt) Primary ID of Target Chain 9,3591,58,0.11,0.01
+142,UniProt (SwissProt) Secondary ID(s) of Target Chain 9,3586,56,0.11,0.01
+143,UniProt (SwissProt) Alternative ID(s) of Target Chain 9,0,0,0.0,0.0
+144,UniProt (TrEMBL) Submitted Name of Target Chain 9,1,1,0.0,0.0
+145,UniProt (TrEMBL) Entry Name of Target Chain 9,1,1,0.0,0.0
+146,UniProt (TrEMBL) Primary ID of Target Chain 9,1,1,0.0,0.0
+147,UniProt (TrEMBL) Secondary ID(s) of Target Chain 9,0,0,0.0,0.0
+148,UniProt (TrEMBL) Alternative ID(s) of Target Chain 9,0,0,0.0,0.0
+149,BindingDB Target Chain Sequence 10,2962,31,0.09,0.0
+150,PDB ID(s) of Target Chain 10,245,5,0.01,0.0
+151,UniProt (SwissProt) Recommended Name of Target Chain 10,2961,30,0.09,0.0
+152,UniProt (SwissProt) Entry Name of Target Chain 10,2961,30,0.09,0.0
+153,UniProt (SwissProt) Primary ID of Target Chain 10,2961,30,0.09,0.0
+154,UniProt (SwissProt) Secondary ID(s) of Target Chain 10,2950,30,0.09,0.0
+155,UniProt (SwissProt) Alternative ID(s) of Target Chain 10,0,0,0.0,0.0
+156,UniProt (TrEMBL) Submitted Name of Target Chain 10,1,1,0.0,0.0
+157,UniProt (TrEMBL) Entry Name of Target Chain 10,1,1,0.0,0.0
+158,UniProt (TrEMBL) Primary ID of Target Chain 10,1,1,0.0,0.0
+159,UniProt (TrEMBL) Secondary ID(s) of Target Chain 10,0,0,0.0,0.0
+160,UniProt (TrEMBL) Alternative ID(s) of Target Chain 10,0,0,0.0,0.0
+161,BindingDB Target Chain Sequence 11,2955,30,0.09,0.0
+162,PDB ID(s) of Target Chain 11,622,15,0.02,0.0
+163,UniProt (SwissProt) Recommended Name of Target Chain 11,2954,29,0.09,0.0
+164,UniProt (SwissProt) Entry Name of Target Chain 11,2954,29,0.09,0.0
+165,UniProt (SwissProt) Primary ID of Target Chain 11,2954,29,0.09,0.0
+166,UniProt (SwissProt) Secondary ID(s) of Target Chain 11,2921,19,0.09,0.0
+167,UniProt (SwissProt) Alternative ID(s) of Target Chain 11,0,0,0.0,0.0
+168,UniProt (TrEMBL) Submitted Name of Target Chain 11,1,1,0.0,0.0
+169,UniProt (TrEMBL) Entry Name of Target Chain 11,1,1,0.0,0.0
+170,UniProt (TrEMBL) Primary ID of Target Chain 11,1,1,0.0,0.0
+171,UniProt (TrEMBL) Secondary ID(s) of Target Chain 11,0,0,0.0,0.0
+172,UniProt (TrEMBL) Alternative ID(s) of Target Chain 11,0,0,0.0,0.0
+173,BindingDB Target Chain Sequence 12,274,15,0.01,0.0
+174,PDB ID(s) of Target Chain 12,237,4,0.01,0.0
+175,UniProt (SwissProt) Recommended Name of Target Chain 12,273,14,0.01,0.0
+176,UniProt (SwissProt) Entry Name of Target Chain 12,273,14,0.01,0.0
+177,UniProt (SwissProt) Primary ID of Target Chain 12,273,14,0.01,0.0
+178,UniProt (SwissProt) Secondary ID(s) of Target Chain 12,268,12,0.01,0.0
+179,UniProt (SwissProt) Alternative ID(s) of Target Chain 12,0,0,0.0,0.0
+180,UniProt (TrEMBL) Submitted Name of Target Chain 12,1,1,0.0,0.0
+181,UniProt (TrEMBL) Entry Name of Target Chain 12,1,1,0.0,0.0
+182,UniProt (TrEMBL) Primary ID of Target Chain 12,1,1,0.0,0.0
+183,UniProt (TrEMBL) Secondary ID(s) of Target Chain 12,0,0,0.0,0.0
+184,UniProt (TrEMBL) Alternative ID(s) of Target Chain 12,0,0,0.0,0.0
+185,BindingDB Target Chain Sequence 13,245,7,0.01,0.0
+186,PDB ID(s) of Target Chain 13,244,6,0.01,0.0
+187,UniProt (SwissProt) Recommended Name of Target Chain 13,244,6,0.01,0.0
+188,UniProt (SwissProt) Entry Name of Target Chain 13,244,6,0.01,0.0
+189,UniProt (SwissProt) Primary ID of Target Chain 13,244,6,0.01,0.0
+190,UniProt (SwissProt) Secondary ID(s) of Target Chain 13,220,0,0.01,0.0
+191,UniProt (SwissProt) Alternative ID(s) of Target Chain 13,0,0,0.0,0.0
+192,UniProt (TrEMBL) Submitted Name of Target Chain 13,1,1,0.0,0.0
+193,UniProt (TrEMBL) Entry Name of Target Chain 13,1,1,0.0,0.0
+194,UniProt (TrEMBL) Primary ID of Target Chain 13,1,1,0.0,0.0
+195,UniProt (TrEMBL) Secondary ID(s) of Target Chain 13,0,0,0.0,0.0
+196,UniProt (TrEMBL) Alternative ID(s) of Target Chain 13,0,0,0.0,0.0
+197,BindingDB Target Chain Sequence 14,245,7,0.01,0.0
+198,PDB ID(s) of Target Chain 14,1,0,0.0,0.0
+199,UniProt (SwissProt) Recommended Name of Target Chain 14,244,6,0.01,0.0
+200,UniProt (SwissProt) Entry Name of Target Chain 14,244,6,0.01,0.0
+201,UniProt (SwissProt) Primary ID of Target Chain 14,244,6,0.01,0.0
+202,UniProt (SwissProt) Secondary ID(s) of Target Chain 14,244,6,0.01,0.0
+203,UniProt (SwissProt) Alternative ID(s) of Target Chain 14,0,0,0.0,0.0
+204,UniProt (TrEMBL) Submitted Name of Target Chain 14,1,1,0.0,0.0
+205,UniProt (TrEMBL) Entry Name of Target Chain 14,1,1,0.0,0.0
+206,UniProt (TrEMBL) Primary ID of Target Chain 14,1,1,0.0,0.0
+207,UniProt (TrEMBL) Secondary ID(s) of Target Chain 14,0,0,0.0,0.0
+208,UniProt (TrEMBL) Alternative ID(s) of Target Chain 14,0,0,0.0,0.0
+209,BindingDB Target Chain Sequence 15,240,5,0.01,0.0
+210,PDB ID(s) of Target Chain 15,218,0,0.01,0.0
+211,UniProt (SwissProt) Recommended Name of Target Chain 15,239,4,0.01,0.0
+212,UniProt (SwissProt) Entry Name of Target Chain 15,239,4,0.01,0.0
+213,UniProt (SwissProt) Primary ID of Target Chain 15,239,4,0.01,0.0
+214,UniProt (SwissProt) Secondary ID(s) of Target Chain 15,238,4,0.01,0.0
+215,UniProt (SwissProt) Alternative ID(s) of Target Chain 15,0,0,0.0,0.0
+216,UniProt (TrEMBL) Submitted Name of Target Chain 15,1,1,0.0,0.0
+217,UniProt (TrEMBL) Entry Name of Target Chain 15,1,1,0.0,0.0
+218,UniProt (TrEMBL) Primary ID of Target Chain 15,1,1,0.0,0.0
+219,UniProt (TrEMBL) Secondary ID(s) of Target Chain 15,0,0,0.0,0.0
+220,UniProt (TrEMBL) Alternative ID(s) of Target Chain 15,0,0,0.0,0.0
+221,BindingDB Target Chain Sequence 16,240,5,0.01,0.0
+222,PDB ID(s) of Target Chain 16,1,0,0.0,0.0
+223,UniProt (SwissProt) Recommended Name of Target Chain 16,239,4,0.01,0.0
+224,UniProt (SwissProt) Entry Name of Target Chain 16,239,4,0.01,0.0
+225,UniProt (SwissProt) Primary ID of Target Chain 16,239,4,0.01,0.0
+226,UniProt (SwissProt) Secondary ID(s) of Target Chain 16,20,4,0.0,0.0
+227,UniProt (SwissProt) Alternative ID(s) of Target Chain 16,0,0,0.0,0.0
+228,UniProt (TrEMBL) Submitted Name of Target Chain 16,1,1,0.0,0.0
+229,UniProt (TrEMBL) Entry Name of Target Chain 16,1,1,0.0,0.0
+230,UniProt (TrEMBL) Primary ID of Target Chain 16,1,1,0.0,0.0
+231,UniProt (TrEMBL) Secondary ID(s) of Target Chain 16,0,0,0.0,0.0
+232,UniProt (TrEMBL) Alternative ID(s) of Target Chain 16,0,0,0.0,0.0
+233,BindingDB Target Chain Sequence 17,240,5,0.01,0.0
+234,PDB ID(s) of Target Chain 17,219,0,0.01,0.0
+235,UniProt (SwissProt) Recommended Name of Target Chain 17,239,4,0.01,0.0
+236,UniProt (SwissProt) Entry Name of Target Chain 17,239,4,0.01,0.0
+237,UniProt (SwissProt) Primary ID of Target Chain 17,239,4,0.01,0.0
+238,UniProt (SwissProt) Secondary ID(s) of Target Chain 17,238,4,0.01,0.0
+239,UniProt (SwissProt) Alternative ID(s) of Target Chain 17,0,0,0.0,0.0
+240,UniProt (TrEMBL) Submitted Name of Target Chain 17,1,1,0.0,0.0
+241,UniProt (TrEMBL) Entry Name of Target Chain 17,1,1,0.0,0.0
+242,UniProt (TrEMBL) Primary ID of Target Chain 17,1,1,0.0,0.0
+243,UniProt (TrEMBL) Secondary ID(s) of Target Chain 17,0,0,0.0,0.0
+244,UniProt (TrEMBL) Alternative ID(s) of Target Chain 17,0,0,0.0,0.0
+245,BindingDB Target Chain Sequence 18,221,1,0.01,0.0
+246,PDB ID(s) of Target Chain 18,220,1,0.01,0.0
+247,UniProt (SwissProt) Recommended Name of Target Chain 18,220,0,0.01,0.0
+248,UniProt (SwissProt) Entry Name of Target Chain 18,220,0,0.01,0.0
+249,UniProt (SwissProt) Primary ID of Target Chain 18,220,0,0.01,0.0
+250,UniProt (SwissProt) Secondary ID(s) of Target Chain 18,219,0,0.01,0.0
+251,UniProt (SwissProt) Alternative ID(s) of Target Chain 18,0,0,0.0,0.0
+252,UniProt (TrEMBL) Submitted Name of Target Chain 18,1,1,0.0,0.0
+253,UniProt (TrEMBL) Entry Name of Target Chain 18,1,1,0.0,0.0
+254,UniProt (TrEMBL) Primary ID of Target Chain 18,1,1,0.0,0.0
+255,UniProt (TrEMBL) Secondary ID(s) of Target Chain 18,0,0,0.0,0.0
+256,UniProt (TrEMBL) Alternative ID(s) of Target Chain 18,0,0,0.0,0.0
+257,BindingDB Target Chain Sequence 19,221,1,0.01,0.0
+258,PDB ID(s) of Target Chain 19,219,0,0.01,0.0
+259,UniProt (SwissProt) Recommended Name of Target Chain 19,220,0,0.01,0.0
+260,UniProt (SwissProt) Entry Name of Target Chain 19,220,0,0.01,0.0
+261,UniProt (SwissProt) Primary ID of Target Chain 19,220,0,0.01,0.0
+262,UniProt (SwissProt) Secondary ID(s) of Target Chain 19,220,0,0.01,0.0
+263,UniProt (SwissProt) Alternative ID(s) of Target Chain 19,0,0,0.0,0.0
+264,UniProt (TrEMBL) Submitted Name of Target Chain 19,1,1,0.0,0.0
+265,UniProt (TrEMBL) Entry Name of Target Chain 19,1,1,0.0,0.0
+266,UniProt (TrEMBL) Primary ID of Target Chain 19,1,1,0.0,0.0
+267,UniProt (TrEMBL) Secondary ID(s) of Target Chain 19,0,0,0.0,0.0
+268,UniProt (TrEMBL) Alternative ID(s) of Target Chain 19,0,0,0.0,0.0
+269,BindingDB Target Chain Sequence 20,3,1,0.0,0.0
+270,PDB ID(s) of Target Chain 20,1,0,0.0,0.0
+271,UniProt (SwissProt) Recommended Name of Target Chain 20,2,0,0.0,0.0
+272,UniProt (SwissProt) Entry Name of Target Chain 20,2,0,0.0,0.0
+273,UniProt (SwissProt) Primary ID of Target Chain 20,2,0,0.0,0.0
+274,UniProt (SwissProt) Secondary ID(s) of Target Chain 20,2,0,0.0,0.0
+275,UniProt (SwissProt) Alternative ID(s) of Target Chain 20,0,0,0.0,0.0
+276,UniProt (TrEMBL) Submitted Name of Target Chain 20,1,1,0.0,0.0
+277,UniProt (TrEMBL) Entry Name of Target Chain 20,1,1,0.0,0.0
+278,UniProt (TrEMBL) Primary ID of Target Chain 20,1,1,0.0,0.0
+279,UniProt (TrEMBL) Secondary ID(s) of Target Chain 20,0,0,0.0,0.0
+280,UniProt (TrEMBL) Alternative ID(s) of Target Chain 20,0,0,0.0,0.0
+281,BindingDB Target Chain Sequence 21,3,1,0.0,0.0
+282,PDB ID(s) of Target Chain 21,3,1,0.0,0.0
+283,UniProt (SwissProt) Recommended Name of Target Chain 21,2,0,0.0,0.0
+284,UniProt (SwissProt) Entry Name of Target Chain 21,2,0,0.0,0.0
+285,UniProt (SwissProt) Primary ID of Target Chain 21,2,0,0.0,0.0
+286,UniProt (SwissProt) Secondary ID(s) of Target Chain 21,2,0,0.0,0.0
+287,UniProt (SwissProt) Alternative ID(s) of Target Chain 21,0,0,0.0,0.0
+288,UniProt (TrEMBL) Submitted Name of Target Chain 21,1,1,0.0,0.0
+289,UniProt (TrEMBL) Entry Name of Target Chain 21,1,1,0.0,0.0
+290,UniProt (TrEMBL) Primary ID of Target Chain 21,1,1,0.0,0.0
+291,UniProt (TrEMBL) Secondary ID(s) of Target Chain 21,0,0,0.0,0.0
+292,UniProt (TrEMBL) Alternative ID(s) of Target Chain 21,0,0,0.0,0.0
+293,BindingDB Target Chain Sequence 22,3,1,0.0,0.0
+294,PDB ID(s) of Target Chain 22,1,0,0.0,0.0
+295,UniProt (SwissProt) Recommended Name of Target Chain 22,2,0,0.0,0.0
+296,UniProt (SwissProt) Entry Name of Target Chain 22,2,0,0.0,0.0
+297,UniProt (SwissProt) Primary ID of Target Chain 22,2,0,0.0,0.0
+298,UniProt (SwissProt) Secondary ID(s) of Target Chain 22,1,0,0.0,0.0
+299,UniProt (SwissProt) Alternative ID(s) of Target Chain 22,0,0,0.0,0.0
+300,UniProt (TrEMBL) Submitted Name of Target Chain 22,1,1,0.0,0.0
+301,UniProt (TrEMBL) Entry Name of Target Chain 22,1,1,0.0,0.0
+302,UniProt (TrEMBL) Primary ID of Target Chain 22,1,1,0.0,0.0
+303,UniProt (TrEMBL) Secondary ID(s) of Target Chain 22,0,0,0.0,0.0
+304,UniProt (TrEMBL) Alternative ID(s) of Target Chain 22,0,0,0.0,0.0
+305,BindingDB Target Chain Sequence 23,3,1,0.0,0.0
+306,PDB ID(s) of Target Chain 23,1,0,0.0,0.0
+307,UniProt (SwissProt) Recommended Name of Target Chain 23,2,0,0.0,0.0
+308,UniProt (SwissProt) Entry Name of Target Chain 23,2,0,0.0,0.0
+309,UniProt (SwissProt) Primary ID of Target Chain 23,2,0,0.0,0.0
+310,UniProt (SwissProt) Secondary ID(s) of Target Chain 23,2,0,0.0,0.0
+311,UniProt (SwissProt) Alternative ID(s) of Target Chain 23,0,0,0.0,0.0
+312,UniProt (TrEMBL) Submitted Name of Target Chain 23,1,1,0.0,0.0
+313,UniProt (TrEMBL) Entry Name of Target Chain 23,1,1,0.0,0.0
+314,UniProt (TrEMBL) Primary ID of Target Chain 23,1,1,0.0,0.0
+315,UniProt (TrEMBL) Secondary ID(s) of Target Chain 23,0,0,0.0,0.0
+316,UniProt (TrEMBL) Alternative ID(s) of Target Chain 23,0,0,0.0,0.0
+317,BindingDB Target Chain Sequence 24,2,0,0.0,0.0
+318,PDB ID(s) of Target Chain 24,1,0,0.0,0.0
+319,UniProt (SwissProt) Recommended Name of Target Chain 24,2,0,0.0,0.0
+320,UniProt (SwissProt) Entry Name of Target Chain 24,2,0,0.0,0.0
+321,UniProt (SwissProt) Primary ID of Target Chain 24,2,0,0.0,0.0
+322,UniProt (SwissProt) Secondary ID(s) of Target Chain 24,1,0,0.0,0.0
+323,UniProt (SwissProt) Alternative ID(s) of Target Chain 24,0,0,0.0,0.0
+324,UniProt (TrEMBL) Submitted Name of Target Chain 24,0,0,0.0,0.0
+325,UniProt (TrEMBL) Entry Name of Target Chain 24,0,0,0.0,0.0
+326,UniProt (TrEMBL) Primary ID of Target Chain 24,0,0,0.0,0.0
+327,UniProt (TrEMBL) Secondary ID(s) of Target Chain 24,0,0,0.0,0.0
+328,UniProt (TrEMBL) Alternative ID(s) of Target Chain 24,0,0,0.0,0.0
+329,BindingDB Target Chain Sequence 25,2,0,0.0,0.0
+330,PDB ID(s) of Target Chain 25,1,0,0.0,0.0
+331,UniProt (SwissProt) Recommended Name of Target Chain 25,2,0,0.0,0.0
+332,UniProt (SwissProt) Entry Name of Target Chain 25,2,0,0.0,0.0
+333,UniProt (SwissProt) Primary ID of Target Chain 25,2,0,0.0,0.0
+334,UniProt (SwissProt) Secondary ID(s) of Target Chain 25,2,0,0.0,0.0
+335,UniProt (SwissProt) Alternative ID(s) of Target Chain 25,0,0,0.0,0.0
+336,UniProt (TrEMBL) Submitted Name of Target Chain 25,0,0,0.0,0.0
+337,UniProt (TrEMBL) Entry Name of Target Chain 25,0,0,0.0,0.0
+338,UniProt (TrEMBL) Primary ID of Target Chain 25,0,0,0.0,0.0
+339,UniProt (TrEMBL) Secondary ID(s) of Target Chain 25,0,0,0.0,0.0
+340,UniProt (TrEMBL) Alternative ID(s) of Target Chain 25,0,0,0.0,0.0
+341,BindingDB Target Chain Sequence 26,2,0,0.0,0.0
+342,PDB ID(s) of Target Chain 26,1,0,0.0,0.0
+343,UniProt (SwissProt) Recommended Name of Target Chain 26,2,0,0.0,0.0
+344,UniProt (SwissProt) Entry Name of Target Chain 26,2,0,0.0,0.0
+345,UniProt (SwissProt) Primary ID of Target Chain 26,2,0,0.0,0.0
+346,UniProt (SwissProt) Secondary ID(s) of Target Chain 26,2,0,0.0,0.0
+347,UniProt (SwissProt) Alternative ID(s) of Target Chain 26,0,0,0.0,0.0
+348,UniProt (TrEMBL) Submitted Name of Target Chain 26,0,0,0.0,0.0
+349,UniProt (TrEMBL) Entry Name of Target Chain 26,0,0,0.0,0.0
+350,UniProt (TrEMBL) Primary ID of Target Chain 26,0,0,0.0,0.0
+351,UniProt (TrEMBL) Secondary ID(s) of Target Chain 26,0,0,0.0,0.0
+352,UniProt (TrEMBL) Alternative ID(s) of Target Chain 26,0,0,0.0,0.0
+353,BindingDB Target Chain Sequence 27,2,0,0.0,0.0
+354,PDB ID(s) of Target Chain 27,1,0,0.0,0.0
+355,UniProt (SwissProt) Recommended Name of Target Chain 27,2,0,0.0,0.0
+356,UniProt (SwissProt) Entry Name of Target Chain 27,2,0,0.0,0.0
+357,UniProt (SwissProt) Primary ID of Target Chain 27,2,0,0.0,0.0
+358,UniProt (SwissProt) Secondary ID(s) of Target Chain 27,1,0,0.0,0.0
+359,UniProt (SwissProt) Alternative ID(s) of Target Chain 27,0,0,0.0,0.0
+360,UniProt (TrEMBL) Submitted Name of Target Chain 27,0,0,0.0,0.0
+361,UniProt (TrEMBL) Entry Name of Target Chain 27,0,0,0.0,0.0
+362,UniProt (TrEMBL) Primary ID of Target Chain 27,0,0,0.0,0.0
+363,UniProt (TrEMBL) Secondary ID(s) of Target Chain 27,0,0,0.0,0.0
+364,UniProt (TrEMBL) Alternative ID(s) of Target Chain 27,0,0,0.0,0.0
+365,BindingDB Target Chain Sequence 28,2,0,0.0,0.0
+366,PDB ID(s) of Target Chain 28,1,0,0.0,0.0
+367,UniProt (SwissProt) Recommended Name of Target Chain 28,2,0,0.0,0.0
+368,UniProt (SwissProt) Entry Name of Target Chain 28,2,0,0.0,0.0
+369,UniProt (SwissProt) Primary ID of Target Chain 28,2,0,0.0,0.0
+370,UniProt (SwissProt) Secondary ID(s) of Target Chain 28,2,0,0.0,0.0
+371,UniProt (SwissProt) Alternative ID(s) of Target Chain 28,0,0,0.0,0.0
+372,UniProt (TrEMBL) Submitted Name of Target Chain 28,0,0,0.0,0.0
+373,UniProt (TrEMBL) Entry Name of Target Chain 28,0,0,0.0,0.0
+374,UniProt (TrEMBL) Primary ID of Target Chain 28,0,0,0.0,0.0
+375,UniProt (TrEMBL) Secondary ID(s) of Target Chain 28,0,0,0.0,0.0
+376,UniProt (TrEMBL) Alternative ID(s) of Target Chain 28,0,0,0.0,0.0
+377,BindingDB Target Chain Sequence 29,2,0,0.0,0.0
+378,PDB ID(s) of Target Chain 29,2,0,0.0,0.0
+379,UniProt (SwissProt) Recommended Name of Target Chain 29,2,0,0.0,0.0
+380,UniProt (SwissProt) Entry Name of Target Chain 29,2,0,0.0,0.0
+381,UniProt (SwissProt) Primary ID of Target Chain 29,2,0,0.0,0.0
+382,UniProt (SwissProt) Secondary ID(s) of Target Chain 29,2,0,0.0,0.0
+383,UniProt (SwissProt) Alternative ID(s) of Target Chain 29,0,0,0.0,0.0
+384,UniProt (TrEMBL) Submitted Name of Target Chain 29,0,0,0.0,0.0
+385,UniProt (TrEMBL) Entry Name of Target Chain 29,0,0,0.0,0.0
+386,UniProt (TrEMBL) Primary ID of Target Chain 29,0,0,0.0,0.0
+387,UniProt (TrEMBL) Secondary ID(s) of Target Chain 29,0,0,0.0,0.0
+388,UniProt (TrEMBL) Alternative ID(s) of Target Chain 29,0,0,0.0,0.0
+389,BindingDB Target Chain Sequence 30,1,0,0.0,0.0
+390,PDB ID(s) of Target Chain 30,1,0,0.0,0.0
+391,UniProt (SwissProt) Recommended Name of Target Chain 30,1,0,0.0,0.0
+392,UniProt (SwissProt) Entry Name of Target Chain 30,1,0,0.0,0.0
+393,UniProt (SwissProt) Primary ID of Target Chain 30,1,0,0.0,0.0
+394,UniProt (SwissProt) Secondary ID(s) of Target Chain 30,1,0,0.0,0.0
+395,UniProt (SwissProt) Alternative ID(s) of Target Chain 30,0,0,0.0,0.0
+396,UniProt (TrEMBL) Submitted Name of Target Chain 30,0,0,0.0,0.0
+397,UniProt (TrEMBL) Entry Name of Target Chain 30,0,0,0.0,0.0
+398,UniProt (TrEMBL) Primary ID of Target Chain 30,0,0,0.0,0.0
+399,UniProt (TrEMBL) Secondary ID(s) of Target Chain 30,0,0,0.0,0.0
+400,UniProt (TrEMBL) Alternative ID(s) of Target Chain 30,0,0,0.0,0.0
+401,BindingDB Target Chain Sequence 31,1,0,0.0,0.0
+402,PDB ID(s) of Target Chain 31,1,0,0.0,0.0
+403,UniProt (SwissProt) Recommended Name of Target Chain 31,1,0,0.0,0.0
+404,UniProt (SwissProt) Entry Name of Target Chain 31,1,0,0.0,0.0
+405,UniProt (SwissProt) Primary ID of Target Chain 31,1,0,0.0,0.0
+406,UniProt (SwissProt) Secondary ID(s) of Target Chain 31,0,0,0.0,0.0
+407,UniProt (SwissProt) Alternative ID(s) of Target Chain 31,0,0,0.0,0.0
+408,UniProt (TrEMBL) Submitted Name of Target Chain 31,0,0,0.0,0.0
+409,UniProt (TrEMBL) Entry Name of Target Chain 31,0,0,0.0,0.0
+410,UniProt (TrEMBL) Primary ID of Target Chain 31,0,0,0.0,0.0
+411,UniProt (TrEMBL) Secondary ID(s) of Target Chain 31,0,0,0.0,0.0
+412,UniProt (TrEMBL) Alternative ID(s) of Target Chain 31,0,0,0.0,0.0
+413,BindingDB Target Chain Sequence 32,1,0,0.0,0.0
+414,PDB ID(s) of Target Chain 32,1,0,0.0,0.0
+415,UniProt (SwissProt) Recommended Name of Target Chain 32,1,0,0.0,0.0
+416,UniProt (SwissProt) Entry Name of Target Chain 32,1,0,0.0,0.0
+417,UniProt (SwissProt) Primary ID of Target Chain 32,1,0,0.0,0.0
+418,UniProt (SwissProt) Secondary ID(s) of Target Chain 32,1,0,0.0,0.0
+419,UniProt (SwissProt) Alternative ID(s) of Target Chain 32,0,0,0.0,0.0
+420,UniProt (TrEMBL) Submitted Name of Target Chain 32,0,0,0.0,0.0
+421,UniProt (TrEMBL) Entry Name of Target Chain 32,0,0,0.0,0.0
+422,UniProt (TrEMBL) Primary ID of Target Chain 32,0,0,0.0,0.0
+423,UniProt (TrEMBL) Secondary ID(s) of Target Chain 32,0,0,0.0,0.0
+424,UniProt (TrEMBL) Alternative ID(s) of Target Chain 32,0,0,0.0,0.0
+425,BindingDB Target Chain Sequence 33,1,0,0.0,0.0
+426,PDB ID(s) of Target Chain 33,1,0,0.0,0.0
+427,UniProt (SwissProt) Recommended Name of Target Chain 33,1,0,0.0,0.0
+428,UniProt (SwissProt) Entry Name of Target Chain 33,1,0,0.0,0.0
+429,UniProt (SwissProt) Primary ID of Target Chain 33,1,0,0.0,0.0
+430,UniProt (SwissProt) Secondary ID(s) of Target Chain 33,1,0,0.0,0.0
+431,UniProt (SwissProt) Alternative ID(s) of Target Chain 33,0,0,0.0,0.0
+432,UniProt (TrEMBL) Submitted Name of Target Chain 33,0,0,0.0,0.0
+433,UniProt (TrEMBL) Entry Name of Target Chain 33,0,0,0.0,0.0
+434,UniProt (TrEMBL) Primary ID of Target Chain 33,0,0,0.0,0.0
+435,UniProt (TrEMBL) Secondary ID(s) of Target Chain 33,0,0,0.0,0.0
+436,UniProt (TrEMBL) Alternative ID(s) of Target Chain 33,0,0,0.0,0.0
+437,BindingDB Target Chain Sequence 34,1,0,0.0,0.0
+438,PDB ID(s) of Target Chain 34,1,0,0.0,0.0
+439,UniProt (SwissProt) Recommended Name of Target Chain 34,1,0,0.0,0.0
+440,UniProt (SwissProt) Entry Name of Target Chain 34,1,0,0.0,0.0
+441,UniProt (SwissProt) Primary ID of Target Chain 34,1,0,0.0,0.0
+442,UniProt (SwissProt) Secondary ID(s) of Target Chain 34,1,0,0.0,0.0
+443,UniProt (SwissProt) Alternative ID(s) of Target Chain 34,0,0,0.0,0.0
+444,UniProt (TrEMBL) Submitted Name of Target Chain 34,0,0,0.0,0.0
+445,UniProt (TrEMBL) Entry Name of Target Chain 34,0,0,0.0,0.0
+446,UniProt (TrEMBL) Primary ID of Target Chain 34,0,0,0.0,0.0
+447,UniProt (TrEMBL) Secondary ID(s) of Target Chain 34,0,0,0.0,0.0
+448,UniProt (TrEMBL) Alternative ID(s) of Target Chain 34,0,0,0.0,0.0
+449,BindingDB Target Chain Sequence 35,1,0,0.0,0.0
+450,PDB ID(s) of Target Chain 35,1,0,0.0,0.0
+451,UniProt (SwissProt) Recommended Name of Target Chain 35,1,0,0.0,0.0
+452,UniProt (SwissProt) Entry Name of Target Chain 35,1,0,0.0,0.0
+453,UniProt (SwissProt) Primary ID of Target Chain 35,1,0,0.0,0.0
+454,UniProt (SwissProt) Secondary ID(s) of Target Chain 35,1,0,0.0,0.0
+455,UniProt (SwissProt) Alternative ID(s) of Target Chain 35,0,0,0.0,0.0
+456,UniProt (TrEMBL) Submitted Name of Target Chain 35,0,0,0.0,0.0
+457,UniProt (TrEMBL) Entry Name of Target Chain 35,0,0,0.0,0.0
+458,UniProt (TrEMBL) Primary ID of Target Chain 35,0,0,0.0,0.0
+459,UniProt (TrEMBL) Secondary ID(s) of Target Chain 35,0,0,0.0,0.0
+460,UniProt (TrEMBL) Alternative ID(s) of Target Chain 35,0,0,0.0,0.0
+461,BindingDB Target Chain Sequence 36,1,0,0.0,0.0
+462,PDB ID(s) of Target Chain 36,1,0,0.0,0.0
+463,UniProt (SwissProt) Recommended Name of Target Chain 36,1,0,0.0,0.0
+464,UniProt (SwissProt) Entry Name of Target Chain 36,1,0,0.0,0.0
+465,UniProt (SwissProt) Primary ID of Target Chain 36,1,0,0.0,0.0
+466,UniProt (SwissProt) Secondary ID(s) of Target Chain 36,1,0,0.0,0.0
+467,UniProt (SwissProt) Alternative ID(s) of Target Chain 36,0,0,0.0,0.0
+468,UniProt (TrEMBL) Submitted Name of Target Chain 36,0,0,0.0,0.0
+469,UniProt (TrEMBL) Entry Name of Target Chain 36,0,0,0.0,0.0
+470,UniProt (TrEMBL) Primary ID of Target Chain 36,0,0,0.0,0.0
+471,UniProt (TrEMBL) Secondary ID(s) of Target Chain 36,0,0,0.0,0.0
+472,UniProt (TrEMBL) Alternative ID(s) of Target Chain 36,0,0,0.0,0.0
+473,BindingDB Target Chain Sequence 37,1,0,0.0,0.0
+474,PDB ID(s) of Target Chain 37,1,0,0.0,0.0
+475,UniProt (SwissProt) Recommended Name of Target Chain 37,1,0,0.0,0.0
+476,UniProt (SwissProt) Entry Name of Target Chain 37,1,0,0.0,0.0
+477,UniProt (SwissProt) Primary ID of Target Chain 37,1,0,0.0,0.0
+478,UniProt (SwissProt) Secondary ID(s) of Target Chain 37,1,0,0.0,0.0
+479,UniProt (SwissProt) Alternative ID(s) of Target Chain 37,0,0,0.0,0.0
+480,UniProt (TrEMBL) Submitted Name of Target Chain 37,0,0,0.0,0.0
+481,UniProt (TrEMBL) Entry Name of Target Chain 37,0,0,0.0,0.0
+482,UniProt (TrEMBL) Primary ID of Target Chain 37,0,0,0.0,0.0
+483,UniProt (TrEMBL) Secondary ID(s) of Target Chain 37,0,0,0.0,0.0
+484,UniProt (TrEMBL) Alternative ID(s) of Target Chain 37,0,0,0.0,0.0
+485,BindingDB Target Chain Sequence 38,1,0,0.0,0.0
+486,PDB ID(s) of Target Chain 38,1,0,0.0,0.0
+487,UniProt (SwissProt) Recommended Name of Target Chain 38,1,0,0.0,0.0
+488,UniProt (SwissProt) Entry Name of Target Chain 38,1,0,0.0,0.0
+489,UniProt (SwissProt) Primary ID of Target Chain 38,1,0,0.0,0.0
+490,UniProt (SwissProt) Secondary ID(s) of Target Chain 38,1,0,0.0,0.0
+491,UniProt (SwissProt) Alternative ID(s) of Target Chain 38,0,0,0.0,0.0
+492,UniProt (TrEMBL) Submitted Name of Target Chain 38,0,0,0.0,0.0
+493,UniProt (TrEMBL) Entry Name of Target Chain 38,0,0,0.0,0.0
+494,UniProt (TrEMBL) Primary ID of Target Chain 38,0,0,0.0,0.0
+495,UniProt (TrEMBL) Secondary ID(s) of Target Chain 38,0,0,0.0,0.0
+496,UniProt (TrEMBL) Alternative ID(s) of Target Chain 38,0,0,0.0,0.0
+497,BindingDB Target Chain Sequence 39,1,0,0.0,0.0
+498,PDB ID(s) of Target Chain 39,1,0,0.0,0.0
+499,UniProt (SwissProt) Recommended Name of Target Chain 39,1,0,0.0,0.0
+500,UniProt (SwissProt) Entry Name of Target Chain 39,1,0,0.0,0.0
+501,UniProt (SwissProt) Primary ID of Target Chain 39,1,0,0.0,0.0
+502,UniProt (SwissProt) Secondary ID(s) of Target Chain 39,1,0,0.0,0.0
+503,UniProt (SwissProt) Alternative ID(s) of Target Chain 39,0,0,0.0,0.0
+504,UniProt (TrEMBL) Submitted Name of Target Chain 39,0,0,0.0,0.0
+505,UniProt (TrEMBL) Entry Name of Target Chain 39,0,0,0.0,0.0
+506,UniProt (TrEMBL) Primary ID of Target Chain 39,0,0,0.0,0.0
+507,UniProt (TrEMBL) Secondary ID(s) of Target Chain 39,0,0,0.0,0.0
+508,UniProt (TrEMBL) Alternative ID(s) of Target Chain 39,0,0,0.0,0.0
+509,BindingDB Target Chain Sequence 40,1,0,0.0,0.0
+510,PDB ID(s) of Target Chain 40,0,0,0.0,0.0
+511,UniProt (SwissProt) Recommended Name of Target Chain 40,1,0,0.0,0.0
+512,UniProt (SwissProt) Entry Name of Target Chain 40,1,0,0.0,0.0
+513,UniProt (SwissProt) Primary ID of Target Chain 40,1,0,0.0,0.0
+514,UniProt (SwissProt) Secondary ID(s) of Target Chain 40,1,0,0.0,0.0
+515,UniProt (SwissProt) Alternative ID(s) of Target Chain 40,0,0,0.0,0.0
+516,UniProt (TrEMBL) Submitted Name of Target Chain 40,0,0,0.0,0.0
+517,UniProt (TrEMBL) Entry Name of Target Chain 40,0,0,0.0,0.0
+518,UniProt (TrEMBL) Primary ID of Target Chain 40,0,0,0.0,0.0
+519,UniProt (TrEMBL) Secondary ID(s) of Target Chain 40,0,0,0.0,0.0
+520,UniProt (TrEMBL) Alternative ID(s) of Target Chain 40,0,0,0.0,0.0
+521,BindingDB Target Chain Sequence 41,1,0,0.0,0.0
+522,PDB ID(s) of Target Chain 41,0,0,0.0,0.0
+523,UniProt (SwissProt) Recommended Name of Target Chain 41,1,0,0.0,0.0
+524,UniProt (SwissProt) Entry Name of Target Chain 41,1,0,0.0,0.0
+525,UniProt (SwissProt) Primary ID of Target Chain 41,1,0,0.0,0.0
+526,UniProt (SwissProt) Secondary ID(s) of Target Chain 41,0,0,0.0,0.0
+527,UniProt (SwissProt) Alternative ID(s) of Target Chain 41,0,0,0.0,0.0
+528,UniProt (TrEMBL) Submitted Name of Target Chain 41,0,0,0.0,0.0
+529,UniProt (TrEMBL) Entry Name of Target Chain 41,0,0,0.0,0.0
+530,UniProt (TrEMBL) Primary ID of Target Chain 41,0,0,0.0,0.0
+531,UniProt (TrEMBL) Secondary ID(s) of Target Chain 41,0,0,0.0,0.0
+532,UniProt (TrEMBL) Alternative ID(s) of Target Chain 41,0,0,0.0,0.0
+533,BindingDB Target Chain Sequence 42,1,0,0.0,0.0
+534,PDB ID(s) of Target Chain 42,0,0,0.0,0.0
+535,UniProt (SwissProt) Recommended Name of Target Chain 42,1,0,0.0,0.0
+536,UniProt (SwissProt) Entry Name of Target Chain 42,1,0,0.0,0.0
+537,UniProt (SwissProt) Primary ID of Target Chain 42,1,0,0.0,0.0
+538,UniProt (SwissProt) Secondary ID(s) of Target Chain 42,1,0,0.0,0.0
+539,UniProt (SwissProt) Alternative ID(s) of Target Chain 42,0,0,0.0,0.0
+540,UniProt (TrEMBL) Submitted Name of Target Chain 42,0,0,0.0,0.0
+541,UniProt (TrEMBL) Entry Name of Target Chain 42,0,0,0.0,0.0
+542,UniProt (TrEMBL) Primary ID of Target Chain 42,0,0,0.0,0.0
+543,UniProt (TrEMBL) Secondary ID(s) of Target Chain 42,0,0,0.0,0.0
+544,UniProt (TrEMBL) Alternative ID(s) of Target Chain 42,0,0,0.0,0.0
+545,BindingDB Target Chain Sequence 43,1,0,0.0,0.0
+546,PDB ID(s) of Target Chain 43,1,0,0.0,0.0
+547,UniProt (SwissProt) Recommended Name of Target Chain 43,1,0,0.0,0.0
+548,UniProt (SwissProt) Entry Name of Target Chain 43,1,0,0.0,0.0
+549,UniProt (SwissProt) Primary ID of Target Chain 43,1,0,0.0,0.0
+550,UniProt (SwissProt) Secondary ID(s) of Target Chain 43,1,0,0.0,0.0
+551,UniProt (SwissProt) Alternative ID(s) of Target Chain 43,0,0,0.0,0.0
+552,UniProt (TrEMBL) Submitted Name of Target Chain 43,0,0,0.0,0.0
+553,UniProt (TrEMBL) Entry Name of Target Chain 43,0,0,0.0,0.0
+554,UniProt (TrEMBL) Primary ID of Target Chain 43,0,0,0.0,0.0
+555,UniProt (TrEMBL) Secondary ID(s) of Target Chain 43,0,0,0.0,0.0
+556,UniProt (TrEMBL) Alternative ID(s) of Target Chain 43,0,0,0.0,0.0
+557,BindingDB Target Chain Sequence 44,1,0,0.0,0.0
+558,PDB ID(s) of Target Chain 44,0,0,0.0,0.0
+559,UniProt (SwissProt) Recommended Name of Target Chain 44,1,0,0.0,0.0
+560,UniProt (SwissProt) Entry Name of Target Chain 44,1,0,0.0,0.0
+561,UniProt (SwissProt) Primary ID of Target Chain 44,1,0,0.0,0.0
+562,UniProt (SwissProt) Secondary ID(s) of Target Chain 44,1,0,0.0,0.0
+563,UniProt (SwissProt) Alternative ID(s) of Target Chain 44,0,0,0.0,0.0
+564,UniProt (TrEMBL) Submitted Name of Target Chain 44,0,0,0.0,0.0
+565,UniProt (TrEMBL) Entry Name of Target Chain 44,0,0,0.0,0.0
+566,UniProt (TrEMBL) Primary ID of Target Chain 44,0,0,0.0,0.0
+567,UniProt (TrEMBL) Secondary ID(s) of Target Chain 44,0,0,0.0,0.0
+568,UniProt (TrEMBL) Alternative ID(s) of Target Chain 44,0,0,0.0,0.0
+569,BindingDB Target Chain Sequence 45,1,0,0.0,0.0
+570,PDB ID(s) of Target Chain 45,1,0,0.0,0.0
+571,UniProt (SwissProt) Recommended Name of Target Chain 45,1,0,0.0,0.0
+572,UniProt (SwissProt) Entry Name of Target Chain 45,1,0,0.0,0.0
+573,UniProt (SwissProt) Primary ID of Target Chain 45,1,0,0.0,0.0
+574,UniProt (SwissProt) Secondary ID(s) of Target Chain 45,1,0,0.0,0.0
+575,UniProt (SwissProt) Alternative ID(s) of Target Chain 45,0,0,0.0,0.0
+576,UniProt (TrEMBL) Submitted Name of Target Chain 45,0,0,0.0,0.0
+577,UniProt (TrEMBL) Entry Name of Target Chain 45,0,0,0.0,0.0
+578,UniProt (TrEMBL) Primary ID of Target Chain 45,0,0,0.0,0.0
+579,UniProt (TrEMBL) Secondary ID(s) of Target Chain 45,0,0,0.0,0.0
+580,UniProt (TrEMBL) Alternative ID(s) of Target Chain 45,0,0,0.0,0.0
+581,BindingDB Target Chain Sequence 46,1,0,0.0,0.0
+582,PDB ID(s) of Target Chain 46,1,0,0.0,0.0
+583,UniProt (SwissProt) Recommended Name of Target Chain 46,1,0,0.0,0.0
+584,UniProt (SwissProt) Entry Name of Target Chain 46,1,0,0.0,0.0
+585,UniProt (SwissProt) Primary ID of Target Chain 46,1,0,0.0,0.0
+586,UniProt (SwissProt) Secondary ID(s) of Target Chain 46,1,0,0.0,0.0
+587,UniProt (SwissProt) Alternative ID(s) of Target Chain 46,0,0,0.0,0.0
+588,UniProt (TrEMBL) Submitted Name of Target Chain 46,0,0,0.0,0.0
+589,UniProt (TrEMBL) Entry Name of Target Chain 46,0,0,0.0,0.0
+590,UniProt (TrEMBL) Primary ID of Target Chain 46,0,0,0.0,0.0
+591,UniProt (TrEMBL) Secondary ID(s) of Target Chain 46,0,0,0.0,0.0
+592,UniProt (TrEMBL) Alternative ID(s) of Target Chain 46,0,0,0.0,0.0
+593,BindingDB Target Chain Sequence 47,1,0,0.0,0.0
+594,PDB ID(s) of Target Chain 47,0,0,0.0,0.0
+595,UniProt (SwissProt) Recommended Name of Target Chain 47,1,0,0.0,0.0
+596,UniProt (SwissProt) Entry Name of Target Chain 47,1,0,0.0,0.0
+597,UniProt (SwissProt) Primary ID of Target Chain 47,1,0,0.0,0.0
+598,UniProt (SwissProt) Secondary ID(s) of Target Chain 47,1,0,0.0,0.0
+599,UniProt (SwissProt) Alternative ID(s) of Target Chain 47,0,0,0.0,0.0
+600,UniProt (TrEMBL) Submitted Name of Target Chain 47,0,0,0.0,0.0
+601,UniProt (TrEMBL) Entry Name of Target Chain 47,0,0,0.0,0.0
+602,UniProt (TrEMBL) Primary ID of Target Chain 47,0,0,0.0,0.0
+603,UniProt (TrEMBL) Secondary ID(s) of Target Chain 47,0,0,0.0,0.0
+604,UniProt (TrEMBL) Alternative ID(s) of Target Chain 47,0,0,0.0,0.0
+605,BindingDB Target Chain Sequence 48,1,0,0.0,0.0
+606,PDB ID(s) of Target Chain 48,1,0,0.0,0.0
+607,UniProt (SwissProt) Recommended Name of Target Chain 48,1,0,0.0,0.0
+608,UniProt (SwissProt) Entry Name of Target Chain 48,1,0,0.0,0.0
+609,UniProt (SwissProt) Primary ID of Target Chain 48,1,0,0.0,0.0
+610,UniProt (SwissProt) Secondary ID(s) of Target Chain 48,1,0,0.0,0.0
+611,UniProt (SwissProt) Alternative ID(s) of Target Chain 48,0,0,0.0,0.0
+612,UniProt (TrEMBL) Submitted Name of Target Chain 48,0,0,0.0,0.0
+613,UniProt (TrEMBL) Entry Name of Target Chain 48,0,0,0.0,0.0
+614,UniProt (TrEMBL) Primary ID of Target Chain 48,0,0,0.0,0.0
+615,UniProt (TrEMBL) Secondary ID(s) of Target Chain 48,0,0,0.0,0.0
+616,UniProt (TrEMBL) Alternative ID(s) of Target Chain 48,0,0,0.0,0.0
+617,BindingDB Target Chain Sequence 49,1,0,0.0,0.0
+618,PDB ID(s) of Target Chain 49,1,0,0.0,0.0
+619,UniProt (SwissProt) Recommended Name of Target Chain 49,1,0,0.0,0.0
+620,UniProt (SwissProt) Entry Name of Target Chain 49,1,0,0.0,0.0
+621,UniProt (SwissProt) Primary ID of Target Chain 49,1,0,0.0,0.0
+622,UniProt (SwissProt) Secondary ID(s) of Target Chain 49,1,0,0.0,0.0
+623,UniProt (SwissProt) Alternative ID(s) of Target Chain 49,0,0,0.0,0.0
+624,UniProt (TrEMBL) Submitted Name of Target Chain 49,0,0,0.0,0.0
+625,UniProt (TrEMBL) Entry Name of Target Chain 49,0,0,0.0,0.0
+626,UniProt (TrEMBL) Primary ID of Target Chain 49,0,0,0.0,0.0
+627,UniProt (TrEMBL) Secondary ID(s) of Target Chain 49,0,0,0.0,0.0
+628,UniProt (TrEMBL) Alternative ID(s) of Target Chain 49,0,0,0.0,0.0
+629,BindingDB Target Chain Sequence 50,1,0,0.0,0.0
+630,PDB ID(s) of Target Chain 50,0,0,0.0,0.0
+631,UniProt (SwissProt) Recommended Name of Target Chain 50,1,0,0.0,0.0
+632,UniProt (SwissProt) Entry Name of Target Chain 50,1,0,0.0,0.0
+633,UniProt (SwissProt) Primary ID of Target Chain 50,1,0,0.0,0.0
+634,UniProt (SwissProt) Secondary ID(s) of Target Chain 50,1,0,0.0,0.0
+635,UniProt (SwissProt) Alternative ID(s) of Target Chain 50,0,0,0.0,0.0
+636,UniProt (TrEMBL) Submitted Name of Target Chain 50,0,0,0.0,0.0
+637,UniProt (TrEMBL) Entry Name of Target Chain 50,0,0,0.0,0.0
+638,UniProt (TrEMBL) Primary ID of Target Chain 50,0,0,0.0,0.0
+639,UniProt (TrEMBL) Secondary ID(s) of Target Chain 50,0,0,0.0,0.0
+640,UniProt (TrEMBL) Alternative ID(s) of Target Chain 50,0,0,0.0,0.0
