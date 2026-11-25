@@ -14,6 +14,7 @@ DTI 벤치마크의 출발 데이터이고, 병합(같은 쌍 합치기)은 아�
 | 1b | `01b_common_columns.py` | 열 1-52 의 이름과 예시 값 | `out/bindingdb_columns_1_52.csv` |
 | 2 | `02_build_kdki.py` | Kd·Ki 측정만 뽑아 19 열 표로 | `data/bindingdb_kdki.tsv` |
 | 3 | `03_make_inputs.py` | Kd 와 Ki 로 나눠 입력 파일과 map 파일로 | `data/bindingdb_{kd,ki}_{input,map}.tsv` |
+| 4 | `04_make_demo_subset.py` | 데모용 10 행 표본 | `data/bindingdb_{kd,ki}_input_10.tsv` |
 
 실행은 compute node 에서 합니다. 로그인 노드는 인터넷이 안 되고 9 GB 파일을 읽기에도 적절하지 않습니다.
 
@@ -23,6 +24,9 @@ srun -A rsc -p cpu-core -c 1 --mem=7500M -t 01:00:00 bash -c \
 ```
 
 원본 내려받기는 `../yeji/TDC/README.md` 의 블록을 씁니다. zip SHA256 이 거기 적혀 있습니다.
+
+`data/` 의 큰 파일은 git 에 올리지 않습니다 (최대 542 MB). 팀 공유 폴더는 여기입니다.
+https://drive.google.com/drive/folders/1kp38b-HcRTRytpTDcTtZ1FGaNokrXdni
 
 ## 원본
 
@@ -152,6 +156,32 @@ full = x.merge(m, on="id", validate="one_to_one")
 ```python
 exact = full[full.qualifier.isna()]          # 부등호 없는 측정만
 ```
+
+### 데모용 10 행 표본
+
+조건 B, C, D 를 돌려 보는 용도입니다. 여기 `data/` 아래 파일은 다른 생성물과 마찬가지로 git 에 올리지
+않습니다. **git 에 올라가 있는 것은 `track_agent/data/` 로 복사한 쪽 하나뿐입니다.** 같은 파일을 두 곳에
+두면 어긋나기 때문입니다. 팀원은 그쪽을 쓰면 되고, 큰 파일을 만들 필요가 없습니다.
+
+| 파일 | 행 | 내용 |
+| --- | --- | --- |
+| `data/bindingdb_kd_input_10.tsv` | 10 | `kd_nm` 3.7 - 43,000 |
+| `data/bindingdb_kd_map_10.tsv` | 10 | 위 10 행의 메타데이터 |
+| `data/bindingdb_ki_input_10.tsv` | 10 | `ki_nm` 0.24 - 69,183 |
+| `data/bindingdb_ki_map_10.tsv` | 10 | 위 10 행의 메타데이터 |
+
+map 파일은 큰 쪽과 열이 같고, 행 순서도 입력 파일과 똑같이 맞춰져 있습니다.
+04 를 다시 돌린 뒤에는 네 파일을 `track_agent/data/` 로 다시 복사하십시오.
+
+고르는 규칙은 세 가지이고 결정적입니다. 같은 입력이면 항상 같은 10 행이 나옵니다.
+
+1. 부등호가 없는 측정만 씁니다. `>10000` 은 정답이 한 점으로 정해지지 않아 모델 답과 비교할 수 없습니다.
+2. 약물도 단백질도 서로 겹치지 않습니다 (10 행 = 약물 10 종 x 단백질 10 종).
+3. 파일 앞에서 연달아 뽑지 않고 전체에 고르게 퍼진 위치에서 뽑습니다. BindingDB 는 같은 논문에서 온
+   측정이 붙어 있어, 앞에서 10 개를 뽑으면 한 논문의 한 단백질 변이체들만 나옵니다. 처음 만들었을 때
+   실제로 약물 1 종에 거의 같은 서열 10 개가 나왔습니다.
+
+`id` 는 원본 입력 파일의 id 그대로입니다 (`kd_9213` 처럼). map 파일에서 그 id 로 출처를 찾을 수 있습니다.
 
 ## 다음 단계에서 정할 것
 
