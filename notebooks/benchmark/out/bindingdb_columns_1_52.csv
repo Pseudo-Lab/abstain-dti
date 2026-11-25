@@ -39,3 +39,15 @@ IUPHAR_GRAC ID of Ligand,5661
 KEGG ID of Ligand,C15660
 ZINC ID of Ligand,ZINC23247639
 Number of Protein Chains in Target (>1 implies a multichain complex),1
+BindingDB Target Chain Sequence 1,PQITLWQRPLVTIKIGGQLKEALLDTGADDTVLEEMSLPGRWKPKMIGGIGGFIKVRQYDQILIEICGHKAIGTVLVGPTPVNIIGRNLLTQIGCTLNF
+PDB ID(s) of Target Chain 1,"1W5Y,1W5X,1W5W,1W5V,2FDE,7UPJ,6UWC,6UWB,6D0E,6D0D,5TYS,5TYR,4I8Z,4I8W,4HLA,4FE6,3T11,3PSU,3PHV,3GGX,3GGV,3GGA,3CKT,3BHE,3BGC,3BGB,2ZGA,2WKZ,2UY0,2UXZ,2UPJ,2QNQ,2QNP,2QNN,2PWR,2PWC,2PQZ,2CEN,2CEM,2CEJ,2BQV,2BPZ,2BPY,2BPX,2BPW,2BPV,2BBB,2BB9,2AQU,2A4F,1ZSR,1ZSF,1YT9,1XL5,1XL2,1WBM,1WBK,1UPJ,1U8G,1T7K,1SP5,1OHR,1NPW,1NPV,1NPA,1NH0,1MUI,1M0B,1IIQ,1HVL,1HVK,1HVJ,1HVI,1HTG,1HTF,1HTE,1HSG,1HPX,1HPV,1HPS,1HOS,1HIH,1HHP,1HBV,1GNO,1G35,1G2K,1FQX,1EC3,1EC2,1EC1,1EC0,1EBZ,1EBW,1DIF,1D4J,1D4I,1D4H,1C70,1AJX,1AJV"
+UniProt (SwissProt) Recommended Name of Target Chain 1,Gag-Pol polyprotein
+UniProt (SwissProt) Entry Name of Target Chain 1,POL_HV1BR
+UniProt (SwissProt) Primary ID of Target Chain 1,P03367
+UniProt (SwissProt) Secondary ID(s) of Target Chain 1,A8K5M2 D3DP53 Q96AN1 Q96KP2
+UniProt (SwissProt) Alternative ID(s) of Target Chain 1,(empty in every Kd/Ki row)
+UniProt (TrEMBL) Submitted Name of Target Chain 1,Neuraminidase
+UniProt (TrEMBL) Entry Name of Target Chain 1,Q9WPQ4_9INFB
+UniProt (TrEMBL) Primary ID of Target Chain 1,Q9WPQ4
+UniProt (TrEMBL) Secondary ID(s) of Target Chain 1,A0A0A0MY30
+UniProt (TrEMBL) Alternative ID(s) of Target Chain 1,(empty in every Kd/Ki row)
