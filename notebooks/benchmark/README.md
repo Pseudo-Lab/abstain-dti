@@ -162,10 +162,14 @@ exact = full[full.qualifier.isna()]          # 부등호 없는 측정만
 조건 B, C, D 를 돌려 보는 용도입니다. 작아서 **git 에 올라가 있습니다**. 큰 파일을 만들지 않아도
 바로 쓸 수 있습니다.
 
-| 파일 | 행 | `_nm` 범위 |
+| 파일 | 행 | 내용 |
 | --- | --- | --- |
-| `data/bindingdb_kd_input_10.tsv` | 10 | 3.7 - 43,000 |
-| `data/bindingdb_ki_input_10.tsv` | 10 | 0.24 - 69,183 |
+| `data/bindingdb_kd_input_10.tsv` | 10 | `kd_nm` 3.7 - 43,000 |
+| `data/bindingdb_kd_map_10.tsv` | 10 | 위 10 행의 메타데이터 |
+| `data/bindingdb_ki_input_10.tsv` | 10 | `ki_nm` 0.24 - 69,183 |
+| `data/bindingdb_ki_map_10.tsv` | 10 | 위 10 행의 메타데이터 |
+
+map 파일은 큰 쪽과 열이 같고, 행 순서도 입력 파일과 똑같이 맞춰져 있습니다.
 
 고르는 규칙은 세 가지이고 결정적입니다. 같은 입력이면 항상 같은 10 행이 나옵니다.
 

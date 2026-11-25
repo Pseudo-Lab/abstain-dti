@@ -1,0 +1,11 @@
+id	reactant_set_id	ligand_inchikey	pubchem_cid	chembl_id	target_name	uniprot_swissprot	organism	qualifier	ph	temp_c	curation_source	pmid	article_doi	date_publication	date_in_bindingdb
+kd_1	18379	BYPFEZZEUUWMEJ-UHFFFAOYSA-N	4740	CHEMBL628	Endochitinase B1	Q873X9	Aspergillus fumigatus				Curated from the literature by BindingDB	16183021	10.1016/j.chembiol.2005.07.009	9/28/2005	8/30/2006
+kd_9213	549808	VZJYQILDWNTSIE-UHFFFAOYSA-N	136215708		Phosphatidylinositol 4,5-bisphosphate 3-kinase catalytic subunit delta isoform	O00329	Homo sapiens				US Patent			10/2/2018	1/17/2019
+kd_22408	1172216	ZLKXVXAPIUXBQK-UHFFFAOYSA-N	165112395		Nuclear receptor ROR-gamma	P51449	Homo sapiens				US Patent			5/31/2022	9/5/2022
+kd_33491	1486466	GDJWDGZNJPNIDI-UHFFFAOYSA-N	172194252		GTPase KRas [G12V]	P01116	Homo sapiens				US Patent			1/30/2025	6/5/2025
+kd_48208	50190395	OYONTEXKYJZFHA-UHFFFAOYSA-N	10461815	CHEMBL450786	Cyclin-dependent kinase 4	P11802	Homo sapiens				ChEMBL	22037378	10.1038/nbt.1990	11/9/2011	7/19/2012
+kd_60407	50658402	XQBLYDOGTIKRAE-UHFFFAOYSA-N	53340111	CHEMBL1822653	Aurora kinase A	O14965	Homo sapiens				ChEMBL	21802948	10.1016/j.bmcl.2011.07.027	8/22/2011	3/23/2012
+kd_86311	50843722	KKTBJRLDYITGOV-UHFFFAOYSA-N	16124964	CHEMBL221321	Glutamate receptor ionotropic, kainate 1	P22756	Rattus norvegicus				ChEMBL	17348638	10.1021/jm061041u	3/29/2007	12/9/2012
+kd_102673	51112358	BZKPWHYZMXOIDC-UHFFFAOYSA-N	1986	CHEMBL20	Carbonic anhydrase 3	P07451	Homo sapiens				ChEMBL	29305297	10.1016/j.bmc.2017.12.035	2/1/2018	8/15/2020
+kd_111037	51308099	ZOQUNXATFSLGSS-UHFFFAOYSA-N	155531053		WD repeat-containing protein 5	P61964	Homo sapiens				ChEMBL	31724864	10.1021/acs.jmedchem.9b01411	12/26/2019	2/26/2021
+kd_119891	51555259	QJQNWNOQNZZJCB-UHFFFAOYSA-N			Galectin-4	P56470	Homo sapiens				ChEMBL	38059452		12/28/2023	12/18/2024

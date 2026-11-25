@@ -41,6 +41,24 @@ def load_exact_ids(mapf: Path) -> set[str]:
         return {r["id"] for r in csv.DictReader(fh, delimiter="\t") if not r["qualifier"]}
 
 
+def subset_map(mapf: Path, ids: list[str]) -> list[list[str]]:
+    """`ids` 에 해당하는 map 행만, 그 순서대로 돌려줍니다."""
+    wanted = set(ids)
+    found: dict[str, list[str]] = {}
+    with mapf.open(newline="", encoding="utf-8") as fh:
+        reader = csv.reader(fh, delimiter="\t")
+        header = next(reader)
+        for row in reader:
+            if row[0] in wanted:
+                found[row[0]] = row
+                if len(found) == len(wanted):
+                    break
+    missing = [i for i in ids if i not in found]
+    if missing:
+        sys.exit(f"{mapf.name}: map 에 없는 id {missing}")
+    return [header] + [found[i] for i in ids]
+
+
 def pick(tag: str, data_dir: Path) -> list[list[str]]:
     src = data_dir / f"bindingdb_{tag}_input.tsv"
     mapf = data_dir / f"bindingdb_{tag}_map.tsv"
@@ -102,9 +120,18 @@ def main() -> None:
         dest = args.out_dir / f"bindingdb_{tag}_input_{N}.tsv"
         with dest.open("w", newline="", encoding="utf-8") as fh:
             csv.writer(fh, delimiter="\t", lineterminator="\n").writerows(rows)
+
+        # 같은 id 의 map 행만 추려 짝이 되는 map 파일도 만듭니다. 입력 파일과 행 순서를 맞춥니다.
+        ids = [r[0] for r in rows[1:]]
+        map_rows = subset_map(args.data_dir / f"bindingdb_{tag}_map.tsv", ids)
+        map_dest = args.out_dir / f"bindingdb_{tag}_map_{N}.tsv"
+        with map_dest.open("w", newline="", encoding="utf-8") as fh:
+            csv.writer(fh, delimiter="\t", lineterminator="\n").writerows(map_rows)
+
         values = [float(r[3]) for r in rows[1:]]
         print(f"{dest.name}: {len(rows)-1} 행, {tag}_nm {min(values):g} - {max(values):g}")
-        print("  id: " + ", ".join(r[0] for r in rows[1:]))
+        print(f"{map_dest.name}: {len(map_rows)-1} 행")
+        print("  id: " + ", ".join(ids))
 
 
 if __name__ == "__main__":
