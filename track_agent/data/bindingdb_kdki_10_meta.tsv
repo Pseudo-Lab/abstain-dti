@@ -1,0 +1,11 @@
+query_id	measurement_type	value_nm	qualifier	n_measurements	label_source	ligand_inchikey	chembl_id	target_name	uniprot_swissprot	organism	curation_source	pmid	date_publication	random	cold_drug	cold_target	cold_both	temporal
+kd_100	kd	1.0		1	exact	ZBNZXTGUTAYRHI-UHFFFAOYSA-N	CHEMBL1421	Tyrosine-protein kinase ABL1 [201-500,Q252H]	P00519	Homo sapiens	Curated from the literature by BindingDB	16046538	8/2/2005	train	train	train	train	train
+kd_1	kd	43000.0		1	exact	BYPFEZZEUUWMEJ-UHFFFAOYSA-N	CHEMBL628	Endochitinase B1	Q873X9	Aspergillus fumigatus	Curated from the literature by BindingDB	16183021	9/28/2005	train	train	test	train	train
+ki_1	ki	0.24		1	exact	XGEGDSLAQZJGCW-UHFFFAOYSA-N		Dimer of Gag-Pol polyprotein [501-599]	P03367	Human immunodeficiency virus 1	Curated from the literature by BindingDB	8784449	8/30/1996	train	train	train	train	train
+ki_10006	ki	8710.0		1	exact	YVNKVURFOBPKHU-UHFFFAOYSA-N		Cathepsin K	P43235	Homo sapiens	Curated from the literature by BindingDB	16876407	10/1/2006	cal	cal	test	train	train
+kd_1079	kd	2.1		1	exact	HKSZLNNOFSGOKW-UHFFFAOYSA-N	CHEMBL290084	Receptor-type tyrosine-protein kinase FLT3 [N841I]	P36888	Homo sapiens	PubChem		11/21/2008	test	train	cal	train	train
+kd_10136	kd	6700.0		1	exact	ZPTNPGVIVMVDNM-UHFFFAOYSA-N		Non-receptor tyrosine-protein kinase TYK2 [556-888]	P29597	Human	US Patent		8/14/2025	train	train	train	drop	test
+ki_101507	ki	0.436		2	exact	FWDUPEDKPATAAX-HJLWYHJMSA-N		Guanylate cyclase soluble subunit alpha-1	Q02108	Human	US Patent		7/24/2018	train	cal	cal	drop	train
+ki_103394	ki	5000.0		1	exact	ZGQBTAJRALBCQR-UHFFFAOYSA-N		Coagulation factor XI	P03951	Human	US Patent		10/9/2018	train	cal	test	drop	train
+kd_11814	kd	22.0		1	exact	COSWQJJQYAJOIJ-UHFFFAOYSA-N		Nuclear receptor ROR-gamma	P51449	Human	US Patent		2/12/2019	train	train	test	train	train
+kd_12581	kd	4550.0		2	exact	NIZNXVQMJWWUHG-UHFFFAOYSA-N		Asialoglycoprotein receptor 1	P07306	Homo sapiens	US Patent		8/13/2019	train	train	train	train	train

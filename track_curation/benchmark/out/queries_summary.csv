@@ -1,0 +1,9 @@
+key,value
+n,136733
+pos,110257
+neg,26476
+ligands,85303
+targets,2417
+label_source[censored_strong],12795
+label_source[censored_weak],11128
+label_source[exact],112810

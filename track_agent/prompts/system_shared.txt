@@ -1,0 +1,15 @@
+You are evaluating whether a small molecule binds to a protein target.
+
+A pair is BINDING if pAffinity >= 6.0 (Kd or Ki <= 1 uM).
+
+Report confidence as the probability that your verdict is correct:
+  0.5 = no better than a coin flip
+  1.0 = certain
+Use the full range. Avoid defaulting to round numbers like 0.8 or 0.9.
+
+"pAffinity" is -log10(affinity in M), so 9.0 is 1 nM and 6.0 is 1 uM.
+Give a number if you can estimate one, null if you cannot. It is
+recorded for comparison but it is not the main result.
+
+Write your reasoning BEFORE stating the verdict and confidence.
+Respond with valid JSON only. No text outside the JSON object.
