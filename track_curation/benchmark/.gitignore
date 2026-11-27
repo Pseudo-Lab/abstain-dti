@@ -2,11 +2,11 @@
 data/*
 !data/bindingdb_kdki_10.jsonl
 !data/bindingdb_kdki_10_meta.tsv
-!data/splits_assignment.tsv
-!data/splits_summary.tsv
 
 # ChEMBL 유래 행이 섞여 CC BY-SA 3.0 을 떠안은 파일, 그리고 큰 중간 산출물입니다.
-# 이유는 README "라이선스로 나눈 두 폴더" 절에 있습니다.
+# 분할 배정표도 2026-11-27 부터 여기 있습니다. 전체 데이터에 대한 분할이고 ChEMBL
+# 유래 쌍을 담으므로 올릴 수 없습니다. 대신 seed 42 와 내용 기반 query_id 덕에 누가
+# 돌려도 같은 표가 나옵니다. 이유는 README "라이선스로 나눈 두 폴더" 절에 있습니다.
 data/all/
 
 logs/

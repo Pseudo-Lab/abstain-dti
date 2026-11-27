@@ -17,8 +17,8 @@ DTI 벤치마크의 출발 데이터이고, 병합(같은 쌍 합치기)은 아�
 
 | 폴더 | 들어가는 것 | ChEMBL 행 | git |
 | --- | --- | --- | --- |
-| `data/` | 데모 10 쌍, 분할 배정표, 분할 요약 | **0** | 올립니다 |
-| `data/all/` | `bindingdb_kdki*.tsv`, 본 쿼리 파일 (136,733 쌍) | 파일마다 다름 | `.gitignore` |
+| `data/` | 데모 10 쌍 (`bindingdb_kdki_10*`) | **0** | 올립니다 |
+| `data/all/` | `bindingdb_kdki*.tsv`, 본 쿼리 파일, **분할 배정표** | 파일마다 다름 | `.gitignore` |
 
 `06_split_license.py` 가 `bindingdb_kdki.tsv` 를 세 갈래로 가릅니다. 숫자는 2026-11-27 에
 직접 센 것입니다.
@@ -30,7 +30,51 @@ DTI 벤치마크의 출발 데이터이고, 병합(같은 쌍 합치기)은 아�
 | `bindingdb_kdki_bdbonly.tsv` | 208,626 | 28.9 % | CC BY 3.0 **확인됨**. 가장 안전합니다 |
 
 `nochembl` 과 `chembl` 을 합치면 입력과 같고, `bdbonly` 는 `nochembl` 의 부분집합입니다.
-현재 평가 쿼리는 `nochembl` 에서 만듭니다.
+
+### 평가 쿼리는 전체에서 만듭니다 (2026-11-27 변경)
+
+처음에는 `nochembl` 에서만 만들었습니다. 그러면 올릴 수는 있지만 데이터의 26 % 만 쓰는
+것입니다. **쓰는 것은 라이선스상 문제가 없고 싣는 것만 문제이므로**, 쿼리와 분할은
+전체 `bindingdb_kdki.tsv` 에서 만들고 그 산출물을 `data/all/` 에 둡니다.
+
+| | ChEMBL 제외 | **전체** |
+| --- | --- | --- |
+| 고유 쌍 | 136,733 | **412,973** |
+| 양성 비율 | 80.6 % | **69.2 %** |
+| 고유 리간드 | 84,705 | **230,525** |
+| 고유 단백질 | 2,417 | **6,217** |
+
+전체를 쓰면 단백질이 2.6 배, 쌍이 3 배가 됩니다. 양성 편중도 80.6 % 에서 69.2 % 로
+완화됩니다. ChEMBL 쪽에 음성이 상대적으로 많습니다.
+
+`nochembl` 쿼리 파일도 계속 만듭니다. **데모 10 쌍은 git 에 올라가므로 거기서만
+뽑아야 합니다.**
+
+### 분할 배정표가 git 에 없습니다
+
+`data/all/splits_assignment.tsv` 는 전체 쌍에 대한 배정이라 ChEMBL 유래 `query_id` 를
+담습니다. 그래서 `.gitignore` 입니다. clone 만으로는 받을 수 없습니다.
+
+대신 **누가 돌려도 같은 표가 나옵니다.** 두 가지가 그것을 보장합니다.
+
+1. `seed 42` 와 결정적인 union-find 묶기
+2. `query_id` 가 **내용 해시**입니다 (`07_make_queries.py` 의 `query_id_of`).
+   2026-11-27 까지는 소스 파일 안의 행 번호였습니다. 그러면 소스가 바뀔 때 같은 id 가
+   다른 쌍을 가리켜, 전체본 배정표와 제외본 데모를 join 하면 조용히 엉뚱한 행이
+   붙습니다. 지금은 `(InChIKey, 서열 해시)` 에서 id 를 만들므로 어느 파일에서 뽑아도
+   같은 쌍은 같은 id 입니다.
+
+07 과 08 을 두 번 돌려 산출물이 바이트 단위로 같은 것을 확인했습니다 (2026-11-27).
+
+받는 법은 둘입니다.
+
+```bash
+# 1. 직접 만듭니다 (compute node, 약 20 분)
+python3 06_split_license.py && python3 07_make_queries.py && python3 08_make_splits.py
+
+# 2. 이미 돌린 사람에게서 받습니다
+rsync -a <호스트>:<경로>/track_curation/benchmark/data/all/ data/all/
+```
 
 **남은 위험 두 가지.**
 
@@ -56,8 +100,9 @@ DTI 벤치마크의 출발 데이터이고, 병합(같은 쌍 합치기)은 아�
 | 1b | `01b_common_columns.py` | 열 1-52 의 이름과 예시 값 | `out/bindingdb_columns_1_52.csv` |
 | 2 | `02_build_kdki.py` | Kd·Ki 측정만 뽑아 19 열 표로 | `data/all/bindingdb_kdki.tsv` |
 | 6 | `06_split_license.py` | 라이선스로 세 갈래로 가름 | `data/all/bindingdb_kdki_{chembl,nochembl,bdbonly}.tsv` |
-| 7 | `07_make_queries.py` | 쌍으로 묶고 라벨을 정해 평가 쿼리로 | `data/all/bindingdb_nochembl_queries{,_meta}.*` |
-| 8 | `08_make_splits.py` | train/cal/test 분할 5 종 배정 | `data/splits_assignment.tsv`, `data/splits_summary.tsv` |
+| 7 | `07_make_queries.py` | 쌍으로 묶고 라벨을 정해 평가 쿼리로 | `data/all/bindingdb_all_queries{,_meta}.*` |
+| 7b | `07_make_queries.py --src ...nochembl.tsv --out-prefix bindingdb_nochembl_queries` | 데모 전용 ChEMBL 제외 쿼리 | `data/all/bindingdb_nochembl_queries{,_meta}.*` |
+| 8 | `08_make_splits.py` | train/cal/test 분할 5 종 배정 | `data/all/splits_assignment.tsv`, `data/all/splits_summary.tsv` |
 | 9 | `09_make_demo.py` | 데모용 10 쌍 | `data/bindingdb_kdki_10.jsonl`, `..._meta.tsv` |
 | 10 | `10_file_guide.py` | 이 폴더 안내서를 만듦. 숫자는 전부 디스크에서 셉니다 | `file_guide.html`, `out/license_split.csv`, `out/queries_summary.csv` |
 

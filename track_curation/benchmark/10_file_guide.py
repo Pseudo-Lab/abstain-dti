@@ -102,8 +102,11 @@ FILE_NOTES = {
     "bindingdb_kdki_chembl.tsv": "ChEMBL 유래. <b>CC BY-SA 3.0</b>. 공개 저장소에 올리지 않습니다",
     "bindingdb_kdki_nochembl.tsv": "ChEMBL 제외분 전부. 평가 쿼리를 여기서 만듭니다",
     "bindingdb_kdki_bdbonly.tsv": "CC BY 문구가 분명한 두 출처만. <code>nochembl</code> 의 부분집합",
-    "bindingdb_nochembl_queries.jsonl": "본 쿼리 파일. <code>query_id, smiles, sequence, truth</code>",
-    "bindingdb_nochembl_queries_meta.tsv": "같은 순서의 메타데이터. 날짜·출처·검열 정보",
+    "bindingdb_all_queries.jsonl": "<b>본 쿼리 파일.</b> <code>query_id, smiles, sequence, truth</code>",
+    "bindingdb_all_queries_meta.tsv": "같은 순서의 메타데이터. 날짜·출처·검열 정보",
+    "bindingdb_nochembl_queries.jsonl": "ChEMBL 제외분. 데모 10 쌍을 여기서만 뽑습니다",
+    "bindingdb_nochembl_queries_meta.tsv": "같은 순서의 메타데이터",
+    "splits_assignment.tsv": "쌍마다 분할 5 종의 배정. <b>두 트랙의 단일 기준</b>",
     "bindingdb_kdki_10.jsonl": "데모 10 쌍. 본 파일과 열이 같습니다",
     "bindingdb_kdki_10_meta.tsv": "데모 메타데이터 + 분할 배정 5 열",
     "splits_assignment.tsv": "쌍마다 분할 5 종의 배정. <b>두 트랙의 단일 기준</b>",
@@ -284,9 +287,11 @@ def build() -> str:
     build_kv = read_kv(OUT / "kdki_build_summary.csv")
     summary_kv = read_kv(OUT / "bindingdb_summary.csv")
     mt = measurement_types(ALL / "bindingdb_kdki.tsv")
-    qs = query_stats(ALL / "bindingdb_nochembl_queries.jsonl",
-                     ALL / "bindingdb_nochembl_queries_meta.tsv")
-    splits = read_splits(DATA / "splits_summary.tsv")
+    qs = query_stats(ALL / "bindingdb_all_queries.jsonl",
+                     ALL / "bindingdb_all_queries_meta.tsv")
+    qs_nc = query_stats(ALL / "bindingdb_nochembl_queries.jsonl",
+                        ALL / "bindingdb_nochembl_queries_meta.tsv")
+    splits = read_splits(ALL / "splits_summary.tsv")
 
     kdki_total = count_lines(ALL / "bindingdb_kdki.tsv")
     lic = {name: count_lines(ALL / f"bindingdb_kdki_{name}.tsv")
@@ -341,6 +346,44 @@ def build() -> str:
                 nt=f'{int(s["n_test_targets"]):,}',
             )
         )
+
+    # --- 분할 경고문. 수치에서 만듭니다. 문장을 박아 두면 재생성 때 거짓이 됩니다.
+    by_name = {r["split"]: r for r in splits}
+    base = by_name.get("random")
+    pos_warn = "<b>분할 경고를 만들 수 없습니다.</b> splits_summary.tsv 가 없습니다."
+    thin_warn = ""
+    if base:
+        base_rate = float(base["test_pos_rate"])
+        worse = sorted(
+            ((r["split"], float(r["test_pos_rate"])) for r in splits
+             if r["split"] != "random" and float(r["test_pos_rate"]) > base_rate),
+            key=lambda x: -x[1],
+        )
+        if worse:
+            names = ", ".join(
+                f'<code>{n}</code> {v:.1%}' for n, v in worse)
+            pos_warn = (
+                f'<b>어려운 분할인데 test 양성이 더 많은 분할이 있습니다.</b><br>'
+                f'<code>random</code> 이 {base_rate:.1%} 인데 {names} 입니다. '
+                f'그 분할에서는 "언제나 결합" 기준선이 <b>무작위 분할에서보다 더 좋아 '
+                f'보입니다.</b> 분할별 비교에는 그 기준선을 반드시 같이 적으십시오.')
+        else:
+            pos_warn = (
+                f'<b>양성 비율이 분할 간에 역전되지 않습니다.</b><br>'
+                f'<code>random</code> 의 test 양성이 {base_rate:.1%} 이고 다른 분할은 '
+                f'모두 그 이하입니다. "언제나 결합" 기준선이 어려운 분할에서 더 좋아 '
+                f'보이는 왜곡은 없습니다.')
+
+        n_t = qs.get("targets")
+        thin = sorted(((r["split"], int(r["n_test_targets"])) for r in splits),
+                      key=lambda x: x[1])[:2]
+        if n_t:
+            names = ", ".join(
+                f'<code>{n}</code> {v:,} 종 ({v / n_t:.1%})' for n, v in thin)
+            thin_warn = (
+                f'<b>test 단백질이 얇은 분할이 있습니다.</b> 전체 {n_t:,} 종 가운데 '
+                f'{names} 뿐입니다. 단백질 종류가 적으면 그 분할의 결과가 특정 '
+                f'패밀리에 좌우됩니다.')
 
     # --- 숫자 요약
     def kv(label: str, value) -> str:
@@ -456,8 +499,7 @@ def build() -> str:
 <h2><span class="n">03</span>git 에 올라가는 파일 (data/)</h2>
 <table>
 <tr><th>파일</th><th class="num">행</th><th class="num">크기</th><th>내용</th></tr>
-{file_rows([DATA / "bindingdb_kdki_10.jsonl", DATA / "bindingdb_kdki_10_meta.tsv",
-            DATA / "splits_assignment.tsv", DATA / "splits_summary.tsv"], "git")}
+{file_rows([DATA / "bindingdb_kdki_10.jsonl", DATA / "bindingdb_kdki_10_meta.tsv"], "git")}
 </table>
 
 <h2><span class="n">04</span>git 에 올리지 않는 파일 (data/all/)</h2>
@@ -466,8 +508,11 @@ def build() -> str:
 <tr><th>파일</th><th class="num">행</th><th class="num">크기</th><th>내용</th></tr>
 {file_rows([ALL / "bindingdb_kdki.tsv", ALL / "bindingdb_kdki_chembl.tsv",
             ALL / "bindingdb_kdki_nochembl.tsv", ALL / "bindingdb_kdki_bdbonly.tsv",
+            ALL / "bindingdb_all_queries.jsonl",
+            ALL / "bindingdb_all_queries_meta.tsv",
             ALL / "bindingdb_nochembl_queries.jsonl",
-            ALL / "bindingdb_nochembl_queries_meta.tsv"], "local")}
+            ALL / "bindingdb_nochembl_queries_meta.tsv",
+            ALL / "splits_assignment.tsv", ALL / "splits_summary.tsv"], "local")}
 </table>
 
 <h2><span class="n">05</span>평가 쿼리</h2>
@@ -494,7 +539,7 @@ def build() -> str:
 
 <h2><span class="n">06</span>분할 배정 (단계 8)</h2>
 <p class="lead">
-  <code>data/splits_assignment.tsv</code> 한 장이 <b>두 트랙의 단일 기준</b>입니다.
+  <code>data/all/splits_assignment.tsv</code> 한 장이 <b>두 트랙의 단일 기준</b>입니다.
   조건 A 의 ML 트랙은 이 표를 읽고 점검만 합니다.
   cal 은 test 와 <b>같은 holdout</b>에서 나눕니다. conformal prediction 이 성립하려면
   그래야 합니다.
@@ -507,13 +552,8 @@ def build() -> str:
 </table>
 
 <div class="warn">
-  <b>어려운 분할일수록 test 양성이 많습니다.</b><br>
-  <code>cold_both</code> 의 test 양성 비율이 <code>random</code> 보다 높습니다. 그래서
-  "언제나 결합" 기준선은 <b>가장 어려운 분할에서 가장 좋아 보입니다.</b> 분할별 비교는
-  반드시 그 기준선을 같이 적어야 합니다.<br><br>
-  <b>test 단백질이 얇습니다.</b> <code>temporal</code> 과 <code>cold_both</code> 의 test
-  단백질이 전체 {n_or_none(qs.get("targets"))} 종의 일부뿐입니다. 단백질 종류가 적으면
-  분할 하나의 결과가 특정 패밀리에 좌우됩니다.
+  {pos_warn}<br><br>
+  {thin_warn}
 </div>
 
 <h2><span class="n">07</span>원본에 적용한 세 가지 변환</h2>

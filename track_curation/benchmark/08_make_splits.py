@@ -5,13 +5,13 @@
 
 입력
 ----
-    data/all/bindingdb_nochembl_queries.jsonl   07_make_queries.py 가 만든 쿼리
-    data/all/bindingdb_nochembl_queries_meta.tsv  temporal 분할에 쓰는 date_publication
+    data/all/bindingdb_all_queries.jsonl       07_make_queries.py 가 만든 쿼리
+    data/all/bindingdb_all_queries_meta.tsv    temporal 분할에 쓰는 date_publication
 
 출력
 ----
-    data/splits_assignment.tsv   query_id 한 줄, 분할 5 열. **이 파일이 동결 대상입니다**
-    data/splits_summary.tsv      분할별 train / cal / test / drop 수와 양성 비율
+    data/all/splits_assignment.tsv  query_id 한 줄, 분할 5 열. **이 파일이 동결 대상입니다**
+    data/all/splits_summary.tsv   분할별 train / cal / test / drop 수와 양성 비율
 
 **왜 배정 표 한 장인가.** 분할마다 train·cal·test 파일을 따로 쓰면 15 개 파일이 되고 같은
 단백질 서열이 15 번 중복됩니다 (서열 평균 길이가 수백 자라 금방 수백 MB 입니다). 배정 표는
@@ -61,7 +61,7 @@ InChIKey 만 쓰면 BindingDB 에 같은 SMILES 가 InChIKey 두 개를 들고 �
     import json, pandas as pd
 
     q = pd.DataFrame(json.loads(l) for l in open("data/queries.jsonl"))
-    a = pd.read_csv("data/splits_assignment.tsv", sep="\t")
+    a = pd.read_csv("data/all/splits_assignment.tsv", sep="\t")
     df = q.merge(a, on="query_id", validate="one_to_one")
 
     train = df[df.cold_target == "train"]
@@ -267,10 +267,10 @@ def main() -> None:
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
     )
     p.add_argument("--queries", type=Path,
-                   default=HERE / "data" / "all" / "bindingdb_nochembl_queries.jsonl")
+                   default=HERE / "data" / "all" / "bindingdb_all_queries.jsonl")
     p.add_argument("--meta", type=Path,
-                   default=HERE / "data" / "all" / "bindingdb_nochembl_queries_meta.tsv")
-    p.add_argument("--out-dir", type=Path, default=HERE / "data")
+                   default=HERE / "data" / "all" / "bindingdb_all_queries_meta.tsv")
+    p.add_argument("--out-dir", type=Path, default=HERE / "data" / "all")
     p.add_argument("--seed", type=int, default=42)
     p.add_argument(
         "--train-fraction",

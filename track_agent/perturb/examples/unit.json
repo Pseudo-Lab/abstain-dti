@@ -3,29 +3,29 @@
   "applied": true,
   "before": {
     "source": "lookup_compound",
-    "chembl_id": "CHEMBL1421",
-    "smiles": "Cc1cccc(c1NC(=O)c2cnc(s2)Nc3cc(nc(n3)C)N4CCN(CC4)CCO)Cl",
-    "uniprot_id": "P00519",
-    "target_name": "Tyrosine-protein kinase ABL1 [201-500,Q252H]",
+    "chembl_id": "CHEMBL000000",
+    "smiles": "Cc1nc(C)c(s1)-c1ccnc(Nc2cccc(c2)C#N)n1",
+    "uniprot_id": "P24941",
+    "target_name": "Cyclin-dependent kinase 2",
     "affinity": {
       "type": "Kd",
-      "value": 1.0,
+      "value": 161.0,
       "unit": "nM"
     },
-    "pmid": "16046538"
+    "pmid": ""
   },
   "after": {
     "source": "lookup_compound",
-    "chembl_id": "CHEMBL1421",
-    "smiles": "Cc1cccc(c1NC(=O)c2cnc(s2)Nc3cc(nc(n3)C)N4CCN(CC4)CCO)Cl",
-    "uniprot_id": "P00519",
-    "target_name": "Tyrosine-protein kinase ABL1 [201-500,Q252H]",
+    "chembl_id": "CHEMBL000000",
+    "smiles": "Cc1nc(C)c(s1)-c1ccnc(Nc2cccc(c2)C#N)n1",
+    "uniprot_id": "P24941",
+    "target_name": "Cyclin-dependent kinase 2",
     "affinity": {
       "type": "Kd",
-      "value": 1.0,
+      "value": 161.0,
       "unit": "uM"
     },
-    "pmid": "16046538"
+    "pmid": ""
   },
   "changed": [
     "affinity.unit: 'nM' -> 'uM'"

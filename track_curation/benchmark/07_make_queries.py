@@ -7,9 +7,9 @@
 
 출력은 두 개입니다.
 
-    data/all/bindingdb_nochembl_queries.jsonl   runner 와 ML 트랙이 읽는 파일.
+    data/all/bindingdb_all_queries.jsonl   runner 와 ML 트랙이 읽는 파일.
                                                 열은 네 개뿐입니다 (query_id, smiles, sequence, truth)
-    data/all/bindingdb_nochembl_queries_meta.tsv  같은 query_id 의 출처·측정값·부등호·날짜
+    data/all/bindingdb_all_queries_meta.tsv  같은 query_id 의 출처·측정값·부등호·날짜
 
 **열을 네 개로 묶어 둔 이유**는 `common/schema.py` 의 `Query` 가 그 네 개만 받기 때문입니다.
 열을 더 넣으면 `Query(**json.loads(line))` 이 터집니다. 메타데이터는 반드시 별 파일로 갑니다.
@@ -105,6 +105,22 @@ def seq_key(seq: str) -> str:
     return hashlib.blake2b(seq.encode(), digest_size=12).hexdigest()
 
 
+def query_id_of(tag: str, inchikey: str, seq_hash: str) -> str:
+    """`kd_` / `ki_` + 쌍의 내용 해시.
+
+    **행 번호를 쓰지 않습니다.** 2026-11-27 까지 `f"{tag}_{seen[tag]}"` 로, 곧 소스 파일
+    안의 등장 순서로 매겼습니다. 그러면 소스가 바뀌면 같은 id 가 다른 쌍을 가리킵니다.
+    ChEMBL 포함본과 제외본에서 뽑은 두 파일을 `query_id` 로 join 하면 조용히 엉뚱한
+    행이 붙습니다. 데모 10 쌍은 제외본에서, 분할 배정표는 포함본에서 나오므로 이 둘이
+    바로 그 경우입니다.
+
+    키는 `collect()` 가 쌍을 묶는 키와 **같습니다** (InChIKey, 서열 해시). 그래서 어느
+    파일에서 뽑아도 같은 쌍은 같은 id 입니다.
+    """
+    h = hashlib.blake2b(f"{inchikey}|{seq_hash}".encode(), digest_size=5).hexdigest()
+    return f"{tag}_{h}"
+
+
 def label_of(value_nm: float, qualifier: str, keep_gray: bool) -> tuple[bool | None, str]:
     """(라벨, 근거) 를 돌려줍니다. 라벨이 None 이면 그 측정은 씁니다."""
     if qualifier == "":
@@ -136,7 +152,7 @@ def collect(src: Path, keep_gray: bool, stats: Counter) -> dict:
         sys.exit(f"파일이 없습니다: {src}\n먼저 06_split_license.py 를 돌리십시오.")
 
     pairs: dict[tuple[str, str], dict] = {}
-    seen: Counter = Counter()  # 측정 종류별 등장 순서. query_id 에 씁니다.
+    seen: Counter = Counter()  # 측정 종류별 등장 횟수. 통계용이고 query_id 와 무관합니다.
 
     with src.open(newline="", encoding="utf-8") as fh:
         rd = csv.DictReader(fh, delimiter="\t")
@@ -181,7 +197,7 @@ def collect(src: Path, keep_gray: bool, stats: Counter) -> dict:
             entry = pairs.get(key)
             if entry is None:
                 entry = pairs[key] = {
-                    "query_id": f"{tag}_{seen[tag]}",
+                    "query_id": query_id_of(tag, *key),
                     "smiles": row["ligand_smiles"],
                     "sequence": sequence,
                     "measurement_type": tag,
@@ -197,7 +213,7 @@ def collect(src: Path, keep_gray: bool, stats: Counter) -> dict:
                 if tag == "ki":
                     continue
                 entry["measurement_type"] = "kd"
-                entry["query_id"] = f"kd_{seen['kd']}"
+                entry["query_id"] = query_id_of("kd", *key)
                 entry["meta"] = row
                 entry["values"] = []
                 entry["labels"] = []
@@ -328,10 +344,12 @@ def subsample(rows: list[dict], n: int) -> list[dict]:
 def main() -> None:
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--src", type=Path,
-                   default=HERE / "data" / "all" / "bindingdb_kdki_nochembl.tsv",
-                   help="06_split_license.py 가 만든 파일. 라이선스는 이 선택으로 정해집니다")
+                   default=HERE / "data" / "all" / "bindingdb_kdki.tsv",
+                   help="기본은 전체 파일입니다. 분할과 학습은 전체를 씁니다. "
+                        "데모용 ChEMBL 제외분은 --src data/all/bindingdb_kdki_nochembl.tsv "
+                        "--out-prefix bindingdb_nochembl_queries 로 따로 만듭니다")
     p.add_argument("--out-dir", type=Path, default=HERE / "data" / "all")
-    p.add_argument("--out-prefix", default="bindingdb_nochembl_queries")
+    p.add_argument("--out-prefix", default="bindingdb_all_queries")
     p.add_argument("--keep-gray", action="store_true",
                    help="pAffinity 5.5-6.5 구간도 남깁니다 (기본은 제외)")
     p.add_argument("--n", type=int, default=0,

@@ -41,9 +41,10 @@ DATA = TRACK / "data"
 PROMPT_EX = TRACK / "prompts" / "examples"
 PERTURB_EX = TRACK / "perturb" / "examples"
 
-# 예시에 쓰는 데모 쌍. 양성 1 건, 음성 1 건.
-POSITIVE = "kd_100"
-NEGATIVE = "ki_10006"
+# 예시에 쓸 데모 쌍은 **고르지 않고 찾습니다.** `query_id` 를 상수로 박아 두면 데모를
+# 다시 만들 때마다 깨집니다. 2026-11-27 에 query_id 가 행 번호에서 내용 해시로 바뀌어
+# (`07_make_queries.py` 의 `query_id_of`) 옛 `kd_100` 이 사라졌습니다.
+# 규칙: 양성과 음성 각각에서 `query_id` 순으로 첫 번째.
 
 BANNER = (
     "# 생성된 파일입니다. 손으로 고치지 마십시오.\n"
@@ -60,6 +61,14 @@ class Q:
         self.smiles = row["smiles"]
         self.sequence = row["sequence"]
         self.truth = row["truth"]
+
+
+def pick_pair(rows: dict[str, Q], want: bool) -> str:
+    """정답이 `want` 인 쌍 중 query_id 가 가장 앞선 것."""
+    ids = sorted(q for q, r in rows.items() if bool(r.truth) is want)
+    if not ids:
+        sys.exit(f"데모에 truth={want} 인 쌍이 없습니다. 09_make_demo.py 를 다시 돌리십시오.")
+    return ids[0]
 
 
 def load_demo() -> tuple[dict[str, Q], dict[str, dict]]:
@@ -84,7 +93,7 @@ def wire_format(system: str, user: str) -> str:
     )
 
 
-def prompt_examples(rows, meta) -> dict[Path, str]:
+def prompt_examples(rows, meta, POSITIVE, NEGATIVE) -> dict[Path, str]:
     out: dict[Path, str] = {}
     system, _ = load_prompts("B")
     sha = hashlib.sha256(system.encode()).hexdigest()[:12]
@@ -213,7 +222,7 @@ def _row_cells(qid: str, dirty40: list[dict]) -> dict[str, str]:
     return cells
 
 
-def perturb_examples(rows, meta) -> dict[Path, str]:
+def perturb_examples(rows, meta, POSITIVE) -> dict[Path, str]:
     out: dict[Path, str] = {}
     qid = POSITIVE
     clean = tool_result(meta[qid], rows[qid].smiles)
@@ -221,6 +230,15 @@ def perturb_examples(rows, meta) -> dict[Path, str]:
     out[PERTURB_EX / "00_tool_output_clean.json"] = json.dumps(clean, indent=2) + "\n"
 
     clean10, dirty40 = ten_inputs(rows, meta)
+    _flips = {r["query_id"]: _row_cells(r["query_id"], dirty40)["unit_flip"].strip("*")
+              for r in clean10}
+    n_unit_flip = sum(1 for v in _flips.values() if v == "뒤집힘")
+    n_pos = sum(1 for r in clean10 if r["truth"])
+    n_neg = len(clean10) - n_pos
+    # pAffinity 6.0 경계에 정확히 걸리는 쌍 (값 1.0 nM 짜리 양성)
+    _b = [r["query_id"] for r in clean10 if r["truth"]
+          and float(meta[r["query_id"]]["value_nm"]) == 1.0]
+    boundary = ", ".join(f"`{q}`" for q in _b)
     out[PERTURB_EX / "tool_outputs_10.jsonl"] = "".join(
         json.dumps(r, ensure_ascii=False) + "\n" for r in clean10
     )
@@ -272,21 +290,22 @@ def perturb_examples(rows, meta) -> dict[Path, str]:
         "",
         "### 이 열이 드러낸 문제",
         "",
-        "`unit` 교란이 라벨을 뒤집는 쌍은 10 개 중 "
-        f"{sum(1 for r in clean10 if _row_cells(r['query_id'], dirty40)['unit_flip'].strip('*') == '뒤집힘')} 개뿐입니다.",
+        f"`unit` 교란이 라벨을 뒤집는 쌍은 {len(clean10)} 개 중 {n_unit_flip} 개입니다"
+        f" (양성 {n_pos} 개 중 {n_unit_flip} 개, 음성 {n_neg} 개 중 0 개).",
         "",
-        "두 가지 이유입니다.",
+        "**음성 쌍은 원리적으로 뒤집히지 않습니다.** 이미 1000 nM 보다 약한데 nM 을 µM"
+        " 으로 읽으면 더 약해질 뿐입니다. 그래서 `unit` 의 분모는 사실상 양성 쌍뿐입니다.",
         "",
-        "1. **음성 쌍은 뒤집히지 않습니다.** 이미 1000 nM 보다 약한데 nM 을 µM 으로"
-        " 읽으면 더 약해질 뿐입니다. 데모의 음성 5 쌍 전부 그렇습니다.",
-        "2. **양성 쌍도 1 µM 안쪽이어야 뒤집힙니다.** `kd_100` 은 1.0 nM 이라 µM 으로"
-        " 읽으면 정확히 1000 nM, 곧 pAffinity 6.0 입니다. 기준이 `>= 6.0` 이므로"
-        " 경계에 걸려 **여전히 결합**입니다.",
+        "**양성 쌍도 1 µM 안쪽이어야 뒤집힙니다.** 1000 nM 을 넘는 값은 µM 으로 읽어도"
+        " 여전히 비결합이고, 정확히 1.0 nM 인 쌍은 µM 으로 읽으면 1000 nM, 곧 pAffinity"
+        " 6.0 이 되어 `>= 6.0` 기준에 걸려 **결합 쪽에 남습니다**."
+        + (f" 이 데모에는 그 경계에 걸리는 쌍이 {boundary} 있습니다." if boundary
+           else " 이 데모에는 그런 쌍이 없어 양성 전부가 뒤집혔습니다."),
         "",
-        "그래서 `unit` 탐지율을 '라벨이 뒤집힌 쌍' 만으로 계산하면 분모가 매우 작아집니다."
-        " 교란 감사의 쿼리는 **1 nM ~ 1 µM 구간의 양성 쌍** 위주로 골라야 `unit` 이"
-        " 의미 있는 숫자를 냅니다. 데모 10 쌍은 조건 B·C·D 배선 확인용으로 반반을"
-        " 맞춘 것이라 이 목적에는 맞지 않습니다.",
+        "그러므로 교란 감사의 쿼리는 **1 nM 초과 1 µM 이하의 양성 쌍** 위주로 골라야"
+        " `unit` 이 의미 있는 숫자를 냅니다. 음성 쌍을 섞으면 그만큼 분모만 커지고"
+        " 탐지할 것이 없습니다. 데모 10 쌍은 조건 B·C·D 배선 확인용으로 양성·음성을"
+        " 반반 맞춘 것이라 이 목적에는 맞지 않습니다.",
         "",
         "`entry` 는 배수가 ×0.02 ~ ×50 이라 사정이 다릅니다. 위 표에서 확인하십시오.",
         "",
@@ -361,11 +380,11 @@ def main() -> None:
     args = p.parse_args()
 
     rows, meta = load_demo()
-    for qid in (POSITIVE, NEGATIVE):
-        if qid not in rows:
-            sys.exit(f"데모 파일에 {qid} 가 없습니다. render_examples.py 의 상수를 고치십시오.")
+    pos, neg = pick_pair(rows, True), pick_pair(rows, False)
+    print(f"  예시 쌍: 양성 {pos}, 음성 {neg}")
 
-    files = {**prompt_examples(rows, meta), **perturb_examples(rows, meta)}
+    files = {**prompt_examples(rows, meta, pos, neg),
+             **perturb_examples(rows, meta, pos)}
 
     stale = []
     for path, text in sorted(files.items()):

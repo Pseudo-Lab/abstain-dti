@@ -4,14 +4,22 @@
 paths:
   # 조건 A·B·C·D 가 같은 쿼리 파일을 읽습니다. 그래야 같은 평가 평면에 올라갑니다.
   # 만드는 법: track_curation/benchmark/07_make_queries.py
-  # 이 파일은 `data/all/` 에 있고 .gitignore 입니다 (100 MB). clone 만으로는 없으므로
-  # 07 을 먼저 돌리십시오. git 에 들어 있는 것은 데모 10 쌍과 분할 배정표뿐입니다.
-  queries: ../track_curation/benchmark/data/all/bindingdb_nochembl_queries.jsonl
-  queries_meta: ../track_curation/benchmark/data/all/bindingdb_nochembl_queries_meta.tsv
-  # 분할은 큐레이션 트랙이 만들어 git 으로 넘겨줍니다 (08_make_splits.py).
-  # TODO (ML 트랙): src/splits.py 는 아직 자기가 분할을 만듭니다. 이 배정표를 읽도록
-  # 바꿔야 두 트랙의 분할이 같아집니다. 지금은 두 구현이 따로 돌고 있습니다.
-  splits_assignment: ../track_curation/benchmark/data/splits_assignment.tsv
+  #
+  # 2026-11-27: ChEMBL 제외분 136,733 쌍에서 **전체** 412,973 쌍으로 바꿨습니다.
+  # ChEMBL 데이터를 쓰는 것은 라이선스상 문제가 없고, 싣는 것만 문제입니다. 전체를
+  # 쓰면 단백질이 2,417 종에서 6,217 종으로, 양성 비율이 80.6 % 에서 69.2 % 로
+  # 바뀝니다. 그 전에 계산한 결과는 비교 대상이 아닙니다.
+  queries: ../track_curation/benchmark/data/all/bindingdb_all_queries.jsonl
+  queries_meta: ../track_curation/benchmark/data/all/bindingdb_all_queries_meta.tsv
+  # 분할은 큐레이션 트랙의 08_make_splits.py 가 만듭니다. src/splits.py 는 이 표를
+  # 읽어 **점검만** 합니다 (크기, 양성 비율, id 대조, cold 누수).
+  #
+  # 이 파일도 `data/all/` 이라 .gitignore 입니다. clone 만으로는 없습니다. 대신
+  # seed 42 와 내용 기반 query_id (07 의 query_id_of) 덕에 누가 돌려도 같은 표가
+  # 나옵니다. 받는 법은 아래 두 가지입니다.
+  #   1. 06 → 07 → 08 을 직접 돌립니다 (compute node, 약 20 분)
+  #   2. 이미 돌린 사람에게서 data/all/ 을 rsync 합니다
+  splits_assignment: ../track_curation/benchmark/data/all/splits_assignment.tsv
   splits: splits
   cache: cache
   results: results

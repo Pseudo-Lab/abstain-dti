@@ -151,8 +151,6 @@
 <tr><th>파일</th><th class="num">행</th><th class="num">크기</th><th>내용</th></tr>
 <tr><td class="f">bindingdb_kdki_10.jsonl <span class="tag git">git</span></td><td class="num">10</td><td class="num">6 KB</td><td class="desc">데모 10 쌍. 본 파일과 열이 같습니다</td></tr>
 <tr><td class="f">bindingdb_kdki_10_meta.tsv <span class="tag git">git</span></td><td class="num">10</td><td class="num">2 KB</td><td class="desc">데모 메타데이터 + 분할 배정 5 열</td></tr>
-<tr><td class="f">splits_assignment.tsv <span class="tag git">git</span></td><td class="num">136,733</td><td class="num">5 MB</td><td class="desc">쌍마다 분할 5 종의 배정. <b>두 트랙의 단일 기준</b></td></tr>
-<tr><td class="f">splits_summary.tsv <span class="tag git">git</span></td><td class="num">5</td><td class="num">489 B</td><td class="desc">분할별 크기와 양성 비율</td></tr>
 </table>
 
 <h2><span class="n">04</span>git 에 올리지 않는 파일 (data/all/)</h2>
@@ -163,8 +161,12 @@
 <tr><td class="f">bindingdb_kdki_chembl.tsv <span class="tag local">local</span></td><td class="num">479,689</td><td class="num">347 MB</td><td class="desc">ChEMBL 유래. <b>CC BY-SA 3.0</b>. 공개 저장소에 올리지 않습니다</td></tr>
 <tr><td class="f">bindingdb_kdki_nochembl.tsv <span class="tag local">local</span></td><td class="num">243,031</td><td class="num">194 MB</td><td class="desc">ChEMBL 제외분 전부. 평가 쿼리를 여기서 만듭니다</td></tr>
 <tr><td class="f">bindingdb_kdki_bdbonly.tsv <span class="tag local">local</span></td><td class="num">208,626</td><td class="num">169 MB</td><td class="desc">CC BY 문구가 분명한 두 출처만. <code>nochembl</code> 의 부분집합</td></tr>
-<tr><td class="f">bindingdb_nochembl_queries.jsonl <span class="tag local">local</span></td><td class="num">136,733</td><td class="num">98 MB</td><td class="desc">본 쿼리 파일. <code>query_id, smiles, sequence, truth</code></td></tr>
-<tr><td class="f">bindingdb_nochembl_queries_meta.tsv <span class="tag local">local</span></td><td class="num">136,733</td><td class="num">18 MB</td><td class="desc">같은 순서의 메타데이터. 날짜·출처·검열 정보</td></tr>
+<tr><td class="f">bindingdb_all_queries.jsonl <span class="tag local">local</span></td><td class="num">412,973</td><td class="num">271 MB</td><td class="desc"><b>본 쿼리 파일.</b> <code>query_id, smiles, sequence, truth</code></td></tr>
+<tr><td class="f">bindingdb_all_queries_meta.tsv <span class="tag local">local</span></td><td class="num">412,973</td><td class="num">58 MB</td><td class="desc">같은 순서의 메타데이터. 날짜·출처·검열 정보</td></tr>
+<tr><td class="f">bindingdb_nochembl_queries.jsonl <span class="tag local">local</span></td><td class="num">136,733</td><td class="num">99 MB</td><td class="desc">ChEMBL 제외분. 데모 10 쌍을 여기서만 뽑습니다</td></tr>
+<tr><td class="f">bindingdb_nochembl_queries_meta.tsv <span class="tag local">local</span></td><td class="num">136,733</td><td class="num">19 MB</td><td class="desc">같은 순서의 메타데이터</td></tr>
+<tr><td class="f">splits_assignment.tsv <span class="tag local">local</span></td><td class="num">412,973</td><td class="num">16 MB</td><td class="desc">쌍마다 분할 5 종의 배정. <b>두 트랙의 단일 기준</b></td></tr>
+<tr><td class="f">splits_summary.tsv <span class="tag local">local</span></td><td class="num">5</td><td class="num">503 B</td><td class="desc">분할별 크기와 양성 비율</td></tr>
 </table>
 
 <h2><span class="n">05</span>평가 쿼리</h2>
@@ -173,25 +175,25 @@
 </p>
 <table>
 <tr><th>항목</th><th class="num">값</th></tr>
-<tr><td class="desc">쿼리 (고유 쌍)</td><td class="num">136,733</td></tr>
-<tr><td class="desc">양성 (pAffinity &ge; 6.0)</td><td class="num">110,257 (80.6%)</td></tr>
-<tr><td class="desc">음성</td><td class="num">26,476</td></tr>
-<tr><td class="desc">고유 리간드 (SMILES)</td><td class="num">85,303</td></tr>
-<tr><td class="desc">고유 단백질 (서열)</td><td class="num">2,417</td></tr>
+<tr><td class="desc">쿼리 (고유 쌍)</td><td class="num">412,973</td></tr>
+<tr><td class="desc">양성 (pAffinity &ge; 6.0)</td><td class="num">285,773 (69.2%)</td></tr>
+<tr><td class="desc">음성</td><td class="num">127,200</td></tr>
+<tr><td class="desc">고유 리간드 (SMILES)</td><td class="num">230,525</td></tr>
+<tr><td class="desc">고유 단백질 (서열)</td><td class="num">6,217</td></tr>
 </table>
-<p class="desc">라벨 근거: <code>exact</code> 112,810  <code>censored_strong</code> 12,795  <code>censored_weak</code> 11,128</p>
+<p class="desc">라벨 근거: <code>exact</code> 341,991  <code>censored_weak</code> 56,871  <code>censored_strong</code> 14,111</p>
 
 <div class="warn">
-  <b>양성이 80.6% 입니다.</b><br>
+  <b>양성이 69.2% 입니다.</b><br>
   "언제나 결합" 이라고 답하는 기준선의 risk 가
-  0.19 입니다. 정확도나 risk 만 보면
+  0.31 입니다. 정확도나 risk 만 보면
   그 기준선을 못 이기는 모델이 좋아 보입니다. 보정 지표 (ECE, risk-coverage) 를
   같이 보아야 합니다.
 </div>
 
 <h2><span class="n">06</span>분할 배정 (단계 8)</h2>
 <p class="lead">
-  <code>data/splits_assignment.tsv</code> 한 장이 <b>두 트랙의 단일 기준</b>입니다.
+  <code>data/all/splits_assignment.tsv</code> 한 장이 <b>두 트랙의 단일 기준</b>입니다.
   조건 A 의 ML 트랙은 이 표를 읽고 점검만 합니다.
   cal 은 test 와 <b>같은 holdout</b>에서 나눕니다. conformal prediction 이 성립하려면
   그래야 합니다.
@@ -200,21 +202,16 @@
 <tr><th>분할</th><th class="num">train</th><th class="num">cal</th><th class="num">test</th>
     <th class="num">drop</th><th class="num">test 양성</th>
     <th class="num">test 리간드</th><th class="num">test 단백질</th></tr>
-<tr><td class="f">random</td><td class="num">82,039</td><td class="num">27,347</td><td class="num">27,347</td><td class="num">0</td><td class="num">80.6%</td><td class="num">23,353</td><td class="num">1,656</td></tr>
-<tr><td class="f">cold_drug</td><td class="num">82,040</td><td class="num">27,346</td><td class="num">27,347</td><td class="num">0</td><td class="num">81.4%</td><td class="num">20,512</td><td class="num">1,656</td></tr>
-<tr><td class="f">cold_target</td><td class="num">82,080</td><td class="num">27,326</td><td class="num">27,327</td><td class="num">0</td><td class="num">80.7%</td><td class="num">23,433</td><td class="num">936</td></tr>
-<tr><td class="f">cold_both</td><td class="num">82,874</td><td class="num">3,404</td><td class="num">3,404</td><td class="num">47,051</td><td class="num">86.3%</td><td class="num">3,075</td><td class="num">310</td></tr>
-<tr><td class="f">temporal</td><td class="num">124,148</td><td class="num">6,282</td><td class="num">6,283</td><td class="num">20</td><td class="num">78.7%</td><td class="num">4,751</td><td class="num">191</td></tr>
+<tr><td class="f">random</td><td class="num">247,783</td><td class="num">82,595</td><td class="num">82,595</td><td class="num">0</td><td class="num">69.2%</td><td class="num">65,792</td><td class="num">3,676</td></tr>
+<tr><td class="f">cold_drug</td><td class="num">247,784</td><td class="num">82,594</td><td class="num">82,595</td><td class="num">0</td><td class="num">68.8%</td><td class="num">55,659</td><td class="num">3,378</td></tr>
+<tr><td class="f">cold_target</td><td class="num">247,819</td><td class="num">82,577</td><td class="num">82,577</td><td class="num">0</td><td class="num">69.4%</td><td class="num">65,732</td><td class="num">1,838</td></tr>
+<tr><td class="f">cold_both</td><td class="num">253,403</td><td class="num">9,623</td><td class="num">9,623</td><td class="num">140,324</td><td class="num">62.9%</td><td class="num">8,101</td><td class="num">650</td></tr>
+<tr><td class="f">temporal</td><td class="num">389,027</td><td class="num">6,274</td><td class="num">6,275</td><td class="num">11,397</td><td class="num">78.4%</td><td class="num">4,714</td><td class="num">189</td></tr>
 </table>
 
 <div class="warn">
-  <b>어려운 분할일수록 test 양성이 많습니다.</b><br>
-  <code>cold_both</code> 의 test 양성 비율이 <code>random</code> 보다 높습니다. 그래서
-  "언제나 결합" 기준선은 <b>가장 어려운 분할에서 가장 좋아 보입니다.</b> 분할별 비교는
-  반드시 그 기준선을 같이 적어야 합니다.<br><br>
-  <b>test 단백질이 얇습니다.</b> <code>temporal</code> 과 <code>cold_both</code> 의 test
-  단백질이 전체 2,417 종의 일부뿐입니다. 단백질 종류가 적으면
-  분할 하나의 결과가 특정 패밀리에 좌우됩니다.
+  <b>어려운 분할인데 test 양성이 더 많은 분할이 있습니다.</b><br><code>random</code> 이 69.2% 인데 <code>temporal</code> 78.4%, <code>cold_target</code> 69.4% 입니다. 그 분할에서는 "언제나 결합" 기준선이 <b>무작위 분할에서보다 더 좋아 보입니다.</b> 분할별 비교에는 그 기준선을 반드시 같이 적으십시오.<br><br>
+  <b>test 단백질이 얇은 분할이 있습니다.</b> 전체 6,217 종 가운데 <code>temporal</code> 189 종 (3.0%), <code>cold_both</code> 650 종 (10.5%) 뿐입니다. 단백질 종류가 적으면 그 분할의 결과가 특정 패밀리에 좌우됩니다.
 </div>
 
 <h2><span class="n">07</span>원본에 적용한 세 가지 변환</h2>

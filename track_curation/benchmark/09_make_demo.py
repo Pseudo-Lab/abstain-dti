@@ -7,14 +7,14 @@
 ----
     data/all/bindingdb_nochembl_queries.jsonl   본실행과 같은 파일
     data/all/bindingdb_nochembl_queries_meta.tsv
-    data/splits_assignment.tsv   있으면 분할 열을 메타에 붙입니다 (없어도 됩니다)
+    data/all/splits_assignment.tsv  있으면 분할 열을 메타에 붙입니다 (없어도 됩니다)
 
 출력
 ----
     data/bindingdb_kdki_10.jsonl       10 행. **형식이 본파일과 똑같습니다**
     data/bindingdb_kdki_10_meta.tsv    같은 순서의 10 행
 
-이 두 파일만 git 에 올라갑니다. 본파일 (136,733 쌍) 은 `data/all/` 에 있고 `.gitignore` 입니다.
+이 두 파일만 git 에 올라갑니다. 본파일은 `data/all/` 에 있고 `.gitignore` 입니다.
 
 **형식을 본실행과 같게 맞춘 이유.** 이전 데모 (지운 `04_make_demo_subset.py`) 는
 `id, smiles, protein_sequence, kd_nm` 이었고 본실행은 `query_id, smiles, sequence, truth`
@@ -26,7 +26,7 @@
 
 고르는 규칙 넷. 결정적입니다. 같은 입력이면 항상 같은 10 행이 나옵니다.
 -------------------------------------------------------------------
-1. **라벨을 반반 섞습니다.** 양성 5, 음성 5 입니다. 전체 쿼리 세트는 양성이 80.6 % 이지만
+1. **라벨을 반반 섞습니다.** 양성 5, 음성 5 입니다. 뽑는 원본은 양성이 더 많지만
    데모에서 음성을 한 번도 못 보면 파싱과 채점 코드를 시험할 수 없습니다.
    **그러므로 데모의 라벨 비율은 벤치마크의 분포가 아닙니다.** 비율을 재려면 본파일을 쓰십시오.
 2. **약물도 단백질도 서로 겹치지 않습니다.** 10 행 = 리간드 10 종 x 단백질 10 종입니다.
@@ -122,7 +122,8 @@ def main() -> None:
                    default=HERE / "data" / "all" / "bindingdb_nochembl_queries.jsonl")
     p.add_argument("--meta", type=Path,
                    default=HERE / "data" / "all" / "bindingdb_nochembl_queries_meta.tsv")
-    p.add_argument("--splits", type=Path, default=HERE / "data" / "splits_assignment.tsv")
+    p.add_argument("--splits", type=Path,
+                   default=HERE / "data" / "all" / "splits_assignment.tsv")
     p.add_argument("--out-dir", type=Path, default=HERE / "data")
     p.add_argument("--out-prefix", default="bindingdb_kdki_10")
     p.add_argument("--n", type=int, default=10, help="데모 행 수. 짝수를 주십시오")
@@ -205,6 +206,18 @@ def main() -> None:
         w.writerow([*META_COLS, *split_cols])
         for r in chosen:
             m = r["_meta"]
+            # 배정표에 없는 id 는 조용히 빈 칸으로 넘기지 않습니다. query_id 는 내용
+            # 해시이므로 (07 의 query_id_of), 없다는 것은 두 파일이 같은 쌍 집합에서
+            # 나오지 않았다는 뜻입니다. 데모는 ChEMBL 제외분, 배정표는 포함본일 때
+            # 바로 이렇게 됩니다.
+            if split_cols and r["query_id"] not in assign:
+                sys.exit(
+                    f"{r['query_id']} 가 배정표에 없습니다.\n"
+                    f"  데모 원본: {q_path}\n"
+                    f"  배정표:    {a_path}\n"
+                    "두 파일이 같은 쌍 집합에서 나와야 합니다. 07 과 08 을 같은 --src 로 "
+                    "다시 돌리거나, --splits 로 맞는 배정표를 주십시오."
+                )
             a = assign.get(r["query_id"], {})
             w.writerow(
                 [*(m.get(c, "") for c in META_COLS), *(a.get(c, "") for c in split_cols)]
@@ -220,7 +233,7 @@ def main() -> None:
             f"{r['query_id']:<12} {str(r['truth']):<6} {float(m['value_nm']):>12,.2f}  "
             f"{len(r['sequence']):>5}  {m['target_name'][:46]}"
         )
-    print("\n데모의 라벨 비율은 반반입니다. 벤치마크 전체(양성 80.6 %)의 분포가 아닙니다.")
+    print("\n데모의 라벨 비율은 반반입니다. 본 쿼리 세트의 분포가 아닙니다.")
 
 
 if __name__ == "__main__":

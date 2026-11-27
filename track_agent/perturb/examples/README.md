@@ -2,7 +2,7 @@
 
 생성된 파일입니다. 만드는 코드는 `track_agent/render_examples.py`.
 
-기준 레코드는 데모 쌍 `kd_100` 입니다 (KD 1.0 nM, Tyrosine-protein kinase ABL1 [201-500,Q252H]). 교란 전 전체 출력은
+기준 레코드는 데모 쌍 `kd_0003216ba8` 입니다 (KD 161.0 nM, Cyclin-dependent kinase 2). 교란 전 전체 출력은
 [`00_tool_output_clean.json`](00_tool_output_clean.json) 에 있습니다.
 
 교란은 **도구 출력에만** 넣습니다. 공개 벤치마크 파일에는 절대 섞지 않습니다.
@@ -16,16 +16,16 @@
 
 | query_id | 정답 | 측정 | 값 (nM) | unit 후 | 라벨 | entry 후 | 라벨 | identity | identifier |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `kd_1` | 비결합 | KD | 43000.0 | uM | 그대로 | 860000.0 | 그대로 | smiles | chembl_id, uniprot_id |
-| `kd_100` | 결합 | KD | 1.0 | uM | 그대로 | 0.02 | 그대로 | smiles | chembl_id, uniprot_id |
-| `kd_10136` | 비결합 | KD | 6700.0 | uM | 그대로 | 134000.0 | 그대로 | smiles | chembl_id, uniprot_id |
-| `kd_1079` | 결합 | KD | 2.1 | uM | **뒤집힘** | 0.042 | 그대로 | smiles | chembl_id, uniprot_id |
-| `kd_11814` | 결합 | KD | 22.0 | uM | **뒤집힘** | 1100.0 | **뒤집힘** | smiles | chembl_id, uniprot_id |
-| `kd_12581` | 비결합 | KD | 4550.0 | uM | 그대로 | 227.5 | **뒤집힘** | smiles | chembl_id, uniprot_id |
-| `ki_1` | 결합 | KI | 0.24 | uM | 그대로 | 4.8 | 그대로 | smiles | chembl_id, uniprot_id |
-| `ki_10006` | 비결합 | KI | 8710.0 | uM | 그대로 | 435500.0 | 그대로 | smiles | chembl_id, uniprot_id |
-| `ki_101507` | 결합 | KI | 0.436 | uM | 그대로 | 21.8 | 그대로 | smiles | chembl_id, uniprot_id |
-| `ki_103394` | 비결합 | KI | 5000.0 | uM | 그대로 | 250000.0 | 그대로 | smiles | chembl_id, uniprot_id |
+| `kd_0003216ba8` | 결합 | KD | 161.0 | uM | **뒤집힘** | 8050.0 | **뒤집힘** | smiles | chembl_id, uniprot_id |
+| `kd_0042610747` | 비결합 | KD | 4200.0 | uM | 그대로 | 210.0 | **뒤집힘** | smiles | chembl_id, uniprot_id |
+| `kd_02c035ec58` | 비결합 | KD | 23000.0 | uM | 그대로 | 460000.0 | 그대로 | smiles | chembl_id, uniprot_id |
+| `kd_02d2e04ba8` | 결합 | KD | 3.0 | uM | **뒤집힘** | 0.15 | 그대로 | smiles | chembl_id, uniprot_id |
+| `kd_05a0fbb574` | 비결합 | KD | 28600.0 | uM | 그대로 | 1430000.0 | 그대로 | smiles | chembl_id, uniprot_id |
+| `kd_05a388506a` | 결합 | KD | 10.0 | uM | **뒤집힘** | 0.5 | 그대로 | smiles | chembl_id, uniprot_id |
+| `ki_00007c48b2` | 결합 | KI | 137.0 | uM | **뒤집힘** | 6850.0 | **뒤집힘** | smiles | chembl_id, uniprot_id |
+| `ki_0001099b55` | 비결합 | KI | 920000.0 | uM | 그대로 | 18400.0 | 그대로 | smiles | chembl_id |
+| `ki_029ec49a3c` | 결합 | KI | 1.6 | uM | **뒤집힘** | 0.08 | 그대로 | smiles | chembl_id, uniprot_id |
+| `ki_02beea01b1` | 비결합 | KI | 12500.0 | uM | 그대로 | 625.0 | **뒤집힘** | smiles | chembl_id, uniprot_id |
 
 `unit 후` 는 바뀐 단위, `entry 후` 는 바뀐 값, 뒤의 둘은 바뀐 칸 이름입니다. `-` 는 그 레코드에 바꿀 칸이 없어 교란이 **적용되지 않은** 경우입니다 (`applied: false`). 그런 건은 탐지율 분모에서 빼야 합니다.
 
@@ -33,14 +33,13 @@
 
 ### 이 열이 드러낸 문제
 
-`unit` 교란이 라벨을 뒤집는 쌍은 10 개 중 2 개뿐입니다.
+`unit` 교란이 라벨을 뒤집는 쌍은 10 개 중 5 개입니다 (양성 5 개 중 5 개, 음성 5 개 중 0 개).
 
-두 가지 이유입니다.
+**음성 쌍은 원리적으로 뒤집히지 않습니다.** 이미 1000 nM 보다 약한데 nM 을 µM 으로 읽으면 더 약해질 뿐입니다. 그래서 `unit` 의 분모는 사실상 양성 쌍뿐입니다.
 
-1. **음성 쌍은 뒤집히지 않습니다.** 이미 1000 nM 보다 약한데 nM 을 µM 으로 읽으면 더 약해질 뿐입니다. 데모의 음성 5 쌍 전부 그렇습니다.
-2. **양성 쌍도 1 µM 안쪽이어야 뒤집힙니다.** `kd_100` 은 1.0 nM 이라 µM 으로 읽으면 정확히 1000 nM, 곧 pAffinity 6.0 입니다. 기준이 `>= 6.0` 이므로 경계에 걸려 **여전히 결합**입니다.
+**양성 쌍도 1 µM 안쪽이어야 뒤집힙니다.** 1000 nM 을 넘는 값은 µM 으로 읽어도 여전히 비결합이고, 정확히 1.0 nM 인 쌍은 µM 으로 읽으면 1000 nM, 곧 pAffinity 6.0 이 되어 `>= 6.0` 기준에 걸려 **결합 쪽에 남습니다**. 이 데모에는 그런 쌍이 없어 양성 전부가 뒤집혔습니다.
 
-그래서 `unit` 탐지율을 '라벨이 뒤집힌 쌍' 만으로 계산하면 분모가 매우 작아집니다. 교란 감사의 쿼리는 **1 nM ~ 1 µM 구간의 양성 쌍** 위주로 골라야 `unit` 이 의미 있는 숫자를 냅니다. 데모 10 쌍은 조건 B·C·D 배선 확인용으로 반반을 맞춘 것이라 이 목적에는 맞지 않습니다.
+그러므로 교란 감사의 쿼리는 **1 nM 초과 1 µM 이하의 양성 쌍** 위주로 골라야 `unit` 이 의미 있는 숫자를 냅니다. 음성 쌍을 섞으면 그만큼 분모만 커지고 탐지할 것이 없습니다. 데모 10 쌍은 조건 B·C·D 배선 확인용으로 양성·음성을 반반 맞춘 것이라 이 목적에는 맞지 않습니다.
 
 `entry` 는 배수가 ×0.02 ~ ×50 이라 사정이 다릅니다. 위 표에서 확인하십시오.
 
@@ -59,7 +58,7 @@ affinity.unit: 'nM' -> 'uM'
 적용됨: True. 바뀐 칸:
 
 ```
-affinity.value: 1.0 -> 0.02
+affinity.value: 161.0 -> 3.22
 ```
 
 전체 before/after: [`entry.json`](entry.json)
@@ -69,7 +68,7 @@ affinity.value: 1.0 -> 0.02
 적용됨: True. 바뀐 칸:
 
 ```
-smiles: 'Cc1cccc(c1NC(=O)c2cnc(s2)Nc3cc(nc(n3)C)N4CCN(CC4)CCO)Cl' -> 'CC(C)Cc1ccc(cc1)C(C)C(=O)O'
+smiles: 'Cc1nc(C)c(s1)-c1ccnc(Nc2cccc(c2)C#N)n1' -> 'CC(C)Cc1ccc(cc1)C(C)C(=O)O'
 ```
 
 전체 before/after: [`identity.json`](identity.json)
@@ -79,8 +78,8 @@ smiles: 'Cc1cccc(c1NC(=O)c2cnc(s2)Nc3cc(nc(n3)C)N4CCN(CC4)CCO)Cl' -> 'CC(C)Cc1cc
 적용됨: True. 바뀐 칸:
 
 ```
-chembl_id: 'CHEMBL1421' -> 'CHEMBL1043'
-uniprot_id: 'P00519' -> 'P32181'
+chembl_id: 'CHEMBL000000' -> 'CHEMBL104332'
+uniprot_id: 'P24941' -> 'P18196'
 ```
 
 전체 before/after: [`identifier.json`](identifier.json)
