@@ -10,6 +10,11 @@ data/*
 data/all/
 
 logs/
-out/
+
+# out/ 은 집계 산출물이라 올리지 않습니다. 다만 README 와 file_guide.html 이
+# 인용하는 두 작은 표는 숫자의 출처라서 되살립니다.
+out/*
+!out/license_split.csv
+!out/queries_summary.csv
 __pycache__/
 .ipynb_checkpoints/

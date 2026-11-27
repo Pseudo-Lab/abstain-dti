@@ -1,0 +1,5 @@
+file,measurements,share_of_total
+bindingdb_kdki.tsv,"722,720",1.0
+bindingdb_kdki_chembl.tsv,"479,689",0.6637
+bindingdb_kdki_nochembl.tsv,"243,031",0.3363
+bindingdb_kdki_bdbonly.tsv,"208,626",0.2887

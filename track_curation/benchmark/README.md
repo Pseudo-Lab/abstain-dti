@@ -59,6 +59,7 @@ DTI 벤치마크의 출발 데이터이고, 병합(같은 쌍 합치기)은 아�
 | 7 | `07_make_queries.py` | 쌍으로 묶고 라벨을 정해 평가 쿼리로 | `data/all/bindingdb_nochembl_queries{,_meta}.*` |
 | 8 | `08_make_splits.py` | train/cal/test 분할 5 종 배정 | `data/splits_assignment.tsv`, `data/splits_summary.tsv` |
 | 9 | `09_make_demo.py` | 데모용 10 쌍 | `data/bindingdb_kdki_10.jsonl`, `..._meta.tsv` |
+| 10 | `10_file_guide.py` | 이 폴더 안내서를 만듦. 숫자는 전부 디스크에서 셉니다 | `file_guide.html`, `out/license_split.csv`, `out/queries_summary.csv` |
 
 번호 3, 4, 5 는 없습니다. `03_make_inputs.py` (Kd·Ki 별 input·map 4 파일) 와
 `04_make_demo_subset.py` 는 2026-11-27 에 지웠습니다. 라이선스 분리를 넣으면서 경로가
