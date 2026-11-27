@@ -1,38 +1,49 @@
 # track_agent/data
 
-조건 B, C, D 데모용 표본입니다. 파일 네 개 모두 `notebooks/benchmark/data/` 에서 **복사해 온 것**이고,
-원본은 그쪽입니다.
+조건 B, C, D 를 돌려 보는 데모 데이터입니다. **git 에 올라가는 유일한 사본입니다.**
+만드는 코드는 `track_curation/benchmark/09_make_demo.py` 이고, 거기서 복사해 옵니다.
 
-| 파일 | 행 | 열 |
+| 파일 | 행 | 내용 |
 | --- | --- | --- |
-| `bindingdb_kd_input_10.tsv` | 10 | `id`, `smiles`, `protein_sequence`, `kd_nm` |
-| `bindingdb_kd_map_10.tsv` | 10 | `id` + 메타데이터 15 열 |
-| `bindingdb_ki_input_10.tsv` | 10 | `id`, `smiles`, `protein_sequence`, `ki_nm` |
-| `bindingdb_ki_map_10.tsv` | 10 | `id` + 메타데이터 15 열 |
+| `bindingdb_kdki_10.jsonl` | 10 | `query_id`, `smiles`, `sequence`, `truth` |
+| `bindingdb_kdki_10_meta.tsv` | 10 | 메타데이터 13 열 + 분할 배정 5 열 |
+| `queries_sample.jsonl` | 5 | 하네스 자가 시험용 **합성 fixture**. 아래 경고 |
 
-input 과 map 은 행 순서가 같아 `id` 로 1:1 합쳐집니다.
+두 파일은 **행 순서가 같습니다.** `query_id` 로 join 하십시오.
 
 ```python
-import pandas as pd
-x = pd.read_csv("bindingdb_kd_input_10.tsv", sep="\t")
-m = pd.read_csv("bindingdb_kd_map_10.tsv",   sep="\t")
-full = x.merge(m, on="id", validate="one_to_one")
+import json
+rows = [json.loads(l) for l in open("track_agent/data/bindingdb_kdki_10.jsonl")]
+for r in rows:
+    print(r["query_id"], r["truth"], len(r["sequence"]))
 ```
 
-## 이 10 행이 어떻게 뽑혔는지
+## 알아야 할 것 셋
 
-`notebooks/benchmark/04_make_demo_subset.py` 가 결정적으로 고릅니다.
+**1. 형식이 본실행과 똑같습니다.** 136,733 쌍짜리 본파일
+(`track_curation/benchmark/data/all/bindingdb_nochembl_queries.jsonl`) 과 열이 같습니다.
+데모로 짠 코드가 본실행에서 그대로 돕니다. 2026-11-27 이전의 데모는 열 이름이 달라
+(`id`, `protein_sequence`, `kd_nm`) 그렇지 않았습니다.
 
-1. 부등호가 없는 측정만 씁니다. `>10000` 은 "10 µM 보다 약하다" 는 뜻이라 정답이 한 점이 아닙니다.
-2. 약물도 단백질도 서로 겹치지 않습니다 (약물 10 종 x 단백질 10 종).
-3. 파일 전체에 고르게 퍼진 위치에서 뽑습니다. BindingDB 는 같은 논문에서 온 측정이 붙어 있어,
-   앞에서 10 개를 뽑으면 한 논문의 한 단백질 변이체들만 나옵니다.
+**2. 라벨이 반반입니다 (양성 5, 음성 5).** 벤치마크 전체는 **양성 80.6 %** 입니다. 데모에서
+음성을 한 번도 못 보면 채점 코드를 시험할 수 없어 일부러 반반으로 뽑았습니다.
+**그러므로 데모로 정확도나 risk 를 재지 마십시오.** 숫자는 본파일에서만 의미가 있습니다.
 
-값 범위는 Kd 3.7 - 43,000 nM, Ki 0.24 - 69,183 nM 입니다.
+**3. ChEMBL 행이 없습니다.** 공개 저장소에 올릴 수 있는 이유입니다. 2026-11-27 이전의 데모 4
+파일은 10 행 중 6 행이 ChEMBL 유래 (CC BY-SA 3.0) 여서 MIT 저장소와 충돌했고, 지웠습니다.
+자세한 것은 `track_curation/benchmark/README.md` 의 "라이선스로 나눈 두 폴더" 절에 있습니다.
 
-## 주의
+> **경고: `queries_sample.jsonl` 은 데이터가 아닙니다.**
+> `Q001` - `Q005` 는 사람이 손으로 쓴 fixture 이고 `truth` 값은 **실측이 아니라 임의로 적은
+> 것**입니다. 리간드도 aspirin, caffeine, ibuprofen 처럼 아무 것이나 넣었습니다.
+> 하네스가 파일을 읽고 JSON 을 뱉는지 확인하는 용도뿐입니다. 이 파일로 성능을 재지 마십시오.
 
-- **이 10 행은 평가용이 아니라 데모용입니다.** 10 행으로는 조건 사이의 차이를 가릴 수 없습니다.
-- **다시 만들면 이 파일을 덮어써야 합니다.** 원본이 바뀌었는데 여기만 남아 있으면 두 폴더가 어긋납니다.
-  `notebooks/benchmark/` 에서 `python 04_make_demo_subset.py` 를 돌린 뒤 네 파일을 다시 복사하십시오.
-- 전체 데이터(측정 722,720 건)는 `notebooks/benchmark/README.md` 를 보십시오.
+## 다시 만들기
+
+```bash
+cd track_curation/benchmark
+python3 09_make_demo.py
+cp data/bindingdb_kdki_10.jsonl data/bindingdb_kdki_10_meta.tsv ../../track_agent/data/
+```
+
+같은 입력이면 항상 같은 10 행이 나옵니다. 고르는 규칙은 `09_make_demo.py` 의 docstring 에 있습니다.

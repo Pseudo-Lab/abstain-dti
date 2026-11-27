@@ -1,4 +1,14 @@
-data/
+# 생성물은 기본으로 올리지 않습니다. 공개 가능한 파일만 아래에서 되살립니다.
+data/*
+!data/bindingdb_kdki_10.jsonl
+!data/bindingdb_kdki_10_meta.tsv
+!data/splits_assignment.tsv
+!data/splits_summary.tsv
+
+# ChEMBL 유래 행이 섞여 CC BY-SA 3.0 을 떠안은 파일, 그리고 큰 중간 산출물입니다.
+# 이유는 README "라이선스로 나눈 두 폴더" 절에 있습니다.
+data/all/
+
 logs/
 out/
 __pycache__/

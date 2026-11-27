@@ -5,27 +5,83 @@ DTI 벤치마크의 출발 데이터이고, 병합(같은 쌍 합치기)은 아�
 
 작업 기록은 `.scratch/benchmark-dataset/` 의 맵과 티켓에 있습니다.
 
+## 라이선스로 나눈 두 폴더
+
+`BindingDB_All` 은 단일 라이선스가 아닙니다. BindingDB 는 집계 데이터베이스이고, 행마다 출처가
+`curation_source` 열에 적혀 있습니다. BindingDB 가 직접 큐레이션한 행은 CC BY 3.0 이지만
+**ChEMBL 에서 가져온 행은 CC BY-SA 3.0** 이고, SA 는 배포본에 같은 라이선스를 요구합니다.
+이 저장소는 MIT 이므로 ChEMBL 행이 담긴 파일을 커밋하면 충돌합니다. **쓰는 것은 문제가 없고
+싣는 것만 문제입니다.** 학습·평가·층화에는 722,720 건 전부를 씁니다.
+
+그래서 `data/` 를 라이선스로 둘로 갈랐습니다.
+
+| 폴더 | 들어가는 것 | ChEMBL 행 | git |
+| --- | --- | --- | --- |
+| `data/` | 데모 10 쌍, 분할 배정표, 분할 요약 | **0** | 올립니다 |
+| `data/all/` | `bindingdb_kdki*.tsv`, 본 쿼리 파일 (136,733 쌍) | 파일마다 다름 | `.gitignore` |
+
+`06_split_license.py` 가 `bindingdb_kdki.tsv` 를 세 갈래로 가릅니다. 숫자는 2026-11-27 에
+직접 센 것입니다.
+
+| 파일 | 측정 | 비중 | 라이선스 |
+| --- | --- | --- | --- |
+| `bindingdb_kdki_chembl.tsv` | 479,689 | 66.4 % | **CC BY-SA 3.0**. 공개 저장소에 올리지 않습니다 |
+| `bindingdb_kdki_nochembl.tsv` | 243,031 | 33.6 % | CC BY 로 추정. 일부 미확인 (아래) |
+| `bindingdb_kdki_bdbonly.tsv` | 208,626 | 28.9 % | CC BY 3.0 **확인됨**. 가장 안전합니다 |
+
+`nochembl` 과 `chembl` 을 합치면 입력과 같고, `bdbonly` 는 `nochembl` 의 부분집합입니다.
+현재 평가 쿼리는 `nochembl` 에서 만듭니다.
+
+**남은 위험 두 가지.**
+
+1. `nochembl` 243,031 건 중 CC BY 문구가 분명한 것은 208,626 건입니다
+   (`US Patent` 181,282 + `Curated from the literature by BindingDB` 27,344). 나머지 34,405 건
+   (`PDSP Ki`, `PubChem`, `WIPO`, `D3R`, `CSAR`, `Taylor Research Group`) 이 BindingDB 의
+   "curated by BindingDB staff" 에 들어가는지 **확인하지 못했습니다.** 완전히 안전하게 가려면
+   `07_make_queries.py --src data/all/bindingdb_kdki_bdbonly.tsv` 로 다시 만듭니다.
+2. `track_agent/data/` 의 옛 데모 4 파일은 이미 커밋되어 있고 10 행 중 6 행이 ChEMBL 입니다.
+   `data/bindingdb_kdki_10.*` 로 **교체하고 지워야 합니다.**
+
+선택지 (a) 제외 / (b) 전체 수록 + CC BY-SA 표기 / (c) 포인터 데이터셋 비교는
+`.scratch/condition-pipeline/issues/02-chembl-redistribution.md` 에 있고 아직 열린 티켓입니다.
+`data/all/` 을 지우지 않고 무시만 하므로, 나중에 (b) 로 가려면 `.gitignore` 한 줄과 `LICENSE`
+파일만 더하면 됩니다. 다만 567 MB 파일은 Git LFS 없이는 올라가지 않습니다.
+
 ## 단계
 
 | 단계 | 스크립트 | 하는 일 | 출력 |
 | --- | --- | --- | --- |
-| 0 | (수동) | BindingDB 202610 내려받기 | `../yeji/TDC/data/bindingdb_202610/` |
+| 0 | (수동) | BindingDB 202610 내려받기 | `../../notebooks/yeji/TDC/data/bindingdb_202610/` |
 | 1 | `01_bindingdb_columns.py` | 640 열의 채움율, qualifier 형식, 사슬 수 집계 | `out/bindingdb_colfill.csv` 등 |
 | 1b | `01b_common_columns.py` | 열 1-52 의 이름과 예시 값 | `out/bindingdb_columns_1_52.csv` |
-| 2 | `02_build_kdki.py` | Kd·Ki 측정만 뽑아 19 열 표로 | `data/bindingdb_kdki.tsv` |
-| 3 | `03_make_inputs.py` | Kd 와 Ki 로 나눠 입력 파일과 map 파일로 | `data/bindingdb_{kd,ki}_{input,map}.tsv` |
-| 4 | `04_make_demo_subset.py` | 데모용 10 행 표본 | `data/bindingdb_{kd,ki}_input_10.tsv` |
+| 2 | `02_build_kdki.py` | Kd·Ki 측정만 뽑아 19 열 표로 | `data/all/bindingdb_kdki.tsv` |
+| 6 | `06_split_license.py` | 라이선스로 세 갈래로 가름 | `data/all/bindingdb_kdki_{chembl,nochembl,bdbonly}.tsv` |
+| 7 | `07_make_queries.py` | 쌍으로 묶고 라벨을 정해 평가 쿼리로 | `data/all/bindingdb_nochembl_queries{,_meta}.*` |
+| 8 | `08_make_splits.py` | train/cal/test 분할 5 종 배정 | `data/splits_assignment.tsv`, `data/splits_summary.tsv` |
+| 9 | `09_make_demo.py` | 데모용 10 쌍 | `data/bindingdb_kdki_10.jsonl`, `..._meta.tsv` |
+
+번호 3, 4, 5 는 없습니다. `03_make_inputs.py` (Kd·Ki 별 input·map 4 파일) 와
+`04_make_demo_subset.py` 는 2026-11-27 에 지웠습니다. 라이선스 분리를 넣으면서 경로가
+`kdki.tsv → 06 → 07` 로 짧아져 중간 4 파일 (578 MB) 이 필요 없어졌습니다. 옛 `05_make_queries.py`
+는 입력을 바꿔 `07_make_queries.py` 가 되었습니다.
 
 실행은 compute node 에서 합니다. 로그인 노드는 인터넷이 안 되고 9 GB 파일을 읽기에도 적절하지 않습니다.
 
 ```bash
-srun -A rsc -p cpu-core -c 1 --mem=7500M -t 01:00:00 bash -c \
-  'source ~/.bashrc; mamba activate tdc; python 02_build_kdki.py'
+cd track_curation/benchmark
+
+# 2 와 6 은 무겁습니다 (9 GB 읽기, 567 MB 읽고 790 MB 쓰기)
+srun -A rsc -p cpu-core -c 1 --mem=7500M -t 01:00:00 python3 02_build_kdki.py
+srun -A rsc -p cpu-core -c 1 --mem=7500M -t 00:30:00 python3 06_split_license.py
+srun -A rsc -p cpu-core -c 1 --mem=15000M -t 00:30:00 python3 07_make_queries.py
+
+# 8 과 9 는 가볍습니다
+python3 08_make_splits.py
+python3 09_make_demo.py
 ```
 
-원본 내려받기는 `../yeji/TDC/README.md` 의 블록을 씁니다. zip SHA256 이 거기 적혀 있습니다.
-
-`data/` 의 큰 파일은 git 에 올리지 않습니다 (최대 542 MB). 팀 공유 폴더는 여기입니다.
+원본 내려받기는 `../../notebooks/yeji/TDC/README.md` 의 블록을 씁니다. zip SHA256 이 거기 적혀 있습니다.
+팀 공유 폴더는 여기입니다.
 https://drive.google.com/drive/folders/1kp38b-HcRTRytpTDcTtZ1FGaNokrXdni
 
 ## 원본
@@ -116,72 +172,115 @@ https://drive.google.com/drive/folders/1kp38b-HcRTRytpTDcTtZ1FGaNokrXdni
 | 고유 약물 (InChIKey) | 259,570 |
 | 고유 단백질 (서열) | 6,628 |
 | 고유 쌍 | 523,790 |
-| 파일 | `data/bindingdb_kdki.tsv` 567 MB |
+| 파일 | `data/all/bindingdb_kdki.tsv` 567 MB |
 
 측정 722,720 건이 고유 쌍 523,790 개에 들어 있으므로, 같은 쌍에 값이 여럿인 경우가 있습니다.
 합치는 규칙은 아직 정하지 않았습니다.
 
-## 모델 입력 파일 (단계 3)
+## 평가 쿼리 파일 (단계 7)
 
-`bindingdb_kdki.tsv` 를 측정 종류로 나눠, 모델에 바로 넣는 좁은 파일과 추적용 map 파일을 만듭니다.
-두 파일은 같은 `id` 로 **행 순서까지 똑같이** 맞춰져 있습니다.
+`bindingdb_kdki_nochembl.tsv` 의 측정 243,031 건을 **(리간드, 서열) 쌍**으로 묶고 쌍마다 라벨을
+하나로 정합니다. 키는 InChIKey 와 서열 해시입니다.
+
+| 걸러낸 것 | 측정·쌍 수 |
+| --- | --- |
+| 읽은 측정 (Kd 38,516 / Ki 204,515) | 243,031 |
+| 회색 구간 316.2 - 3,162.3 nM 이라 제외 | -36,363 |
+| 부등호가 경계를 가르지 못해 제외 | -9,545 |
+| 값이 0 이하 | -12 |
+| 라벨이 갈려 버린 쌍 | -1,261 |
+| **라벨이 정해진 고유 쌍** | **136,733** |
 
 | 파일 | 행 | 크기 | 열 |
 | --- | --- | --- | --- |
-| `data/bindingdb_kd_input.tsv` | 128,381 | 97 MB | `id`, `smiles`, `protein_sequence`, `kd_nm` |
-| `data/bindingdb_kd_map.tsv` | 128,381 | 22 MB | `id` + 메타데이터 15 열 |
-| `data/bindingdb_ki_input.tsv` | 594,339 | 360 MB | `id`, `smiles`, `protein_sequence`, `ki_nm` |
-| `data/bindingdb_ki_map.tsv` | 594,339 | 101 MB | `id` + 메타데이터 15 열 |
+| `data/all/bindingdb_nochembl_queries.jsonl` | 136,733 | 100 MB | `query_id`, `smiles`, `sequence`, `truth` |
+| `data/all/bindingdb_nochembl_queries_meta.tsv` | 136,733 | 19 MB | `query_id` + 메타데이터 13 열 |
 
-`id` 는 그 입력 파일 안에서의 행 번호입니다 (1 부터). 종류를 앞에 붙여 `kd_1`, `ki_1` 로 적습니다.
-두 파일의 id 를 섞어 써도 어느 쪽 것인지 바로 보이게 하려는 것입니다.
+열이 네 개뿐인 이유는 `common/schema.py` 의 `Query` 가 그 네 개만 받기 때문입니다. 열을 더 넣으면
+`Query(**json.loads(line))` 이 터집니다. 메타데이터는 반드시 별 파일로 갑니다.
 
-map 파일의 열: `reactant_set_id`, `ligand_inchikey`, `pubchem_cid`, `chembl_id`, `target_name`,
-`uniprot_swissprot`, `organism`, `qualifier`, `ph`, `temp_c`, `curation_source`, `pmid`,
-`article_doi`, `date_publication`, `date_in_bindingdb`.
+| 항목 | 값 |
+| --- | --- |
+| 쌍 | 136,733 |
+| 고유 리간드 (InChIKey) | 84,716 |
+| 고유 단백질 (서열) | 2,417 |
+| **양성** | **110,257 (80.6 %)** |
+| 음성 | 26,476 |
+| Kd 로 라벨한 쌍 | 20,824 |
+| Ki 로 라벨한 쌍 | 115,909 |
+
+> **경고: 양성이 80.6 % 입니다.**
+> 항상 "binds" 라고 답하는 baseline 이 risk 0.19 를 얻습니다. risk-coverage 와 AURC 를 읽을 때
+> 이 선을 같이 그어야 합니다. 결과표에 balanced accuracy 와 양성 비율을 함께 적으십시오.
+> 2026-11-27 현재 이 분포를 손대지 않기로 했습니다. BindingDB 의 자연스러운 분포이기 때문입니다.
+
+## 분할 배정 (단계 8)
+
+분할 5 종을 **파일 한 장**에 적습니다. 분할마다 train·cal·test 파일을 따로 쓰면 15 개 파일이
+되고 같은 서열이 15 번 중복됩니다.
+
+| 파일 | 행 | 크기 | 열 |
+| --- | --- | --- | --- |
+| `data/splits_assignment.tsv` | 136,733 | 4.8 MB | `query_id` + `random`, `cold_drug`, `cold_target`, `cold_both`, `temporal` |
+| `data/splits_summary.tsv` | 5 | 1 KB | 분할별 크기와 양성 비율 |
+
+값은 `train`, `cal`, `test`, `drop` 넷입니다. `drop` 은 그 분할에서 쓸 수 없는 쌍입니다.
+
+| 분할 | train | cal | test | drop | test 양성 |
+| --- | --- | --- | --- | --- | --- |
+| `random` | 82,039 | 27,347 | 27,347 | 0 | 80.6 % |
+| `cold_drug` | 82,040 | 27,346 | 27,347 | 0 | 79.9 % |
+| `cold_target` | 82,080 | 27,326 | 27,327 | 0 | 80.7 % |
+| `cold_both` | 80,535 | 3,691 | 3,692 | **48,815** | 85.6 % |
+| `temporal` | 124,148 | 6,282 | 6,283 | 20 | 78.7 % |
+
+`cold_both` 가 48,815 쌍을 버리는 것은 리간드와 단백질 중 한쪽만 train 쪽인 쌍을 어느 편에도
+둘 수 없기 때문입니다. `temporal` 의 drop 20 은 `date_publication` 에서 연도를 읽지 못한 쌍입니다.
+
+스크립트가 **누수 점검을 직접 합니다.** cold 분할의 train 과 test 가 키를 공유하면 종료 코드가
+0 이 아닙니다. 현재 네 검사 모두 공유 0 입니다.
+
+읽는 법입니다.
 
 ```python
-import pandas as pd
-x = pd.read_csv("data/bindingdb_kd_input.tsv", sep="\t")
-m = pd.read_csv("data/bindingdb_kd_map.tsv", sep="\t")
-full = x.merge(m, on="id", validate="one_to_one")
+import json, pandas as pd
+
+q = pd.DataFrame(json.loads(l) for l in open("data/all/bindingdb_nochembl_queries.jsonl"))
+a = pd.read_csv("data/splits_assignment.tsv", sep="\t")
+df = q.merge(a, on="query_id", validate="one_to_one")
+
+train = df[df.cold_target == "train"]
+cal   = df[df.cold_target == "cal"]
+test  = df[df.cold_target == "test"]
 ```
 
-> **경고: 입력 파일만 보면 검열값을 알 수 없습니다.**
-> `kd_nm` 과 `ki_nm` 에는 숫자만 있고 부등호가 없습니다. 원본이 `">10000"` 이었던 측정도
-> `10000` 으로만 적힙니다. 부등호는 map 파일의 `qualifier` 열에만 있습니다.
-> Kd 의 **37.45 %**, Ki 의 **13.10 %** 가 검열값이므로, 입력 파일만으로 학습하면 "10 µM 보다 약하다"
-> 를 "정확히 10 µM" 로 가르치게 됩니다. 학습 전에 map 을 합쳐 `qualifier` 를 확인하십시오.
+## 데모용 10 쌍 (단계 9)
 
-```python
-exact = full[full.qualifier.isna()]          # 부등호 없는 측정만
-```
-
-### 데모용 10 행 표본
-
-조건 B, C, D 를 돌려 보는 용도입니다. 여기 `data/` 아래 파일은 다른 생성물과 마찬가지로 git 에 올리지
-않습니다. **git 에 올라가 있는 것은 `track_agent/data/` 로 복사한 쪽 하나뿐입니다.** 같은 파일을 두 곳에
-두면 어긋나기 때문입니다. 팀원은 그쪽을 쓰면 되고, 큰 파일을 만들 필요가 없습니다.
+조건 B, C, D 를 처음 돌려 볼 때 쓰는 파일입니다. **git 에 올라가는 데이터는 이 두 파일과
+분할 배정표뿐입니다.**
 
 | 파일 | 행 | 내용 |
 | --- | --- | --- |
-| `data/bindingdb_kd_input_10.tsv` | 10 | `kd_nm` 3.7 - 43,000 |
-| `data/bindingdb_kd_map_10.tsv` | 10 | 위 10 행의 메타데이터 |
-| `data/bindingdb_ki_input_10.tsv` | 10 | `ki_nm` 0.24 - 69,183 |
-| `data/bindingdb_ki_map_10.tsv` | 10 | 위 10 행의 메타데이터 |
+| `data/bindingdb_kdki_10.jsonl` | 10 | 형식이 본파일과 **똑같습니다** |
+| `data/bindingdb_kdki_10_meta.tsv` | 10 | 메타데이터 13 열 + 분할 배정 5 열 |
 
-map 파일은 큰 쪽과 열이 같고, 행 순서도 입력 파일과 똑같이 맞춰져 있습니다.
-04 를 다시 돌린 뒤에는 네 파일을 `track_agent/data/` 로 다시 복사하십시오.
+형식을 본파일과 같게 맞춘 이유는, 지운 `04_make_demo_subset.py` 의 데모가
+`id, smiles, protein_sequence, kd_nm` 이었고 본실행은 `query_id, smiles, sequence, truth` 여서
+데모로 짠 코드가 본실행에서 안 돌아갔기 때문입니다.
 
-고르는 규칙은 세 가지이고 결정적입니다. 같은 입력이면 항상 같은 10 행이 나옵니다.
+고르는 규칙 넷입니다. 결정적이라 같은 입력이면 항상 같은 10 행이 나옵니다.
 
-1. 부등호가 없는 측정만 씁니다. `>10000` 은 정답이 한 점으로 정해지지 않아 모델 답과 비교할 수 없습니다.
-2. 약물도 단백질도 서로 겹치지 않습니다 (10 행 = 약물 10 종 x 단백질 10 종).
-3. 파일 앞에서 연달아 뽑지 않고 전체에 고르게 퍼진 위치에서 뽑습니다. BindingDB 는 같은 논문에서 온
-   측정이 붙어 있어, 앞에서 10 개를 뽑으면 한 논문의 한 단백질 변이체들만 나옵니다. 처음 만들었을 때
-   실제로 약물 1 종에 거의 같은 서열 10 개가 나왔습니다.
+1. **라벨 반반** (양성 5, 음성 5). 전체는 양성 80.6 % 이지만 데모에서 음성을 못 보면 채점 코드를
+   시험할 수 없습니다. **그러므로 데모의 라벨 비율은 벤치마크의 분포가 아닙니다.**
+2. **약물도 단백질도 겹치지 않습니다.** 10 행 = 리간드 10 종 x 단백질 10 종.
+3. **부등호 없는 측정만** (`label_source == "exact"`).
+4. **Kd 와 Ki 를 섞고, 파일 전체에 고르게 퍼진 위치에서 뽑습니다.** `queries.jsonl` 은 Kd 가 앞
+   Ki 가 뒤에 모여 있어 한 줄로 훑으면 데모가 전부 Kd 가 됩니다. 처음 만들었을 때 실제로
+   10 행 모두 Kd 였습니다. 또 BindingDB 는 같은 논문의 측정이 붙어 있어 앞에서 자르면 한 논문의
+   단백질 변이체만 나옵니다.
 
-`id` 는 원본 입력 파일의 id 그대로입니다 (`kd_9213` 처럼). map 파일에서 그 id 로 출처를 찾을 수 있습니다.
+현재 10 행은 Kd 6, Ki 4 이고 타겟은 kinase, chitinase, 핵수용체, phosphatase, HIV protease,
+cathepsin, guanylate cyclase, 응고인자로 갈립니다. ChEMBL 행은 0 입니다.
 
 ## 다음 단계에서 정할 것
 

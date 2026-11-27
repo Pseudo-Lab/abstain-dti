@@ -13,7 +13,7 @@
    파일에 적혀 있지 않습니다. 한 측정에 서열 하나를 짝지을 수 없으므로 제외합니다 (Kd·Ki 행의 4.3 %).
 4. 숫자로 읽히지 않는 측정값은 버리고 몇 건인지 셉니다.
 
-출력: data/bindingdb_kdki.tsv, out/kdki_build_summary.csv
+출력: data/all/bindingdb_kdki.tsv, out/kdki_build_summary.csv
 """
 
 from __future__ import annotations
@@ -136,7 +136,7 @@ END {
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--tsv", type=Path, default=TSV, help="원본 BindingDB_All.tsv")
-    parser.add_argument("--out-tsv", type=Path, default=HERE / "data" / "bindingdb_kdki.tsv")
+    parser.add_argument("--out-tsv", type=Path, default=HERE / "data" / "all" / "bindingdb_kdki.tsv")
     parser.add_argument("--out-dir", type=Path, default=HERE / "out")
     args = parser.parse_args()
 
