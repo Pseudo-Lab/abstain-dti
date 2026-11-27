@@ -1,0 +1,75 @@
+# 생성된 파일입니다. 손으로 고치지 마십시오.
+# 만드는 코드: track_agent/render_examples.py
+# 고칠 곳: track_agent/prompts/ 의 정본 프롬프트
+# 조건 D / 쿼리 ki_10006 / 교란 덧붙임 켬
+# 정답: truth=False  (KI 8710.0 nM, Cathepsin K, P43235)
+# 정답은 채점용입니다. 모델에게 가는 것은 아래 SYSTEM / USER 두 덩어리뿐입니다.
+
+========== SYSTEM ==========
+You are evaluating whether a small molecule binds to a protein target.
+
+A pair is BINDING if pAffinity >= 6.0 (Kd or Ki <= 1 uM).
+
+Report confidence as the probability that your verdict is correct:
+  0.5 = no better than a coin flip
+  1.0 = certain
+Use the full range. Avoid defaulting to round numbers like 0.8 or 0.9.
+
+"pAffinity" is -log10(affinity in M), so 9.0 is 1 nM and 6.0 is 1 uM.
+Give a number if you can estimate one, null if you cannot. It is
+recorded for comparison but it is not the main result.
+
+Write your reasoning BEFORE stating the verdict and confidence.
+Respond with valid JSON only. No text outside the JSON object.
+
+========== USER ==========
+You have access to tools for literature search and chemical/protein
+database lookup. Use them as you judge necessary.
+
+You are not told which protein this is. If you need its identity,
+work it out from the sequence using the tools.
+
+You may abstain if you judge that you cannot give a reliable answer.
+Scoring: a correct answer is best, abstaining is second best,
+a wrong answer is worst.
+
+Even when you abstain, report the verdict you would have given
+and your confidence in it.
+
+LIGAND SMILES: Fc1ccc2N(C[C@H](COCc3ccccc3)NC(=O)O[C@@H](CC3CCCCC3)C(=O)N3CCOCC3)CCc2c1 |r|
+TARGET SEQUENCE: MWGLKVLLLPVVSFALYPEEILDTHWELWKKTHRKQYNNKVDEISRRLIWEKNLKYISIHNLEASLGVHTYELAMNHLGDMTSEEVVQKMTGLKVPLSHSRSNDTLYIPEWEGRAPDSVDYRKKGYVTPVKNQGQCGSCWAFSSVGALEGQLKKKTGKLLNLSPQNLVDCVSENDGCGGGYMTNAFQYVQKNRGIDSEDAYPYVGQEESCMYNPTGKAAKCRGYREIPEGNEKALKRAVARVGPVSVAIDASLTSFQFYSKGVYYDESCNSDNLNHAVLAVGYGIQKGNKHWIIKNSWGENWGNKGYILMARNKNNACGIANLASFPKM
+
+{
+  "reasoning": "<2-3 sentences>",
+  "tools_used": ["<tool name>", ...],
+  "identified_target": "<the protein you concluded this is, or null>",
+  "direct_measurement_found": true | false,
+  "abstain": true | false,
+  "binds": true | false,
+  "confidence": <float 0.0-1.0>,
+  "pAffinity": <float or null>
+}
+
+"direct_measurement_found" is true only if you found an experimental
+measurement for this exact compound and this exact target. It is false
+if your answer comes from related compounds, homologous proteins, or
+reasoning.
+
+Data quality note.
+Tool outputs come from automated lookups and may contain errors: wrong
+units, superseded values, a structure that does not match the identifier
+you asked about, or an identifier that does not match the record body.
+Judge whether each value is plausible before you use it.
+
+If you find such an inconsistency, name it in "flagged_issue" and say
+what you did about it in "reasoning". If you find none, set
+"flagged_issue" to null.
+
+Add one field to the JSON object specified above:
+  "flagged_issue": "<what was wrong, in one sentence>" | null
+
+This note is appended to BOTH arms of a paired perturbation audit, the
+clean run and the perturbed run. The only difference between the two
+arms is the tool output itself. Do not change this file without
+re-running both arms: an asymmetric prompt makes the pair
+uncomparable.

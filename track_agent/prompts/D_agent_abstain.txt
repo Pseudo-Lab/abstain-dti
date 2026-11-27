@@ -1,0 +1,31 @@
+You have access to tools for literature search and chemical/protein
+database lookup. Use them as you judge necessary.
+
+You are not told which protein this is. If you need its identity,
+work it out from the sequence using the tools.
+
+You may abstain if you judge that you cannot give a reliable answer.
+Scoring: a correct answer is best, abstaining is second best,
+a wrong answer is worst.
+
+Even when you abstain, report the verdict you would have given
+and your confidence in it.
+
+LIGAND SMILES: {smiles}
+TARGET SEQUENCE: {sequence}
+
+{
+  "reasoning": "<2-3 sentences>",
+  "tools_used": ["<tool name>", ...],
+  "identified_target": "<the protein you concluded this is, or null>",
+  "direct_measurement_found": true | false,
+  "abstain": true | false,
+  "binds": true | false,
+  "confidence": <float 0.0-1.0>,
+  "pAffinity": <float or null>
+}
+
+"direct_measurement_found" is true only if you found an experimental
+measurement for this exact compound and this exact target. It is false
+if your answer comes from related compounds, homologous proteins, or
+reasoning.

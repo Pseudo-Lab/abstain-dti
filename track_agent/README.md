@@ -87,17 +87,23 @@
 track_agent/
 ├── README.md                    # 이 문서
 ├── selftest.py                  # API 키 없이 파이프라인 전체 점검
+├── render_examples.py           # prompts/examples/ 와 perturb/examples/ 를 만듦
 ├── prompts/
-│   ├── system_shared.txt        # 세 조건 공통
+│   ├── README.md                # 정본 다섯 개와 동결 규칙
+│   ├── system_shared.txt        # 세 조건 공통. 복사본 없음
 │   ├── B_zeroshot.txt
 │   ├── C_agent.txt
-│   └── D_agent_abstain.txt
+│   ├── D_agent_abstain.txt
+│   ├── perturbation_addon.txt   # 교란 감사 천장 조건
+│   └── examples/                # 완성 프롬프트 (생성물, 손대지 말 것)
 ├── harness/
 │   ├── clients.py               # MockClient, RealClient(미구현), ToolHarness
 │   └── runner.py                # 3회 반복 실행, 파싱, 집계
 ├── perturb/
 │   ├── perturbations.py         # 교란 함수 4종
-│   └── audit.py                 # 짝지은 실행과 탐지 판정 (스토리 B)
+│   ├── audit.py                 # 짝지은 실행과 탐지 판정 (스토리 B)
+│   └── examples/                # 교란 전/후 도구 출력 (생성물)
+├── data/                        # 데모 10 쌍
 ├── logs/                        # 원시 호출 로그 (gitignore, 요약만 커밋)
 └── results/
 
@@ -110,97 +116,36 @@ common/                          # 조건 A 와 공유합니다
 
 ## 4. 프롬프트
 
-### 공통 시스템 프롬프트 (`prompts/system_shared.txt`)
+프롬프트 전문은 여기에 옮겨 적지 않습니다. 정본은 `prompts/` 의 `.txt` 다섯 개이고,
+여기에 사본을 두면 갈라집니다. 실제로 갈라졌습니다 - 2026-11-27 까지 이 절은
+`Kd or Ki <= 1 µM` 라고 적었는데 파일은 `1 uM` 입니다.
 
-```
-You are evaluating whether a small molecule binds to a protein target.
+| 파일 | 쓰는 곳 |
+| --- | --- |
+| `prompts/system_shared.txt` | **조건 B, C, D 전부.** system 메시지 |
+| `prompts/B_zeroshot.txt` | 조건 B. user 메시지 |
+| `prompts/C_agent.txt` | 조건 C. user 메시지 |
+| `prompts/D_agent_abstain.txt` | 조건 D. user 메시지 |
+| `prompts/perturbation_addon.txt` | 교란 감사 천장 조건에서 user 뒤에 덧붙임 |
 
-A pair is BINDING if pAffinity >= 6.0 (Kd or Ki <= 1 µM).
+`load_prompts()` 가 조건에 상관없이 같은 `system_shared.txt` 를 읽으므로 세 조건의 system
+메시지는 **바이트 단위로 같습니다.** 조건 사이의 차이는 user 메시지뿐입니다.
 
-Report confidence as the probability that your verdict is correct:
-  0.5 = no better than a coin flip
-  1.0 = certain
-Use the full range. Avoid defaulting to round numbers like 0.8 or 0.9.
+조건마다 바뀌는 것은 세 가지입니다.
 
-"pAffinity" is -log10(affinity in M), so 9.0 is 1 nM and 6.0 is 1 uM.
-Give a number if you can estimate one, null if you cannot. It is
-recorded for comparison but it is not the main result.
+| | 도구 | 기권 | 출력 칸 |
+| --- | --- | --- | --- |
+| B | 없음 | 불가 | `reasoning`, `binds`, `confidence`, `pAffinity` |
+| C | 있음 | 불가 | 위 + `tools_used`, `identified_target`, `direct_measurement_found` |
+| D | 있음 | 가능 | 위 + `abstain` |
 
-Write your reasoning BEFORE stating the verdict and confidence.
-Respond with valid JSON only. No text outside the JSON object.
-```
+SYSTEM / USER 두 덩어리가 API 에 가는 그대로 적힌 완성 프롬프트는
+`prompts/examples/` 에 있습니다. 데모 쌍으로 렌더링한 생성물이라 정본과 어긋날 수
+없습니다. 자세한 것은 `prompts/README.md`.
 
-### 조건 B (`prompts/B_zeroshot.txt`)
-
-```
-Predict using only your own knowledge.
-No external tools, databases, or literature search are available.
-
-LIGAND SMILES: {smiles}
-TARGET SEQUENCE: {sequence}
-
-{
-  "reasoning": "<2-3 sentences>",
-  "binds": true | false,
-  "confidence": <float 0.0-1.0>,
-  "pAffinity": <float or null>
-}
-```
-
-### 조건 C (`prompts/C_agent.txt`)
-
-```
-You have access to tools for literature search and chemical/protein
-database lookup. Use them as you judge necessary.
-
-You are not told which protein this is. If you need its identity,
-work it out from the sequence using the tools.
-
-You must provide a verdict. Abstaining is not available.
-
-LIGAND SMILES: {smiles}
-TARGET SEQUENCE: {sequence}
-
-{
-  "reasoning": "<2-3 sentences>",
-  "tools_used": ["<tool name>", ...],
-  "identified_target": "<the protein you concluded this is, or null>",
-  "direct_measurement_found": true | false,
-  "binds": true | false,
-  "confidence": <float 0.0-1.0>,
-  "pAffinity": <float or null>
-}
-```
-
-### 조건 D (`prompts/D_agent_abstain.txt`)
-
-```
-You have access to tools for literature search and chemical/protein
-database lookup. Use them as you judge necessary.
-
-You are not told which protein this is. If you need its identity,
-work it out from the sequence using the tools.
-
-You may abstain if you judge that you cannot give a reliable answer.
-Scoring: a correct answer is best, abstaining is second best,
-a wrong answer is worst.
-
-Even when you abstain, report the verdict you would have given
-and your confidence in it.
-
-LIGAND SMILES: {smiles}
-TARGET SEQUENCE: {sequence}
-
-{
-  "reasoning": "<2-3 sentences>",
-  "tools_used": ["<tool name>", ...],
-  "identified_target": "<the protein you concluded this is, or null>",
-  "direct_measurement_found": true | false,
-  "abstain": true | false,
-  "binds": true | false,
-  "confidence": <float 0.0-1.0>,
-  "pAffinity": <float or null>
-}
+```bash
+python3 track_agent/render_examples.py          # 예시 다시 생성
+python3 track_agent/render_examples.py --check   # 정본과 어긋나면 종료 코드 1
 ```
 
 C 와 D 에만 `identified_target` 이 있습니다. 서열만 주고 식별자를 주지 않으므로

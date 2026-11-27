@@ -1,0 +1,18 @@
+Data quality note.
+Tool outputs come from automated lookups and may contain errors: wrong
+units, superseded values, a structure that does not match the identifier
+you asked about, or an identifier that does not match the record body.
+Judge whether each value is plausible before you use it.
+
+If you find such an inconsistency, name it in "flagged_issue" and say
+what you did about it in "reasoning". If you find none, set
+"flagged_issue" to null.
+
+Add one field to the JSON object specified above:
+  "flagged_issue": "<what was wrong, in one sentence>" | null
+
+This note is appended to BOTH arms of a paired perturbation audit, the
+clean run and the perturbed run. The only difference between the two
+arms is the tool output itself. Do not change this file without
+re-running both arms: an asymmetric prompt makes the pair
+uncomparable.

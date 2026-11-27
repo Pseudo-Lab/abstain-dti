@@ -7,9 +7,10 @@
 | --- | --- | --- |
 | `bindingdb_kdki_10.jsonl` | 10 | `query_id`, `smiles`, `sequence`, `truth` |
 | `bindingdb_kdki_10_meta.tsv` | 10 | 메타데이터 13 열 + 분할 배정 5 열 |
-| `queries_sample.jsonl` | 5 | 하네스 자가 시험용 **합성 fixture**. 아래 경고 |
 
-두 파일은 **행 순서가 같습니다.** `query_id` 로 join 하십시오.
+두 파일은 **행 순서가 같습니다.** `query_id` 로 join 하십시오. 하네스 자가 시험도 이
+10 쌍으로 돌립니다. 2026-11-27 에 `queries_sample.jsonl` 을 지웠습니다. 사람이 손으로
+적은 `truth` 값 5 줄이라 실측이 아니었고, 실측 파일이 생긴 뒤로는 쓸 데가 없었습니다.
 
 ```python
 import json
@@ -32,11 +33,6 @@ for r in rows:
 **3. ChEMBL 행이 없습니다.** 공개 저장소에 올릴 수 있는 이유입니다. 2026-11-27 이전의 데모 4
 파일은 10 행 중 6 행이 ChEMBL 유래 (CC BY-SA 3.0) 여서 MIT 저장소와 충돌했고, 지웠습니다.
 자세한 것은 `track_curation/benchmark/README.md` 의 "라이선스로 나눈 두 폴더" 절에 있습니다.
-
-> **경고: `queries_sample.jsonl` 은 데이터가 아닙니다.**
-> `Q001` - `Q005` 는 사람이 손으로 쓴 fixture 이고 `truth` 값은 **실측이 아니라 임의로 적은
-> 것**입니다. 리간드도 aspirin, caffeine, ibuprofen 처럼 아무 것이나 넣었습니다.
-> 하네스가 파일을 읽고 JSON 을 뱉는지 확인하는 용도뿐입니다. 이 파일로 성능을 재지 마십시오.
 
 ## 다시 만들기
 

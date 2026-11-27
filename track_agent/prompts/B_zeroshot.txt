@@ -1,0 +1,12 @@
+Predict using only your own knowledge.
+No external tools, databases, or literature search are available.
+
+LIGAND SMILES: {smiles}
+TARGET SEQUENCE: {sequence}
+
+{
+  "reasoning": "<2-3 sentences>",
+  "binds": true | false,
+  "confidence": <float 0.0-1.0>,
+  "pAffinity": <float or null>
+}

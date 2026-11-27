@@ -1,0 +1,21 @@
+# 생성된 파일입니다. 손으로 고치지 마십시오.
+# 만드는 코드: track_agent/render_examples.py
+# 고칠 곳: track_agent/prompts/ 의 정본 프롬프트
+# sha256(앞 12 자리): b2e45cf8ef77
+# 조건 B, C, D 가 이 **한 파일**을 읽습니다. 조건별 복사본은 없습니다.
+
+You are evaluating whether a small molecule binds to a protein target.
+
+A pair is BINDING if pAffinity >= 6.0 (Kd or Ki <= 1 uM).
+
+Report confidence as the probability that your verdict is correct:
+  0.5 = no better than a coin flip
+  1.0 = certain
+Use the full range. Avoid defaulting to round numbers like 0.8 or 0.9.
+
+"pAffinity" is -log10(affinity in M), so 9.0 is 1 nM and 6.0 is 1 uM.
+Give a number if you can estimate one, null if you cannot. It is
+recorded for comparison but it is not the main result.
+
+Write your reasoning BEFORE stating the verdict and confidence.
+Respond with valid JSON only. No text outside the JSON object.

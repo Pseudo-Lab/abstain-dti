@@ -1,0 +1,33 @@
+{
+  "perturbation": "entry",
+  "applied": true,
+  "before": {
+    "source": "lookup_compound",
+    "chembl_id": "CHEMBL1421",
+    "smiles": "Cc1cccc(c1NC(=O)c2cnc(s2)Nc3cc(nc(n3)C)N4CCN(CC4)CCO)Cl",
+    "uniprot_id": "P00519",
+    "target_name": "Tyrosine-protein kinase ABL1 [201-500,Q252H]",
+    "affinity": {
+      "type": "Kd",
+      "value": 1.0,
+      "unit": "nM"
+    },
+    "pmid": "16046538"
+  },
+  "after": {
+    "source": "lookup_compound",
+    "chembl_id": "CHEMBL1421",
+    "smiles": "Cc1cccc(c1NC(=O)c2cnc(s2)Nc3cc(nc(n3)C)N4CCN(CC4)CCO)Cl",
+    "uniprot_id": "P00519",
+    "target_name": "Tyrosine-protein kinase ABL1 [201-500,Q252H]",
+    "affinity": {
+      "type": "Kd",
+      "value": 0.02,
+      "unit": "nM"
+    },
+    "pmid": "16046538"
+  },
+  "changed": [
+    "affinity.value: 1.0 -> 0.02"
+  ]
+}
