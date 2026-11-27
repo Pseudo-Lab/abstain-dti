@@ -1,0 +1,62 @@
+# 조건 A 기본 설정. 모든 스크립트가 이 파일을 읽습니다.
+# 값을 바꾸면 결과가 바뀌므로, 실험마다 이 파일을 복사해 쓰고 경로를 --config 로 넘기십시오.
+
+paths:
+  # 조건 A·B·C·D 가 같은 쿼리 파일을 읽습니다. 그래야 같은 평가 평면에 올라갑니다.
+  # 만드는 법: track_curation/benchmark/07_make_queries.py
+  # 이 파일은 `data/all/` 에 있고 .gitignore 입니다 (100 MB). clone 만으로는 없으므로
+  # 07 을 먼저 돌리십시오. git 에 들어 있는 것은 데모 10 쌍과 분할 배정표뿐입니다.
+  queries: ../track_curation/benchmark/data/all/bindingdb_nochembl_queries.jsonl
+  queries_meta: ../track_curation/benchmark/data/all/bindingdb_nochembl_queries_meta.tsv
+  # 분할은 큐레이션 트랙이 만들어 git 으로 넘겨줍니다 (08_make_splits.py).
+  # TODO (ML 트랙): src/splits.py 는 아직 자기가 분할을 만듭니다. 이 배정표를 읽도록
+  # 바꿔야 두 트랙의 분할이 같아집니다. 지금은 두 구현이 따로 돌고 있습니다.
+  splits_assignment: ../track_curation/benchmark/data/splits_assignment.tsv
+  splits: splits
+  cache: cache
+  results: results
+
+split:
+  # queries.jsonl 에 들어 있는 쌍을 전부 쓰려면 0. 숫자를 주면 무작위로 그만큼만 씁니다.
+  n_sample: 0
+  seed: 42
+  # holdout 을 cal 과 test 로 나누는 비율. cal 은 conformal 보정에만 씁니다.
+  test_fraction_of_holdout: 0.5
+  # train 이 차지하는 비율. 나머지가 holdout 입니다. temporal 에는 적용되지 않습니다.
+  train_fraction: 0.6
+  # temporal 의 경계 연도. 이 연도 이상이 holdout 입니다.
+  # 2026-11-26 결정: 2025. 근거는 .scratch/condition-pipeline/issues/03 의 집계입니다.
+  cutoff_year: 2025
+  names:
+    - random
+    - cold_drug
+    - cold_target
+    - cold_both
+    - temporal
+
+features:
+  ligand:
+    kind: morgan
+    radius: 2
+    n_bits: 2048
+  protein:
+    # 데모 기본값. 다운로드도 GPU 도 필요 없습니다 (20 + 400 = 420 차원).
+    # ESM-C 로 바꾸려면 kind: esmc 로 두고 features.py 의 해당 분기를 채우십시오.
+    # 캐시 파일 이름이 달라지므로 두 설정의 결과가 섞이지 않습니다.
+    kind: composition
+
+model:
+  kind: xgboost
+  n_estimators: 500
+  max_depth: 6
+  learning_rate: 0.1
+  n_jobs: 1
+  seeds: [42, 43, 44]
+
+conformal:
+  method: lac
+  alphas: [0.01, 0.05, 0.10, 0.15, 0.20, 0.30]
+
+curves:
+  # 답한 수가 이보다 적은 구간은 risk 가 불안정해 버립니다.
+  min_answered: 5

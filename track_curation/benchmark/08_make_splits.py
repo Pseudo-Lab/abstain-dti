@@ -52,9 +52,9 @@ temporal 이 특별한 이유는 **조건 A 와 B·C·D 가 같은 경계를 공
 `.scratch/benchmark-dataset/research/03-dti-split-protocols.md` 에 있습니다. 정체 기준은
 **가장 느슨한 cold 분할**이므로, 여기서 나온 숫자는 낙관적으로 읽으십시오.
 
-리간드 키는 SMILES 원문이 아니라 `queries_meta.tsv` 의 **InChIKey** 입니다. 같은 분자를 다르게
-쓴 SMILES 가 다른 그룹이 되면 cold_drug 가 새지 않습니다. 이 쿼리 세트에서 SMILES 는 33,860
-가지이지만 InChIKey 는 33,752 가지로, 108 쌍이 그 차이에 해당합니다.
+리간드는 **InChIKey 와 SMILES 를 둘 다** 보고 묶습니다. 두 키 중 하나라도 같으면 같은 그룹입니다.
+InChIKey 만 쓰면 BindingDB 에 같은 SMILES 가 InChIKey 두 개를 들고 있는 행이 있어 cold_drug 가
+샙니다. 자세한 것은 `ligand_groups()` 의 docstring 에 있습니다.
 
 읽는 법
 ------
@@ -105,6 +105,46 @@ def pub_year(value: str) -> int | None:
     return None
 
 
+def ligand_groups(rows: list[dict]) -> dict[int, str]:
+    """리간드를 InChIKey 와 SMILES 양쪽으로 묶어 그룹 id 를 돌려줍니다.
+
+    **왜 두 키를 다 보는가.** BindingDB 에는 **같은 SMILES 에 InChIKey 가 두 개** 붙은 행이
+    있습니다. 이 쿼리 세트에서 2 건입니다.
+
+        Nc1ncc(CN[C@H]2C[C@@H]2c2ccc(OCc3ccccc3)cc2)s1
+            UKYBJIFGAZGUOR-UHFFFAOYSA-N   (ki_129790 등)
+            UKYBJIFGAZGUOR-MOPGFXCFSA-N   (ki_99455 등)
+
+    첫 14 자(골격)는 같고 두 번째 블록만 다릅니다. SMILES 에 `[C@H]` 로 입체 정보가 있는데
+    한쪽 키에는 그 층이 반영되지 않은 것으로 보이지만 **InChI 명세를 조회해 확인하지는
+    않았습니다.** 원인이 무엇이든, InChIKey 만으로 묶으면 같은 분자가 두 그룹이 되어
+    cold_drug 의 train 과 test 에 함께 들어갑니다. 실제로 그렇게 새어 ML 트랙의
+    `src/splits.py` 점검이 잡았습니다.
+
+    그래서 (InChIKey, SMILES) 를 잇는 그래프의 연결 요소를 그룹으로 씁니다. 두 키 중 어느
+    하나라도 같으면 같은 그룹입니다. 묶기가 느슨해지는 방향이므로 누수가 생기지 않습니다.
+    """
+    parent: dict[str, str] = {}
+
+    def find(x: str) -> str:
+        parent.setdefault(x, x)
+        while parent[x] != x:
+            parent[x] = parent[parent[x]]
+            x = parent[x]
+        return x
+
+    def union(a: str, b: str) -> None:
+        ra, rb = find(a), find(b)
+        if ra != rb:
+            parent[ra] = rb
+
+    for r in rows:
+        # 두 이름공간이 섞이지 않게 접두사를 붙입니다.
+        union(f"k:{r['inchikey']}", f"s:{r['smiles']}")
+
+    return {i: find(f"s:{r['smiles']}") for i, r in enumerate(rows)}
+
+
 def load_rows(q_path: Path, m_path: Path) -> list[dict]:
     if not q_path.is_file():
         sys.exit(f"쿼리 파일이 없습니다: {q_path}\n먼저 07_make_queries.py 를 돌리십시오.")
@@ -131,8 +171,10 @@ def load_rows(q_path: Path, m_path: Path) -> list[dict]:
                 {
                     "query_id": d["query_id"],
                     "truth": bool(d["truth"]),
-                    # 리간드 키는 InChIKey. 비어 있으면 SMILES 로 떨어집니다 (이 세트에서는 0 건).
-                    "lig": (m.get("ligand_inchikey") or "").strip() or d["smiles"],
+                    "smiles": d["smiles"],
+                    "inchikey": (m.get("ligand_inchikey") or "").strip() or d["smiles"],
+                    # lig 는 아래 ligand_groups() 가 채웁니다.
+                    "lig": "",
                     "tgt": seq_key(d["sequence"]),
                     "year": pub_year(m.get("date_publication", "")),
                 }
@@ -140,6 +182,9 @@ def load_rows(q_path: Path, m_path: Path) -> list[dict]:
     if not rows:
         sys.exit(f"쿼리 파일이 비어 있습니다: {q_path}")
     rows.sort(key=lambda r: r["query_id"])  # 순서를 고정합니다.
+    groups = ligand_groups(rows)
+    for i, r in enumerate(rows):
+        r["lig"] = groups[i]
     return rows
 
 
@@ -252,7 +297,7 @@ def main() -> None:
     n_lig = len({r["lig"] for r in rows})
     n_tgt = len({r["tgt"] for r in rows})
 
-    print(f"쿼리 {len(rows):,}   고유 리간드 (InChIKey) {n_lig:,}   고유 단백질 (서열) {n_tgt:,}")
+    print(f"쿼리 {len(rows):,}   고유 리간드 (그룹) {n_lig:,}   고유 단백질 (서열) {n_tgt:,}")
     print(f"양성 {sum(r['truth'] for r in rows):,} ({pos_rate(rows, range(len(rows))):.1%})")
     print(f"seed {args.seed}   train_fraction {args.train_fraction}   경계 연도 {args.cutoff_year}\n")
 

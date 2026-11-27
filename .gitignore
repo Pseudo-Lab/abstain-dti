@@ -2,3 +2,9 @@
 .scratch/abstain-dti-design/feedback.md
 .env
 .env.secret
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
